@@ -1,0 +1,13 @@
+# Python
+*.pyc
+*.egg
+*.egg-info
+dist
+build
+
+# VIM
+*.swp
+
+# Dependencies
+dependencies/
+
