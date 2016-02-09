@@ -97,7 +97,7 @@ setup(
 
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers = [
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python :: 3 :: Only",
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -105,7 +105,7 @@ setup(
     ],
     keywords = "Unitex, Finite-States Transducers, Natural Language Processing",
 
-    license = "MIT",
+    license = "GPLv3",
     install_requires = [
         # TO FILL
     ],
