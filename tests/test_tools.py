@@ -14,12 +14,12 @@ class Arguments:
     def __init__(self, language=None):
         self.__arguments = {}
 
-        self.__arguments["dic"] = "data/delaf-short.dic" 
+        self.__arguments["dic"] = "data/dela-fr-public.dic" 
         self.__arguments["dic_type"] = "delaf"
         self.__arguments["dic_check"] = "data/CHECK_DIC.TXT" 
 
-        self.__arguments["bin"] = "data/delaf-short.bin" 
-        self.__arguments["inf"] = "data/delaf-short.inf" 
+        self.__arguments["bin"] = "data/dela-fr-public.bin" 
+        self.__arguments["inf"] = "data/dela-fr-public.inf" 
 
         self.__arguments["alphabet"] = "data/Alphabet.txt" 
         self.__arguments["alphabet_sort"] = "data/Alphabet_sort.txt" 
