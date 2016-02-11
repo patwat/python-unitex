@@ -1,0 +1,24 @@
+global:
+    debug: 1
+    verbose: 1
+
+    persistence: 1
+    virtualization: 1
+
+resources:
+    language: fr
+
+    alphabet: /home/resources/media/fr/unitex/preprocessing/Alphabet.txt
+    alphabet-sorted: /home/resources/media/fr/unitex/preprocessing/Alphabet_sort.txt
+    sentence: /home/resources/media/fr/unitex/preprocessing/Sentence.fst2
+    replace: /home/resources/media/fr/unitex/preprocessing/Replace.fst2
+
+    dictionaries:
+        - /home/resources/media/fr/unitex/dictionary/delaf-short.bin
+        - /home/resources/media/fr/unitex/dictionary/delacf-light.bin
+        - /home/resources/media/fr/unitex/dictionary/toponyms.bin
+
+# The 'options' section can contain any of the argument used by the unitex tools
+# functions.
+options:
+    match-mode: longest

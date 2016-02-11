@@ -24,7 +24,9 @@ UNITEX_INC = os.path.abspath(UNITEX_INC)
 class CustomBuild(build):
 
     def run(self):
-        command = "cd %s && make 64BITS=yes LIBRARY=yes" % os.path.join(UNITEX_INC, "build")
+        build.run(self)
+
+        command = "cd %s && make 64BITS=yes LIBRARY=yes TRE_DIRECT_COMPILE=yes DEBUG=yes" % os.path.join(UNITEX_INC, "build")
         
         try:
             process = subprocess.Popen(command, stderr=subprocess.PIPE, shell=True)
@@ -36,13 +38,14 @@ class CustomBuild(build):
 
         if process.returncode != 0:
             raise OSError(process.stderr.read())
-        build.run(self)
 
 
 
 class CustomClean(clean):
 
     def run(self):
+        clean.run(self)
+
         command = "cd %s && make clean" % os.path.join(UNITEX_INC, "build")
 
         try:
@@ -55,13 +58,14 @@ class CustomClean(clean):
 
         if process.returncode != 0:
             raise OSError(process.stderr.read())
-        clean.run(self)
 
 
 
 class CustomInstall(install):
 
     def run(self):
+        install.run(self)
+
         library = None
 
         if sys.platform == "darwin":
@@ -84,7 +88,6 @@ class CustomInstall(install):
 
         if process.returncode != 0:
             raise OSError(process.stderr.read())
-        install.run(self)
 
 
 
@@ -118,9 +121,9 @@ setup(
     data_files = [
     ],
 
-    cmdclass = {
-        "build": CustomBuild,
-        "clean": CustomClean,
-        "install": CustomInstall
-    }
+#    cmdclass = {
+#        "build": CustomBuild,
+#        "clean": CustomClean,
+#        "install": CustomInstall
+#    }
 )

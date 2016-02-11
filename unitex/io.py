@@ -7,7 +7,22 @@ from unitex import UnitexException, LOGGER, LIBUNITEX
 
 
 
-class UnitexFile:
+def enable_stdout():
+    """This function enable Unitex standard output. This should be used
+    for debug purposes only.
+    """
+    pass
+
+def disable_stdout():
+    """This function disable Unitex standard output to ensure multithread
+    output consistency (i.e. avoid output mixing between threads) and to
+    improve performances.
+    """
+    pass
+
+
+
+class UnitexFile(object):
 
     def __init__(self):
         raise NotImplementedError
