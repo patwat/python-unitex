@@ -5,7 +5,7 @@ import os
 import subprocess
 import sys
 
-from distutils.core import setup
+from distutils.core import setup, Extension
 from distutils.command.build import build
 from distutils.command.clean import clean
 from distutils.command.install import install
@@ -121,9 +121,15 @@ setup(
     data_files = [
     ],
 
-#    cmdclass = {
-#        "build": CustomBuild,
-#        "clean": CustomClean,
-#        "install": CustomInstall
-#    }
+    ext_modules=[
+        Extension("_unitex",
+                  include_dirs = [UNITEX_INC],
+                  sources = ["extensions/_unitex.c"])
+    ],
+
+    cmdclass = {
+        "build": CustomBuild,
+        "clean": CustomClean,
+        "install": CustomInstall
+    }
 )
