@@ -22,7 +22,7 @@ LIBUNITEX = None
 
 if sys.platform == "darwin":
     LIBUNITEX = ctypes.cdll.LoadLibrary("libunitex.dylib")
-elif sys.platform == "linux2":
+elif sys.platform == "linux":
     LIBUNITEX = ctypes.cdll.LoadLibrary("libunitex.so")
 else:
     raise UnitexException("Plateform '%s' not supported..." % sys.platform)

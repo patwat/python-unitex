@@ -24,8 +24,7 @@ UNITEX_INC = os.path.abspath(UNITEX_INC)
 class CustomBuild(build):
 
     def run(self):
-        build.run(self)
-
+        # Unitex library compilation.
         command = "cd %s && make 64BITS=yes LIBRARY=yes TRE_DIRECT_COMPILE=yes DEBUG=yes" % os.path.join(UNITEX_INC, "build")
         
         try:
@@ -39,14 +38,18 @@ class CustomBuild(build):
         if process.returncode != 0:
             raise OSError(process.stderr.read())
 
+        # Unitex library installation (needed by _unitex C extension).
+        library = None
 
+        if sys.platform == "darwin":
+            library = "libunitex.dylib"
+        elif sys.platform == "linux":
+            library = "libunitex.so"
+        else:
+            sys.stderr.write("Plateform '%s' not supported...\n" % sys.platform)
+            sys.exit(1)
 
-class CustomClean(clean):
-
-    def run(self):
-        clean.run(self)
-
-        command = "cd %s && make clean" % os.path.join(UNITEX_INC, "build")
+        command = "cd %s && cp %s /usr/local/lib" % (os.path.join(UNITEX_INC, "bin"), library)
 
         try:
             process = subprocess.Popen(command, stderr=subprocess.PIPE, shell=True)
@@ -59,24 +62,16 @@ class CustomClean(clean):
         if process.returncode != 0:
             raise OSError(process.stderr.read())
 
+        build.run(self)
 
 
-class CustomInstall(install):
+
+class CustomClean(clean):
 
     def run(self):
-        install.run(self)
+        clean.run(self)
 
-        library = None
-
-        if sys.platform == "darwin":
-            library = "libunitex.dylib"
-        elif sys.platform == "linux2":
-            library = "libunitex.so"
-        else:
-            sys.stderr.write("Plateform '%s' not supported...\n" % sys.platform)
-            sys.exit(1)
-
-        command = "cd %s && cp %s /usr/local/lib" % (os.path.join(UNITEX_INC, "bin"), library)
+        command = "cd %s && make clean" % os.path.join(UNITEX_INC, "build")
 
         try:
             process = subprocess.Popen(command, stderr=subprocess.PIPE, shell=True)
@@ -124,12 +119,13 @@ setup(
     ext_modules=[
         Extension("_unitex",
                   include_dirs = [UNITEX_INC],
+                  libraries=["unitex"],
+                  library_dirs=['/usr/local/lib'],
                   sources = ["extensions/_unitex.c"])
     ],
 
     cmdclass = {
         "build": CustomBuild,
-        "clean": CustomClean,
-        "install": CustomInstall
+        "clean": CustomClean
     }
 )

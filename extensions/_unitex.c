@@ -1,19 +1,20 @@
 #include <Python.h>
+
 #include "UnitexLibIO.h"
 
 static char unitex_docstring[] =
 	"This module provides some usefull C function to work with the Unitex library.";
-static char unitex_get_vfs_file_list_docstring[] =
-	"This function converts a C array of string (char**) into a Python list.";
 
+static char unitex_get_vfs_file_list_docstring[] =
+	"This function list (disk or virtual) directory contents.";
 static PyObject *unitex_get_vfs_file_list(PyObject *self, PyObject *args);
 
 PyObject *unitex_get_vfs_file_list(PyObject *self, PyObject *args) {
-	char *filename;
-	if (!PyArg_ParseTuple(args, "s", &filename))
+	char *path;
+	if (!PyArg_ParseTuple(args, "s", &path))
 		return NULL;
 
-	char **array=GetUnitexFileList(filename);
+	char **array=GetUnitexFileList(path);
 	if (array==NULL)
 		return PyList_New(0);
 
@@ -57,3 +58,5 @@ PyMODINIT_FUNC PyInit__unitex(void) {
 		return NULL;
 	return module;
 }
+
+

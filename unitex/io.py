@@ -3,6 +3,7 @@
 
 import ctypes
 
+from _unitex import unitex_get_vfs_file_list
 from unitex import UnitexException, LOGGER, LIBUNITEX
 
 
@@ -69,7 +70,7 @@ class UnitexIOConstants:
 
 
 
-def vfs_cp(source_path, target_path):
+def cp(source_path, target_path):
     _source_path = ctypes.c_char_p(bytes(str(source_path), "utf-8"))
     _target_path = ctypes.c_char_p(bytes(str(target_path), "utf-8"))
 
@@ -77,20 +78,23 @@ def vfs_cp(source_path, target_path):
     if ret != 0:
         raise UnitexException("File copy failed!")
 
-def vfs_rm(path):
+def rm(path):
     _path = ctypes.c_char_p(bytes(str(path), "utf-8"))
 
     ret = LIBUNITEX.RemoveUnitexFile(_path)
     if ret != 0:
         raise UnitexException("File suppression failed!")
 
-def vfs_mv(old_path, new_path):
+def mv(old_path, new_path):
     _old_path = ctypes.c_char_p(bytes(str(old_path), "utf-8"))
     _new_path = ctypes.c_char_p(bytes(str(new_path), "utf-8"))
 
     ret = LIBUNITEX.RenameUnitexFile(_old_path, _new_path)
     if ret != 0:
         raise UnitexException("File renaming failed!")
+
+def ls(path):
+    return unitex_get_vfs_file_list(path)
 
 def mkdir(path):
     _path = ctypes.c_char_p(bytes(str(path), "utf-8"))
