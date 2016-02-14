@@ -157,8 +157,11 @@ def ls(path):
 
 class UnitexFile(object):
     """The UnitexFile class provides the minimum functionality necessary to
-    manipulate files on the disk and the virtual filesystems. *The encoding
-    must be UTF-8*.
+    manipulate files on the disk and the virtual filesystems. It's mainly
+    useful to read files from virtual filesystem whithout having to copy them
+    to the disk.
+    
+    **WARNING: the encoding must be UTF-8 and the data Unicode strings.**
     """
 
     def __init__(self):
@@ -166,10 +169,14 @@ class UnitexFile(object):
         self.__mode = None
 
     def open(self, file, mode=None):
+        if self.__file is not None:
+            raise UnitexException("You must close the current file (%s) before open another one..." % self.__file)
         self.__file = file
         self.__mode = mode
 
     def close(self):
+        if self.__file is None:
+            raise UnitexException("There is no file to close...")
         self.__file = None
         self.__mode = None
 
@@ -185,4 +192,6 @@ class UnitexFile(object):
             unitex_append_to_file(self.__file, data)
 
     def read(self):
+        if self.__mode != "r":
+            raise UnitexException("File '%s' is opened in write/append mode..." % self.__file)
         return unitex_read_file(self.__file)
