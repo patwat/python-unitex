@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from unitex import UnitexException, LOGGER, LIBUNITEX
+from _unitex import unitex_tool
+from unitex import UnitexException, LOGGER
 
 
 
@@ -58,7 +59,7 @@ def check_dic(*args, **kwargs):
 
     LOGGER.info("Checking dic '%s'" % dictionary)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -123,7 +124,7 @@ def compress(*args, **kwargs):
 
     LOGGER.info("Compressing dic '%s'" % dictionary)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -341,7 +342,7 @@ def concord(*args, **kwargs):
 
     LOGGER.info("Create concordance for '%s'" % index)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -422,7 +423,7 @@ def dico(*args, **kwargs):
 
     LOGGER.info("Applying dictionaries")
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -493,7 +494,7 @@ def fst2txt(*args, **kwargs):
 
     LOGGER.info("Applying grammar '%s'..." % grammar)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -590,7 +591,7 @@ def grf2fst2(*args, **kwargs):
 
     LOGGER.info("Compiling grammar '%s'..." % grammar)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -782,7 +783,7 @@ def locate(*args, **kwargs):
 
     LOGGER.info("Locating pattern '%s'..." % grammar)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -859,7 +860,7 @@ def normalize(*args, **kwargs):
 
     LOGGER.info("Normalizing text '%s'..." % text)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -932,7 +933,7 @@ def sort_txt(*args, **kwargs):
 
     LOGGER.info("Sorting file '%s'..." % text)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret
 
@@ -1024,6 +1025,6 @@ def tokenize(*args, **kwargs):
 
     LOGGER.info("Tokenizing file '%s'..." % text)
     LOGGER.debug("Command: %s", command)
-    ret = LIBUNITEX.UnitexTool_public_run_string(bytes(str(command), "utf-8"))
+    ret = unitex_tool(command)
 
     return ret

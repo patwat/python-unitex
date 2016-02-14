@@ -3,7 +3,6 @@
 
 __all__ = ["io", "tools", "processor"]
 
-import ctypes
 import logging
 import os
 import sys
@@ -16,16 +15,6 @@ class UnitexException(Exception):
         message = "## UNITEX EXCEPTION ## %s" % message
         super(UnitexException, self).__init__(message)
 
-
-
-LIBUNITEX = None
-
-if sys.platform == "darwin":
-    LIBUNITEX = ctypes.cdll.LoadLibrary("libunitex.dylib")
-elif sys.platform == "linux":
-    LIBUNITEX = ctypes.cdll.LoadLibrary("libunitex.so")
-else:
-    raise UnitexException("Plateform '%s' not supported..." % sys.platform)
 
 
 # VERBOSE = 0: ERROR logging level

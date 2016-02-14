@@ -121,11 +121,11 @@ setup(
                   include_dirs = [UNITEX_INC],
                   libraries=["unitex"],
                   library_dirs=['/usr/local/lib'],
-                  sources = ["extensions/_unitex.c"])
+                  sources = ["extensions/_unitex.cpp"])
     ],
 
-    cmdclass = {
-        "build": CustomBuild,
-        "clean": CustomClean
-    }
+#    cmdclass = {
+#        "build": CustomBuild,
+#        "clean": CustomClean
+#    }
 )
