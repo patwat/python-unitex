@@ -902,6 +902,9 @@ def sort_txt(*args, **kwargs):
         raise UnitexException("You must provide the sort_order argument...")
 
     line_info = kwargs.get("line_info", None)
+    if line_info is None:
+        raise UnitexException("You must provide the line_info argument...")
+
     thai = kwargs.get("thai", False)
     factorize_inflectional_codes = kwargs.get("factorize_inflectional_codes", False)
 

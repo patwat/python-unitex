@@ -1,0 +1,35 @@
+biniou,.N+z2:ms
+ce,.DET+Ddem+z1:ms
+ce,.PRO+Pdem+z1:ms
+ce,.PRO+PpvIL+z1:3ms:3mp
+dans,.PREP+Dnom+z1
+de,.DET+Dind+z1:ms:fs:mp:fp
+de,.PREP+z1
+dommage,.N+z1:ms
+du,.PREPDET+Dind+z1:ms
+est,.A+z1:ms:fs:mp:fp
+est,.N+z1:ms
+est,être.V+z1:P3s
+et,.CONJC
+heureux,.A+z1:ms:mp
+heureux,.N+z1:ms:mp
+il,.PRO+PpvIL+z1:3ms
+jardin,.N+z1:ms
+jardin de,.NDET+Dnom7
+joue,.N+z1:fs
+joue,jouer.V+z1:P1s:P3s:S1s:S3s:Y2s
+monsieur,.N+z1:ms
+n,.N+z1:ms:mp
+Norvège,.N+PLACE
+pas,.ADV+z1
+pas,.N+z1:ms:mp
+paumier,.N:ms
+près,.ADV
+près,.PREP+Dnom+z1
+près de,.PREP+EPCPQ+z1
+Sébastien,Paumier.N+PERS
+son,.DET+Dposs3s+z1:ms:fs
+son,.N+[Bruit]+z1:ms
+son,.N+Conc+[Veg]+z1:ms
+verger,.N+z1:ms
+verger,.V+z1:W
