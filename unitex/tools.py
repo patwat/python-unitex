@@ -20,6 +20,9 @@ def check_dic(*args, **kwargs):
         alphabet [str]          -- alphabet file to use
         strict [bool]           -- strict syntax checking against unprotected dot and comma (default: False) 
         no_space_warning [bool] -- tolerates spaces in grammatical/semantic/inflectional codes (default: True) 
+
+    Return [bool]:
+        The function returns 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -90,6 +93,9 @@ def compress(*args, **kwargs):
         version [str]  -- 'v1': produces an old style .bin file
                           'v2': produces a new style .bin file, with no file size limitation to 16 Mb
                                 and a smaller size (default)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -222,6 +228,9 @@ def concord(*args, **kwargs):
                                than <index> but in 'directory'
             alphabet [str]  -- alphabet file used for sorting
             thai [bool]     -- option to use for Thai concordances (default: False)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -382,6 +391,9 @@ def dico(*args, **kwargs):
         arabic_rules [str] -- specifies the Arabic typographic rule configuration file path
         raw [str]          -- alternative output file path containing both simple and compound
                               words, without requiring a text directory
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if not args:
@@ -450,6 +462,8 @@ def fst2txt(*args, **kwargs):
                                  This is useful for languages like Thai (default: False)
         merge [bool]          -- merge transducer outputs with text inputs (default: True)
 
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -538,6 +552,9 @@ def grf2fst2(*args, **kwargs):
         debug [bool]                   -- compile graphs in debug mode (default: False)
         check_variables [bool]         -- check output validity to avoid malformed variable
                                           expressions (default: False)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -664,6 +681,9 @@ def locate(*args, **kwargs):
             variable_error [str]     -- 'exit': kills the function if variable has an empty content
                                         'ignore': ignore the errors (default)
                                         'backtrack': stop the current path exploration
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -820,6 +840,9 @@ def normalize(*args, **kwargs):
                                              replaces { and } by [ and ]
         no_separator_normalization [bool] -- only applies replacement rules specified with -r
                                              (default: False)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -889,6 +912,9 @@ def sort_txt(*args, **kwargs):
         factorize_inflectional_codes [bool] -- makes two entries XXX,YYY.ZZZ:A and XXX,YYY.ZZZ:B
                                                become a single entry XXX,YYY.ZZZ:A:B
                                                (default: False)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:
@@ -982,6 +1008,9 @@ def tokenize(*args, **kwargs):
       - Offsets options:
             input_offsets [str]  -- base offset file to be used;
             output_offsets [str] -- offset file to be produced;
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
     """
 
     if len(args) != 1:

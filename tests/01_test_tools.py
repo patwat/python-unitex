@@ -98,9 +98,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = check_dic(*args, **kwargs)
 
-        ok = os.path.exists(self._arguments["dic_check"]) and (ret == 0)
+        ok = os.path.exists(self._arguments["dic_check"]) and ret
 
-        self.assertTrue(ok, "Dictionary checking failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Dictionary checking failed!")
 
     def test_02_compress(self):
         args = [self._arguments["dic"]]
@@ -112,9 +112,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = compress(*args, **kwargs)
 
-        ok = os.path.exists(self._arguments["bin"]) and os.path.exists(self._arguments["inf"]) and (ret == 0)
+        ok = os.path.exists(self._arguments["bin"]) and os.path.exists(self._arguments["inf"]) and ret
 
-        self.assertTrue(ok, "Compression failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Compression failed!")
 
     def test_03_normalize(self):
         args = [self._arguments["txt"]]
@@ -128,9 +128,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = normalize(*args, **kwargs)
 
-        ok = os.path.exists(self._arguments["snt"]) and (ret == 0)
+        ok = os.path.exists(self._arguments["snt"]) and ret
 
-        self.assertTrue(ok, "Normalisation failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Normalisation failed!")
 
     def test_04_fst2txt(self):
         args = [self._arguments["sentence"]]
@@ -144,9 +144,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = fst2txt(*args, **kwargs)
 
-        ok = (ret == 0)
+        ok = ret
 
-        self.assertTrue(ok, "FST application failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "FST application failed!")
 
     def test_05_tokenize(self):
         if not os.path.exists(self._arguments["dir"]):
@@ -163,14 +163,14 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = tokenize(*args, **kwargs)
 
-        ok = (ret == 0)
+        ok = ret
         ok = ok and os.path.exists(self._arguments["text.cod"])
         ok = ok and os.path.exists(self._arguments["tok_by_freq.txt"])
         ok = ok and os.path.exists(self._arguments["tok_by_alph.txt"])
         ok = ok and os.path.exists(self._arguments["stats.n"])
         ok = ok and os.path.exists(self._arguments["enter.pos"])
 
-        self.assertTrue(ok, "Tokenisation failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Tokenisation failed!")
 
     def test_06_dico(self):
         args = [self._arguments["bin"]]
@@ -186,7 +186,7 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = dico(*args, **kwargs)
 
-        ok = (ret == 0)
+        ok = ret
         ok = ok and os.path.exists(self._arguments["dlf"])
         ok = ok and os.path.exists(self._arguments["dlc"])
         ok = ok and os.path.exists(self._arguments["err"])
@@ -194,7 +194,7 @@ class TestUnitexTools(unittest.TestCase):
         ok = ok and os.path.exists(self._arguments["tags.ind"])
         ok = ok and os.path.exists(self._arguments["stat_dic.n"])
 
-        self.assertTrue(ok, "Dictionary application failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Dictionary application failed!")
 
     def test_07_sort_txt(self):
         files = []
@@ -218,9 +218,9 @@ class TestUnitexTools(unittest.TestCase):
 
             ret = sort_txt(*args, **kwargs)
 
-            ok = ok and (ret == 0)
+            ok = ok and ret
 
-        self.assertTrue(ok, "Sorting failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Sorting failed!")
 
     def test_08_grf2fst2(self):
         args = [self._arguments["grf"]]
@@ -239,9 +239,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = grf2fst2(*args, **kwargs)
 
-        ok = os.path.exists(self._arguments["fst"]) and (ret == 0)
+        ok = os.path.exists(self._arguments["fst"]) and ret
 
-        self.assertTrue(ok, "Grammar compilation failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Grammar compilation failed!")
 
     def test_09_locate(self):
         args = [self._arguments["fst"]]
@@ -272,9 +272,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = locate(*args, **kwargs)
 
-        ok = os.path.exists(self._arguments["ind"]) and os.path.exists(self._arguments["concord.n"]) and (ret == 0)
+        ok = os.path.exists(self._arguments["ind"]) and os.path.exists(self._arguments["concord.n"]) and ret
 
-        self.assertTrue(ok, "Locate failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Locate failed!")
 
     def test_10_concord(self):
         args = [self._arguments["ind"]]
@@ -301,9 +301,9 @@ class TestUnitexTools(unittest.TestCase):
 
         ret = concord(*args, **kwargs)
 
-        ok = os.path.exists(self._arguments["concordances"]) and (ret == 0)
+        ok = os.path.exists(self._arguments["concordances"]) and ret
 
-        self.assertTrue(ok, "Concord failed! Return code is '%s'" % ret)
+        self.assertTrue(ok, "Concord failed!")
 
 
 

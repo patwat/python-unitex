@@ -34,7 +34,7 @@ PyObject *unitex_tool(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = UnitexTool_public_run_string(command);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
 
@@ -183,7 +183,7 @@ PyObject *unitex_is_persistent_dictionary(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = persistence_public_is_persisted_dictionary_filename(path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 /*'unitex_is_persistent_fst2' function*/
@@ -199,7 +199,7 @@ PyObject *unitex_is_persistent_fst2(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = persistence_public_is_persisted_fst2_filename(path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 /*'unitex_is_persistent_alphabet' function*/
@@ -215,7 +215,7 @@ PyObject *unitex_is_persistent_alphabet(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = persistence_public_is_persisted_alphabet_filename(path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 
@@ -235,7 +235,7 @@ PyObject *unitex_enable_stdout(PyObject *self, PyObject *noarg) {
 	unsigned int ret;
 	ret = SetStdWriteCB(swk, 0, NULL, NULL);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 /* 'unitex_enable_stderr' function*/
@@ -249,7 +249,7 @@ PyObject *unitex_enable_stderr(PyObject *self, PyObject *noarg) {
 	unsigned int ret;
 	ret = SetStdWriteCB(swk, 0, NULL, NULL);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 /* 'unitex_disable_stdout' function*/
@@ -263,7 +263,7 @@ PyObject *unitex_disable_stdout(PyObject *self, PyObject *noarg) {
 	unsigned int ret;
 	ret = SetStdWriteCB(swk, 1, NULL, NULL);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 /* 'unitex_disable_stderr' function*/
@@ -277,7 +277,7 @@ PyObject *unitex_disable_stderr(PyObject *self, PyObject *noarg) {
 	unsigned int ret;
 	ret = SetStdWriteCB(swk, 1, NULL, NULL);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
 /* 'unitex_cp' function*/
@@ -294,7 +294,7 @@ PyObject *unitex_cp(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = CopyUnitexFile(source_path, target_path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
 /* 'unitex_rm' function*/
@@ -310,7 +310,7 @@ PyObject *unitex_rm(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = RemoveUnitexFile(path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
 /* 'unitex_mv' function*/
@@ -327,7 +327,7 @@ PyObject *unitex_mv(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = RenameUnitexFile(old_path, new_path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
 /* 'unitex_mkdir' function*/
@@ -343,7 +343,7 @@ PyObject *unitex_mkdir(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = CreateUnitexFolder(path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
 /* 'unitex_rmdir' function*/
@@ -359,10 +359,12 @@ PyObject *unitex_rmdir(PyObject *self, PyObject *args) {
 	unsigned int ret;
 	ret = RemoveUnitexFolder(path);
 
-	return Py_BuildValue("i", ret);
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_ls' function*/
+/* 'unitex_ls' function
+ *    -> adapted from the function 'getFileList' developped
+ *       by Gilles Vollant and distributed with Unitex */
 static char unitex_ls_docstring[] =
 	"This function list (disk or virtual) directory contents.";
 static PyObject *unitex_ls(PyObject *self, PyObject *args);
@@ -372,7 +374,7 @@ PyObject *unitex_ls(PyObject *self, PyObject *args) {
 	if (!PyArg_ParseTuple(args, "s", &path))
 		return NULL;
 
-	char **_file_list=GetUnitexFileList(path);
+	char **_file_list = GetUnitexFileList(path);
 	if (_file_list==NULL)
 		return PyList_New(0);
 
@@ -396,6 +398,87 @@ PyObject *unitex_ls(PyObject *self, PyObject *args) {
 	return file_list;
 }
 
+/* 'unitex_read_file' function (UTF-8 encoding only)
+ *    -> adapted from the function 'getUnitexFileString' developped
+ *       by Gilles Vollant and distributed with Unitex */
+static char unitex_read_file_docstring[] =
+	"This function read a (virtual) file.";
+static PyObject *unitex_read_file(PyObject *self, PyObject *args);
+
+PyObject *unitex_read_file(PyObject *self, PyObject *args) {
+	char *path;
+	if (!PyArg_ParseTuple(args, "s", &path))
+		return NULL;
+	PyObject *content = NULL;
+
+    UNITEXFILEMAPPED *amf;
+    const void *buffer;
+    size_t file_size;
+
+	GetUnitexFileReadBuffer(path, &amf, &buffer, &file_size);
+	const unsigned char* bufchar = (const unsigned char*)buffer;
+
+	size_t bom_size = 0;
+    if (file_size>2) {
+        if (((*(bufchar))==0xef) && ((*(bufchar+1))==0xbb) && ((*(bufchar+2))==0xbf)) {
+            bom_size = 3;
+        }
+	}
+
+	char* _content = (char*)malloc(file_size+1);
+	memcpy(_content, bufchar+bom_size, file_size-bom_size);
+
+	*(_content+file_size-bom_size) = '\0';
+
+	content = PyUnicode_FromString(_content);
+	free(_content);
+
+    CloseUnitexFileReadBuffer(amf, buffer, file_size);
+
+    return content;
+}
+
+/* 'unitex_write_file' function (UTF-8 encoding only)
+ *    -> adapted from the function 'doWriteUnitexFileUtf' developped
+ *       by Gilles Vollant and distributed with Unitex */
+static char unitex_write_file_docstring[] =
+	"This function write a (virtual) file.";
+static PyObject *unitex_write_file(PyObject *self, PyObject *args);
+
+PyObject *unitex_write_file(PyObject *self, PyObject *args) {
+	char *path;
+	char *content;
+	int *use_bom;
+	if (!PyArg_ParseTuple(args, "ssi", &path, &content, &use_bom))
+		return NULL;
+
+	const unsigned char UTF8BOM[3] = { 0xef,0xbb,0xbf };
+
+	unsigned int ret;
+	ret = WriteUnitexFile(path, UTF8BOM, use_bom ? 3:0, content, strlen(content));
+
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
+}
+
+/* 'unitex_append_to_file' function*/
+static char unitex_append_to_file_docstring[] =
+	"This function append_to a (virtual) file.";
+static PyObject *unitex_append_to_file(PyObject *self, PyObject *args);
+
+PyObject *unitex_append_to_file(PyObject *self, PyObject *args) {
+	char *path;
+	char *content;
+	if (!PyArg_ParseTuple(args, "ss", &path, &content))
+		return NULL;
+
+	unsigned int ret;
+	ret = AppendUnitexFile(path, content, strlen(content));
+
+	return Py_BuildValue("O", ret ? Py_False: Py_True);
+}
+
+
+
 static PyMethodDef unitex_methods[] = {
 	/*Unitex Tool function*/
 	{"unitex_tool", unitex_tool, METH_VARARGS, unitex_tool_docstring},
@@ -404,9 +487,11 @@ static PyMethodDef unitex_methods[] = {
 	{"unitex_load_persistent_dictionary", unitex_load_persistent_dictionary, METH_VARARGS, unitex_load_persistent_dictionary_docstring},
 	{"unitex_load_persistent_fst2", unitex_load_persistent_fst2, METH_VARARGS, unitex_load_persistent_fst2_docstring},
 	{"unitex_load_persistent_alphabet", unitex_load_persistent_alphabet, METH_VARARGS, unitex_load_persistent_alphabet_docstring},
+
 	{"unitex_free_persistent_dictionary", unitex_free_persistent_dictionary, METH_VARARGS, unitex_free_persistent_dictionary_docstring},
 	{"unitex_free_persistent_fst2", unitex_free_persistent_fst2, METH_VARARGS, unitex_free_persistent_fst2_docstring},
 	{"unitex_free_persistent_alphabet", unitex_free_persistent_alphabet, METH_VARARGS, unitex_free_persistent_alphabet_docstring},
+
 	{"unitex_is_persistent_dictionary", unitex_is_persistent_dictionary, METH_VARARGS, unitex_is_persistent_dictionary_docstring},
 	{"unitex_is_persistent_fst2", unitex_is_persistent_fst2, METH_VARARGS, unitex_is_persistent_fst2_docstring},
 	{"unitex_is_persistent_alphabet", unitex_is_persistent_alphabet, METH_VARARGS, unitex_is_persistent_alphabet_docstring},
@@ -416,6 +501,7 @@ static PyMethodDef unitex_methods[] = {
 	{"unitex_disable_stdout", unitex_disable_stdout, METH_NOARGS, unitex_disable_stdout_docstring},
 	{"unitex_enable_stderr", unitex_enable_stderr, METH_NOARGS, unitex_enable_stderr_docstring},
 	{"unitex_disable_stderr", unitex_disable_stderr, METH_NOARGS, unitex_disable_stderr_docstring},
+
 	{"unitex_cp", unitex_cp, METH_VARARGS, unitex_cp_docstring},
 	{"unitex_rm", unitex_rm, METH_VARARGS, unitex_rm_docstring},
 	{"unitex_mv", unitex_mv, METH_VARARGS, unitex_mv_docstring},
@@ -423,10 +509,14 @@ static PyMethodDef unitex_methods[] = {
 	{"unitex_rmdir", unitex_rmdir, METH_VARARGS, unitex_rmdir_docstring},
 	{"unitex_ls", unitex_ls, METH_VARARGS, unitex_ls_docstring},
 
+	{"unitex_read_file", unitex_read_file, METH_VARARGS, unitex_read_file_docstring},
+	{"unitex_write_file", unitex_write_file, METH_VARARGS, unitex_write_file_docstring},
+	{"unitex_append_to_file", unitex_append_to_file, METH_VARARGS, unitex_append_to_file_docstring},
+
 	{NULL, NULL, 0, NULL}
 };
 
-static struct PyModuleDef unitexdef = {
+static struct PyModuleDef unitex_module_def = {
 	PyModuleDef_HEAD_INIT,
 	"_unitex",
 	unitex_docstring,
@@ -435,7 +525,7 @@ static struct PyModuleDef unitexdef = {
 };
 
 PyMODINIT_FUNC PyInit__unitex(void) {
-	PyObject *module = PyModule_Create(&unitexdef);
+	PyObject *module = PyModule_Create(&unitex_module_def);
 
 	if (module == NULL)
 		return NULL;
