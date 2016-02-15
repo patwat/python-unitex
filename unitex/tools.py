@@ -1057,3 +1057,68 @@ def tokenize(*args, **kwargs):
     ret = unitex_tool(command)
 
     return ret
+
+
+
+def txt2tfst(*args, **kwargs):
+    """This function constructs an automaton of a text.
+
+    If the text is separated into sentences, the function constructs an automaton for each
+    sentence. If this is not the case, the program arbitrarily cuts the text into sequences
+    of 2000 tokens and produces an automaton for each of these sequences.
+
+    The result is a file called text.tfst which is saved in the directory of the text.
+    Another file named text.tind is also produced.
+
+    Arguments (length: 1):
+        0 -- the full path to the text file in snt format.
+
+    Keyword arguments:
+        alphabet [str]              -- the alphabet file of the language of the text
+        clean [bool]                -- indicates whether the rule of conservation of the best
+                                       paths (see section 7.2.4) should be applied
+                                       (default: False)
+        normalization_grammar [str] -- name of a normalization grammar that is to be applied
+                                       to the text automaton
+        tagset [str]                -- Elag tagset file to use to normalize dictionary entries
+        korean [bool]               -- tells the function that it works on Korean
+                                       (default: False)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
+    """
+    if len(args) != 1:
+        raise UnitexException("You must specify one and only one text to normalize...")
+    text = args[0]
+
+    alphabet = kwargs.get("alphabet", None)
+    if alphabet is None:
+        raise UnitexException("You must specify the alphabet file path...")
+
+    clean = kwargs.get("clean", False)
+    normalization_grammar = kwargs.get("normalization_grammar", None)
+    tagset = kwargs.get("tagset", None)
+    korean = kwargs.get("korean", False)
+
+    command = ["UnitexTool", "Txt2Tfst"]
+
+    command.append("--alphabet=%s" % alphabet)
+
+    if clean is not False:
+        command.append("--clean")
+    if normalization_grammar is not None:
+        command.append("--normalization_grammar=%s" % normalization_grammar)
+    if tagset is not None:
+        command.append("--tagset=%s" % tagset)
+    if korean is not False:
+        command.append("--korean")
+
+    command.append(text)
+
+    command = " ".join(command)
+
+    LOGGER.info("Building text automaton for '%s'..." % text)
+    LOGGER.debug("Command: %s", command)
+    ret = unitex_tool(command)
+
+    return ret

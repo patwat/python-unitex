@@ -43,6 +43,9 @@ class Arguments:
         self.__arguments["tags.ind"] = os.path.join(self.__arguments["dir"], "tags.ind")
         self.__arguments["stat_dic.n"] = os.path.join(self.__arguments["dir"], "stat_dic.n")
 
+        self.__arguments["text.tfst"] = os.path.join(self.__arguments["dir"], "text.tfst")
+        self.__arguments["text.tind"] = os.path.join(self.__arguments["dir"], "text.tind")
+
         self.__arguments["grf"] = "data/grammar.grf" 
         self.__arguments["fst"] = "data/grammar.fst2" 
 
@@ -304,6 +307,24 @@ class TestUnitexTools(unittest.TestCase):
         ok = os.path.exists(self._arguments["concordances"]) and ret
 
         self.assertTrue(ok, "Concord failed!")
+
+    def test_11_txt2tfst(self):
+        args = [self._arguments["snt"]]
+
+        kwargs = {}
+        kwargs["alphabet"] = self._arguments["alphabet"]
+        kwargs["clean"] = False
+        kwargs["normalization_grammar"] = None
+        kwargs["tagset"] = None
+        kwargs["korean"] = False
+
+        ret = txt2tfst(*args, **kwargs)
+
+        ok = ret
+        ok = ok and os.path.exists(self._arguments["text.tfst"])
+        ok = ok and os.path.exists(self._arguments["text.tind"])
+
+        self.assertTrue(ok, "Txt2Tfst failed!")
 
 
 

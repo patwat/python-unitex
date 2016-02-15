@@ -1,3 +1,7 @@
+/*
+ * NOTE: some parts of this file are an adaptation of the 'fr_umlv_unitex_jni_UnitexJni.cpp' file
+ *       which is included in the Unitex source distribution.
+ */
 #include <Python.h>
 
 #include "AbstractFilePlugCallback.h"
