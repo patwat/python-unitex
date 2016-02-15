@@ -18,10 +18,14 @@ class Arguments:
         self.__arguments["file_target_vfs_01"] = "%sdata/corpus-vfs-01.txt" % UnitexIOConstants.VFS_PREFIX
         self.__arguments["file_target_vfs_02"] = "%sdata/corpus-vfs-02.txt" % UnitexIOConstants.VFS_PREFIX
 
-        self.__arguments["virtual_file_hdd_01"] = "data/corpus-virtual-file-01.txt"
-        self.__arguments["virtual_file_hdd_02"] = "data/corpus-virtual-file-02.txt"
-        self.__arguments["virtual_file_vfs_01"] = "%sdata/corpus-virtual-file-01.txt" % UnitexIOConstants.VFS_PREFIX
-        self.__arguments["virtual_file_vfs_02"] = "%sdata/corpus-virtual-file-02.txt" % UnitexIOConstants.VFS_PREFIX
+        self.__arguments["hdd_root"] = "data/"
+        self.__arguments["vfs_root"] = "%sdata/" % UnitexIOConstants.VFS_PREFIX
+
+        self.__arguments["hdd_name"] = "corpus.txt"
+        self.__arguments["vfs_name"] = "$:data/unitex-file-corpus.txt"
+
+        self.__arguments["unitex_file_hdd"] = "data/unitex-file-corpus.txt"
+        self.__arguments["unitex_file_vfs"] = "%sdata/unitex-file-corpus.txt" % UnitexIOConstants.VFS_PREFIX
 
         self.__arguments["directory"] = "data/biniou/"
 
@@ -49,69 +53,223 @@ class TestUnitexIO(unittest.TestCase):
         if os.path.exists(self._arguments["directory"]):
             shutil.rmtree(self._arguments["directory"])
 
+        if os.path.exists(self._arguments["unitex_file_hdd"]):
+            os.remove(self._arguments["unitex_file_hdd"])
+
     def test_01_enable_stdout(self):
         ret = enable_stdout()
-        self.assertTrue(ok, "STDOUT enabling failed!")
+        self.assertTrue(ret, "STDOUT enabling failed!")
 
     def test_02_disable_stdout(self):
         ret = disable_stdout()
-        self.assertTrue(ok, "STDOUT disabling failed!")
+        self.assertTrue(ret, "STDOUT disabling failed!")
 
     def test_03_enable_stderr(self):
         ret = enable_stderr()
-        self.assertTrue(ok, "STDERR enabling failed!")
+        self.assertTrue(ret, "STDERR enabling failed!")
 
     def test_04_disable_stderr(self):
         ret = disable_stderr()
-        self.assertTrue(ok, "STDERR disabling failed!")
+        self.assertTrue(ret, "STDERR disabling failed!")
 
     def test_05_01_cp_hdd(self):
-        raise NotImplementedError
+        ret = cp(self._arguments["file_source"], self._arguments["file_target_hdd_01"])
+
+        ok = ret and os.path.exists(self._arguments["file_target_hdd_01"])
+
+        self.assertTrue(ok, "Copy to disk failed!")
 
     def test_05_02_cp_vfs(self):
-        raise NotImplementedError
+        ret = cp(self._arguments["file_source"], self._arguments["file_target_vfs_01"])
 
-    def test_06_01_rm_hdd(self):
-        raise NotImplementedError
+        # Note that this check needs the 'ls' function working...
+        vfs_content = ls(self._arguments["vfs_root"])
 
-    def test_06_02_rm_vfs(self):
-        raise NotImplementedError
+        ok = ret and self._arguments["file_target_vfs_01"] in vfs_content
 
-    def test_07_01_mv_hdd(self):
-        raise NotImplementedError
+        self.assertTrue(ok, "Copy to VFS failed!")
 
-    def test_07_02_mv_vfs(self):
-        raise NotImplementedError
+    def test_06_01_mv_hdd(self):
+        ret = mv(self._arguments["file_target_hdd_01"], self._arguments["file_target_hdd_02"])
+
+        ok = ret
+        ok = ok and not os.path.exists(self._arguments["file_target_hdd_01"])
+        ok = ok and os.path.exists(self._arguments["file_target_hdd_02"])
+
+        self.assertTrue(ok, "Move from/to disk failed!")
+
+    def test_06_02_mv_vfs(self):
+        ret = mv(self._arguments["file_target_vfs_01"], self._arguments["file_target_vfs_02"])
+
+        # Note that this check needs the 'ls' function working...
+        vfs_content = ls(self._arguments["vfs_root"])
+
+        ok = ret
+        ok = ok and not self._arguments["file_target_vfs_01"] in vfs_content
+        ok = ok and self._arguments["file_target_vfs_02"] in vfs_content
+
+        self.assertTrue(ok, "Move from/to VFS failed!")
+
+    def test_07_01_rm_hdd(self):
+        ret = rm(self._arguments["file_target_hdd_02"])
+
+        ok = ret
+        ok = ok and not os.path.exists(self._arguments["file_target_hdd_02"])
+
+        self.assertTrue(ok, "Remove from disk failed!")
+
+    def test_07_02_rm_vfs(self):
+        ret = rm(self._arguments["file_target_vfs_02"])
+
+        # Note that this check needs the 'ls' function working...
+        vfs_content = ls(self._arguments["vfs_root"])
+
+        ok = ret
+        ok = ok and not self._arguments["file_target_vfs_02"] in vfs_content
+
+        self.assertTrue(ok, "Remove from disk failed!")
 
     def test_08_mkdir(self):
-        raise NotImplementedError
+        ret = mkdir(self._arguments["directory"])
+
+        ok = ret and os.path.exists(self._arguments["directory"])
+
+        self.assertTrue(ok, "Make disk directory failed!")
 
     def test_09_rmdir(self):
-        raise NotImplementedError
+        ret = rmdir(self._arguments["directory"])
+
+        ok = ret and not os.path.exists(self._arguments["directory"])
+
+        self.assertTrue(ok, "Remove disk directory failed!")
 
     def test_10_ls_hdd(self):
-        raise NotImplementedError
+        hdd_content = ls(self._arguments["hdd_root"])
+
+        ok = self._arguments["hdd_name"] in hdd_content
+
+        self.assertTrue(ok, "Listing disk directory failed!")
 
     def test_10_ls_vfs(self):
-        raise NotImplementedError
+        ret = cp(self._arguments["file_source"], self._arguments["unitex_file_vfs"])
 
-    def test_11_01_01_virtual_file_read_hdd(self):
-        raise NotImplementedError
+        vfs_content = ls(self._arguments["vfs_root"])
 
-    def test_11_01_02_virtual_file_read_vfs(self):
-        raise NotImplementedError
+        ret = rm(self._arguments["unitex_file_vfs"])
 
-    def test_11_02_01_virtual_file_write_hdd(self):
-        raise NotImplementedError
+        ok = self._arguments["vfs_name"] in vfs_content
 
-    def test_11_02_02_virtual_file_write_vfs(self):
-        raise NotImplementedError
+        self.assertTrue(ok, "Listing VFS directory failed!")
 
-    def test_11_03_01_virtual_file_append_hdd(self):
-        raise NotImplementedError
+    def test_11_01_01_unitex_file_read_hdd(self):
+        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
+        original = rf.read()
+        rf.close()
 
-    def test_11_03_02_virtual_file_append_vfs(self):
-        raise NotImplementedError
+        uf = UnitexFile()
+        uf.open(self._arguments["file_source"], "r")
+        content = uf.read()
+        uf.close()
+
+        ok = original == content
+
+        self.assertTrue(ok, "UnitexFile disk read failed!")
+
+    def test_11_01_02_unitex_file_read_vfs(self):
+        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
+        original = rf.read()
+        rf.close()
+
+        ret = cp(self._arguments["file_source"], self._arguments["unitex_file_vfs"])
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_vfs"], "r")
+        content = uf.read()
+        uf.close()
+
+        ret = rm(self._arguments["unitex_file_vfs"])
+
+        ok = original == content
+
+        self.assertTrue(ok, "UnitexFile VFS read failed!")
+
+    def test_11_02_01_unitex_file_write_hdd(self):
+        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
+        original = rf.read()
+        rf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_hdd"], "w")
+        uf.write(original)
+        uf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_hdd"], "r")
+        content = uf.read()
+        uf.close()
+
+        ok = original == content
+
+        self.assertTrue(ok, "UnitexFile disk write failed!")
+
+    def test_11_02_02_unitex_file_write_vfs(self):
+        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
+        original = rf.read()
+        rf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_vfs"], "w")
+        uf.write(original)
+        uf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_vfs"], "r")
+        content = uf.read()
+        uf.close()
+
+        ok = original == content
+
+        self.assertTrue(ok, "UnitexFile VFS write failed!")
+
+    def test_11_03_01_unitex_file_append_hdd(self):
+        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
+        original = rf.read()
+        rf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_hdd"], "a")
+        uf.write(original)
+        uf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_hdd"], "r")
+        content = uf.read()
+        uf.close()
+
+        ok = (original+original) == content
+
+        self.assertTrue(ok, "UnitexFile disk append failed!")
+
+    def test_11_03_02_unitex_file_append_vfs(self):
+        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
+        original = rf.read()
+        rf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_vfs"], "a")
+        uf.write(original)
+        uf.close()
+
+        uf = UnitexFile()
+        uf.open(self._arguments["unitex_file_vfs"], "r")
+        content = uf.read()
+        uf.close()
+
+        ret = rm(self._arguments["unitex_file_vfs"])
+
+        ok = (original+original) == content
+
+        self.assertTrue(ok, "UnitexFile VFS append failed!")
 
 
 

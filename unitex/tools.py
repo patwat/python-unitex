@@ -1071,7 +1071,7 @@ def txt2tfst(*args, **kwargs):
     Another file named text.tind is also produced.
 
     Arguments (length: 1):
-        0 -- the full path to the text file in snt format.
+        0 -- the path to the text file in snt format.
 
     Keyword arguments:
         alphabet [str]              -- the alphabet file of the language of the text

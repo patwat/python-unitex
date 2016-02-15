@@ -183,12 +183,16 @@ class UnitexFile(object):
     """
 
     def __init__(self):
+        self.__use_bom = None
+
         self.__file = None
         self.__mode = None
 
-    def open(self, file, mode=None):
+    def open(self, file, mode=None, use_bom=False):
         if self.__file is not None:
             raise UnitexException("You must close the current file (%s) before open another one..." % self.__file)
+        self.__use_bom = use_bom
+
         self.__file = file
         self.__mode = mode
 
@@ -205,7 +209,8 @@ class UnitexFile(object):
             raise UnitexException("You must open a file before writing...")
 
         if self.__mode == "w":
-            unitex_write_file(self.__file, data, 1)
+            bom = 1 if self.__use_bom is True else 0
+            unitex_write_file(self.__file, data, bom)
         else:
             unitex_append_to_file(self.__file, data)
 

@@ -1,6 +1,7 @@
 /*
  * NOTE: some parts of this file are an adaptation of the 'fr_umlv_unitex_jni_UnitexJni.cpp' file
  *       which is included in the Unitex source distribution.
+ *
  */
 #include <Python.h>
 
@@ -25,7 +26,7 @@ static char unitex_docstring[] =
  * UNITEX TOOL FUNCTION *
  ************************/
 
-/* 'unitex_tool' function*/
+/* 'unitex_tool' function */
 static char unitex_tool_docstring[] =
 	"This function launches an Unitex command.";
 static PyObject *unitex_tool(PyObject *self, PyObject *args);
@@ -47,7 +48,7 @@ PyObject *unitex_tool(PyObject *self, PyObject *args) {
  * PERSISTENCE FUNCTIONS *
  *************************/
 
-/*'unitex_load_persistent_dictionary' function*/
+/* 'unitex_load_persistent_dictionary' function */
 static char unitex_load_persistent_dictionary_docstring[] =
 	"This function loads a dictionary in the persistent space.";
 static PyObject *unitex_load_persistent_dictionary(PyObject *self, PyObject *args);
@@ -73,7 +74,7 @@ PyObject *unitex_load_persistent_dictionary(PyObject *self, PyObject *args) {
 	return result;
 }
 
-/*'unitex_load_persistent_fst2' function*/
+/* 'unitex_load_persistent_fst2' function */
 static char unitex_load_persistent_fst2_docstring[] =
 	"This function loads a fst2 in the persistent space.";
 static PyObject *unitex_load_persistent_fst2(PyObject *self, PyObject *args);
@@ -99,7 +100,7 @@ PyObject *unitex_load_persistent_fst2(PyObject *self, PyObject *args) {
 	return result;
 }
 
-/*'unitex_load_persistent_alphabet' function*/
+/* 'unitex_load_persistent_alphabet' function */
 static char unitex_load_persistent_alphabet_docstring[] =
 	"This function loads an alphabet in the persistent space.";
 static PyObject *unitex_load_persistent_alphabet(PyObject *self, PyObject *args);
@@ -127,7 +128,7 @@ PyObject *unitex_load_persistent_alphabet(PyObject *self, PyObject *args) {
 
 
 
-/*'unitex_free_persistent_dictionary' function*/
+/* 'unitex_free_persistent_dictionary' function */
 static char unitex_free_persistent_dictionary_docstring[] =
 	"This function removes a dictionary from the persistent space.";
 static PyObject *unitex_free_persistent_dictionary(PyObject *self, PyObject *args);
@@ -142,7 +143,7 @@ PyObject *unitex_free_persistent_dictionary(PyObject *self, PyObject *args) {
 	Py_RETURN_NONE;
 }
 
-/*'unitex_free_persistent_fst2' function*/
+/* 'unitex_free_persistent_fst2' function */
 static char unitex_free_persistent_fst2_docstring[] =
 	"This function removes a fst2 from the persistent space.";
 static PyObject *unitex_free_persistent_fst2(PyObject *self, PyObject *args);
@@ -157,7 +158,7 @@ PyObject *unitex_free_persistent_fst2(PyObject *self, PyObject *args) {
 	Py_RETURN_NONE;
 }
 
-/*'unitex_free_persistent_alphabet' function*/
+/* 'unitex_free_persistent_alphabet' function */
 static char unitex_free_persistent_alphabet_docstring[] =
 	"This function removes an alphabet from the persistent space.";
 static PyObject *unitex_free_persistent_alphabet(PyObject *self, PyObject *args);
@@ -174,7 +175,7 @@ PyObject *unitex_free_persistent_alphabet(PyObject *self, PyObject *args) {
 
 
 
-/*'unitex_is_persistent_dictionary' function*/
+/* 'unitex_is_persistent_dictionary' function */
 static char unitex_is_persistent_dictionary_docstring[] =
 	"This function checks if a dictionary is in the persistent space.";
 static PyObject *unitex_is_persistent_dictionary(PyObject *self, PyObject *args);
@@ -190,7 +191,7 @@ PyObject *unitex_is_persistent_dictionary(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
-/*'unitex_is_persistent_fst2' function*/
+/* 'unitex_is_persistent_fst2' function */
 static char unitex_is_persistent_fst2_docstring[] =
 	"This function checks if a fst2 is in the persistent space.";
 static PyObject *unitex_is_persistent_fst2(PyObject *self, PyObject *args);
@@ -206,7 +207,7 @@ PyObject *unitex_is_persistent_fst2(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
-/*'unitex_is_persistent_alphabet' function*/
+/* 'unitex_is_persistent_alphabet' function */
 static char unitex_is_persistent_alphabet_docstring[] =
 	"This function checks if an alphabet is in the persistent space.";
 static PyObject *unitex_is_persistent_alphabet(PyObject *self, PyObject *args);
@@ -228,7 +229,7 @@ PyObject *unitex_is_persistent_alphabet(PyObject *self, PyObject *args) {
  * I/O FUNCTIONS *
  *****************/
 
-/* 'unitex_enable_stdout' function*/
+/* 'unitex_enable_stdout' function */
 static char unitex_enable_stdout_docstring[] =
 	"This function enable the standard output.";
 static PyObject *unitex_enable_stdout(PyObject *self, PyObject *noarg);
@@ -242,7 +243,7 @@ PyObject *unitex_enable_stdout(PyObject *self, PyObject *noarg) {
 	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
-/* 'unitex_enable_stderr' function*/
+/* 'unitex_enable_stderr' function */
 static char unitex_enable_stderr_docstring[] =
 	"This function enable the error output.";
 static PyObject *unitex_enable_stderr(PyObject *self, PyObject *noarg);
@@ -256,7 +257,7 @@ PyObject *unitex_enable_stderr(PyObject *self, PyObject *noarg) {
 	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
-/* 'unitex_disable_stdout' function*/
+/* 'unitex_disable_stdout' function */
 static char unitex_disable_stdout_docstring[] =
 	"This function disable the standard output.";
 static PyObject *unitex_disable_stdout(PyObject *self, PyObject *noarg);
@@ -270,7 +271,7 @@ PyObject *unitex_disable_stdout(PyObject *self, PyObject *noarg) {
 	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
-/* 'unitex_disable_stderr' function*/
+/* 'unitex_disable_stderr' function */
 static char unitex_disable_stderr_docstring[] =
 	"This function disable the error output.";
 static PyObject *unitex_disable_stderr(PyObject *self, PyObject *noarg);
@@ -284,7 +285,7 @@ PyObject *unitex_disable_stderr(PyObject *self, PyObject *noarg) {
 	return Py_BuildValue("O", ret ? Py_True: Py_False);
 }
 
-/* 'unitex_cp' function*/
+/* 'unitex_cp' function */
 static char unitex_cp_docstring[] =
 	"This function copies a file to the (virtual) filesystem.";
 static PyObject *unitex_cp(PyObject *self, PyObject *args);
@@ -301,7 +302,7 @@ PyObject *unitex_cp(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_rm' function*/
+/* 'unitex_rm' function */
 static char unitex_rm_docstring[] =
 	"This function removes a file from the (virtual) filesystem.";
 static PyObject *unitex_rm(PyObject *self, PyObject *args);
@@ -317,7 +318,7 @@ PyObject *unitex_rm(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_mv' function*/
+/* 'unitex_mv' function */
 static char unitex_mv_docstring[] =
 	"This function renames (and potentially moves) a (virtual) file.";
 static PyObject *unitex_mv(PyObject *self, PyObject *args);
@@ -334,7 +335,7 @@ PyObject *unitex_mv(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_mkdir' function*/
+/* 'unitex_mkdir' function */
 static char unitex_mkdir_docstring[] =
 	"This function creates a directory on the disk.";
 static PyObject *unitex_mkdir(PyObject *self, PyObject *args);
@@ -350,7 +351,7 @@ PyObject *unitex_mkdir(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_rmdir' function*/
+/* 'unitex_rmdir' function */
 static char unitex_rmdir_docstring[] =
 	"This function removes a directory from disk (and all its content).";
 static PyObject *unitex_rmdir(PyObject *self, PyObject *args);
@@ -366,9 +367,7 @@ PyObject *unitex_rmdir(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_ls' function
- *    -> adapted from the function 'getFileList' developped
- *       by Gilles Vollant and distributed with Unitex */
+/* 'unitex_ls' function */
 static char unitex_ls_docstring[] =
 	"This function list (disk or virtual) directory contents.";
 static PyObject *unitex_ls(PyObject *self, PyObject *args);
@@ -402,9 +401,7 @@ PyObject *unitex_ls(PyObject *self, PyObject *args) {
 	return file_list;
 }
 
-/* 'unitex_read_file' function (UTF-8 encoding only)
- *    -> adapted from the function 'getUnitexFileString' developped
- *       by Gilles Vollant and distributed with Unitex */
+/* 'unitex_read_file' function (UTF-8 encoding only)*/
 static char unitex_read_file_docstring[] =
 	"This function read a (virtual) file.";
 static PyObject *unitex_read_file(PyObject *self, PyObject *args);
@@ -442,9 +439,7 @@ PyObject *unitex_read_file(PyObject *self, PyObject *args) {
     return content;
 }
 
-/* 'unitex_write_file' function (UTF-8 encoding only)
- *    -> adapted from the function 'doWriteUnitexFileUtf' developped
- *       by Gilles Vollant and distributed with Unitex */
+/* 'unitex_write_file' function (UTF-8 encoding only)*/
 static char unitex_write_file_docstring[] =
 	"This function write a (virtual) file.";
 static PyObject *unitex_write_file(PyObject *self, PyObject *args);
@@ -464,7 +459,7 @@ PyObject *unitex_write_file(PyObject *self, PyObject *args) {
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
 
-/* 'unitex_append_to_file' function*/
+/* 'unitex_append_to_file' function */
 static char unitex_append_to_file_docstring[] =
 	"This function append_to a (virtual) file.";
 static PyObject *unitex_append_to_file(PyObject *self, PyObject *args);
@@ -484,10 +479,10 @@ PyObject *unitex_append_to_file(PyObject *self, PyObject *args) {
 
 
 static PyMethodDef unitex_methods[] = {
-	/*Unitex Tool function*/
+	/* Unitex Tool function */
 	{"unitex_tool", unitex_tool, METH_VARARGS, unitex_tool_docstring},
 
-	/*Persistence functions*/
+	/* Persistence functions */
 	{"unitex_load_persistent_dictionary", unitex_load_persistent_dictionary, METH_VARARGS, unitex_load_persistent_dictionary_docstring},
 	{"unitex_load_persistent_fst2", unitex_load_persistent_fst2, METH_VARARGS, unitex_load_persistent_fst2_docstring},
 	{"unitex_load_persistent_alphabet", unitex_load_persistent_alphabet, METH_VARARGS, unitex_load_persistent_alphabet_docstring},
@@ -500,7 +495,7 @@ static PyMethodDef unitex_methods[] = {
 	{"unitex_is_persistent_fst2", unitex_is_persistent_fst2, METH_VARARGS, unitex_is_persistent_fst2_docstring},
 	{"unitex_is_persistent_alphabet", unitex_is_persistent_alphabet, METH_VARARGS, unitex_is_persistent_alphabet_docstring},
 
-	/*I/O functions*/
+	/* I/O functions */
 	{"unitex_enable_stdout", unitex_enable_stdout, METH_NOARGS, unitex_enable_stdout_docstring},
 	{"unitex_disable_stdout", unitex_disable_stdout, METH_NOARGS, unitex_disable_stdout_docstring},
 	{"unitex_enable_stderr", unitex_enable_stderr, METH_NOARGS, unitex_enable_stderr_docstring},
