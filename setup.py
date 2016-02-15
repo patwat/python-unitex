@@ -9,6 +9,7 @@ from distutils.core import setup, Extension
 from distutils.command.build import build
 from distutils.command.clean import clean
 from distutils.command.install import install
+from distutils.sysconfig import get_python_inc
 
 
 
@@ -118,7 +119,7 @@ setup(
 
     ext_modules=[
         Extension("_unitex",
-                  include_dirs = [UNITEX_INC],
+                  include_dirs = [UNITEX_INC, get_python_inc()],
                   libraries=["unitex"],
                   library_dirs=['/usr/local/lib'],
                   sources = ["extensions/_unitex.cpp"])
