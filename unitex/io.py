@@ -18,6 +18,8 @@ def enable_stdout():
     if ret is False:
         LOGGER.info("[FAILED!]")
 
+    return ret
+
 def disable_stdout():
     """This function disables Unitex standard output to ensure multithread
     output consistency (i.e. avoid output mixing between threads) and to
@@ -31,6 +33,8 @@ def disable_stdout():
     if ret is False:
         LOGGER.info("[FAILED!]")
 
+    return ret
+
 def enable_stderr():
     """This function enables Unitex error output. This is the default but
     should be used for debug purposes only.
@@ -42,6 +46,8 @@ def enable_stderr():
     ret = unitex_enable_stderr()
     if ret is False:
         LOGGER.info("[FAILED!]")
+
+    return ret
 
 def disable_stderr():
     """This function disables Unitex error output to ensure multithread
@@ -55,6 +61,8 @@ def disable_stderr():
     ret = unitex_disable_stderr()
     if ret is False:
         LOGGER.info("[FAILED!]")
+
+    return ret
 
 
 
@@ -81,6 +89,8 @@ def cp(source_path, target_path):
     if ret is False:
         LOGGER.info("[FAILED!]")
 
+    return ret
+
 def rm(path):
     """This function removes a file. The path can be on the virtual filesystem
     or the disk filesystem.
@@ -95,6 +105,8 @@ def rm(path):
     ret = unitex_rm(path)
     if ret is False:
         LOGGER.info("[FAILED!]")
+
+    return ret
 
 def mv(old_path, new_path):
     """This function moves/renames a file. Both pathes can be on the virtual
@@ -112,6 +124,8 @@ def mv(old_path, new_path):
     if ret is False:
         LOGGER.info("[FAILED!]")
 
+    return ret
+
 def mkdir(path):
     """This function creates a directory on the disk.
 
@@ -126,6 +140,8 @@ def mkdir(path):
     if ret is False:
         LOGGER.info("[FAILED!]")
 
+    return ret
+
 def rmdir(path):
     """This function removes a directory on the disk.
 
@@ -139,6 +155,8 @@ def rmdir(path):
     ret = unitex_rmdir(path)
     if ret is False:
         LOGGER.info("[FAILED!]")
+
+    return ret
 
 def ls(path):
     """This function lists (disk or virtual) directory contents.
