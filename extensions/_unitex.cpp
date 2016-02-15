@@ -515,6 +515,7 @@ static PyMethodDef unitex_methods[] = {
 	{NULL, NULL, 0, NULL}
 };
 
+#if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef unitex_module_def = {
 	PyModuleDef_HEAD_INIT,
 	"_unitex",
@@ -530,3 +531,8 @@ PyMODINIT_FUNC PyInit__unitex(void) {
 		return NULL;
 	return module;
 }
+#else
+void init_unitex(void) {
+	PyObject *module = Py_InitModule("_unitex", unitex_methods);
+}
+#endif
