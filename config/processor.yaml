@@ -10,8 +10,8 @@ resources:
 
     alphabet: /home/resources/media/fr/unitex/preprocessing/Alphabet.txt
     alphabet-sorted: /home/resources/media/fr/unitex/preprocessing/Alphabet_sort.txt
-    sentence: /home/resources/media/fr/unitex/preprocessing/Sentence.fst2
-    replace: /home/resources/media/fr/unitex/preprocessing/Replace.fst2
+    sentence: /home/resources/media/fr/unitex/preprocessing/sentence/Sentence.fst2
+    replace: /home/resources/media/fr/unitex/preprocessing/replace/Replace.fst2
 
     dictionaries:
         - /home/resources/media/fr/unitex/dictionary/delaf-short.bin
@@ -22,3 +22,4 @@ resources:
 # functions.
 options:
     match-mode: longest
+    output-mode: merge

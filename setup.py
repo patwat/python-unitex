@@ -44,7 +44,7 @@ class CustomBuild(build):
 
         if sys.platform == "darwin":
             library = "libunitex.dylib"
-        elif sys.platform == "linux":
+        elif sys.platform == "linux" or sys.platform == "linux2":
             library = "libunitex.so"
         else:
             sys.stderr.write("Plateform '%s' not supported...\n" % sys.platform)
@@ -125,8 +125,8 @@ setup(
                   sources = ["extensions/_unitex.cpp"])
     ],
 
-    cmdclass = {
-        "build": CustomBuild,
-        "clean": CustomClean
-    }
+#    cmdclass = {
+#        "build": CustomBuild,
+#        "clean": CustomClean
+#    }
 )

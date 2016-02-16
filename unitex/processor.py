@@ -27,6 +27,7 @@ class UnitexSettings(object):
     def load(self, f):
         with open(f, 'r') as config:
             self.__settings = yaml.load(config)
+        self.check()
 
     def check(self):
         resources = self.__settings.get("resources", None)
@@ -40,7 +41,49 @@ class UnitexSettings(object):
         alphabet = resources.get("alphabet", None)
         if alphabet is None:
             LOGGER.warning("No alphabet file provided.")
+        elif not os.path.exists(alphabet):
+            raise UnitexException("Alphabet file '%s' doesn't exist." % alphabet)
+
+        alphabet_sort = resources.get("alphabet-sort", None)
+        if alphabet_sort is None:
+            LOGGER.warning("No sorted alphabet file provided.")
+        elif not os.path.exists(alphabet_sort):
+            raise UnitexException("Sorted alphabet file '%s' doesn't exist." % alphabet_sort)
+
+        sentence = resources.get("sentence", None)
+        if sentence is None:
+            LOGGER.warning("No sentence grammar provided.")
         else:
+            _, extension = os.path.splitext(sentence)
+            if extension != ".fst2":
+                raise UnitexException("Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension.")
+            if not os.path.exists(sentence):
+                raise UnitexException("Sentence grammar file '%s' doesn't exist." % sentence)
+
+        replace = resources.get("replace", None)
+        if replace is None:
+            LOGGER.warning("No replace grammar provided.")
+        else:
+            _, extension = os.path.splitext(replace)
+            if extension != ".fst2":
+                raise UnitexException("Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension.")
+            if not os.path.exists(replace):
+                raise UnitexException("Replace grammar file '%s' doesn't exist." % replace)
+
+        dictionaries = resources.get("dictionaries", None)
+        if dictionaries is None:
+            LOGGER.warning("No dictionaries provided.")
+        else:
+            if not isinstance(dictionaries, list):
+                raise UnitexException("The 'dictionaries' element must be a list of .bin files.")
+            for dictionary in dictionaries:
+                prefix, extension = os.path.splitext(dictionary)
+                if extension != ".bin":
+                    raise UnitexException("Wrong extension for '%s'. Dictionaries must be compiled and have the '.bin' extension.")
+                if not os.path.exists(dictionary):
+                    raise UnitexException("Dictionary file '%s' doesn't exist." % dictionary)
+                if not os.path.exists("%s.bin" % prefix):
+                    raise UnitexException("Dictionary .inf file missing for '%s'." % dictionary)
 
 
 
@@ -62,4 +105,3 @@ class UnitexProcessor(object):
 
     def close(self):
         raise NotImplementedError
-
