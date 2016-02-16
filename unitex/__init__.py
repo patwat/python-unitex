@@ -17,6 +17,8 @@ class UnitexException(Exception):
 
 
 
+DEFAULT_ENCODING="utf-8"
+
 # VERBOSE = 0: ERROR logging level
 # VERBOSE = 1: WARNING logging level
 # VERBOSE = 2: INFO logging level

@@ -91,7 +91,7 @@ setup(
     name = "unitex",
     version = "1.0",
     description = "Python 3 binding for the Unitex library",
-    long_description = open('README').read(),
+    long_description = open('README.md').read(),
 
     author = "Patrick Watrin",
     author_email = "patrick.watrin@gmail.com",
@@ -125,8 +125,8 @@ setup(
                   sources = ["extensions/_unitex.cpp"])
     ],
 
-#    cmdclass = {
-#        "build": CustomBuild,
-#        "clean": CustomClean
-#    }
+    cmdclass = {
+        "build": CustomBuild,
+        "clean": CustomClean
+    }
 )
