@@ -26,7 +26,7 @@ The following sections gives some sample codes to illustrate each of them.
 
 ## Useful links
 
-	- The **Unitex/GramLab**  corpus processor: [homepage][unet] and [documentation][udoc]
+	- The **Unitex/GramLab**  corpus processor: [web site][unet] and [user manual][udoc]
 	
 
 
