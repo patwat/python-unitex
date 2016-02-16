@@ -10,7 +10,7 @@ This package provides access to the Unitex C++ Library.
 
 ## Installation
 
-The library has been tested on MacOSX (with `python` from the [MacPorts](https://www.macports.org/) projet) and Linux for the versions 2 and 3 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download2.html) source distribution.
+The library has been tested on MacOSX (with `python` from the [MacPorts](https://www.macports.org/) projet) and Linux for the versions 2 and 3 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution.
 
 Once you have filled the requirements and downloaded the package, you just have to run (as root):
 
