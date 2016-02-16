@@ -58,6 +58,7 @@ def check_dic(*args, **kwargs):
 
     command.append(dictionary)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Checking dic '%s'" % dictionary)
@@ -126,6 +127,7 @@ def compress(*args, **kwargs):
 
     command.append(dictionary)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Compressing dic '%s'" % dictionary)
@@ -347,6 +349,7 @@ def concord(*args, **kwargs):
 
     command.append(index)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Create concordance for '%s'" % index)
@@ -431,6 +434,7 @@ def dico(*args, **kwargs):
 
     command += args
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Applying dictionaries")
@@ -504,6 +508,7 @@ def fst2txt(*args, **kwargs):
 
     command.append(grammar)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Applying grammar '%s'..." % grammar)
@@ -604,6 +609,7 @@ def grf2fst2(*args, **kwargs):
 
     command.append(grammar)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Compiling grammar '%s'..." % grammar)
@@ -719,7 +725,7 @@ def locate(*args, **kwargs):
         raise UnitexException("Invalid output mode '%s'..." % output_mode)
 
     protect_dic_chars = kwargs.get("protect_dic_chars", False)
-    variable = kwargs.get("variable", None)
+    variable = kwargs.get("variable", "ignore")
 
     ambiguous_outputs = kwargs.get("ambiguous_outputs", True)
 
@@ -799,6 +805,7 @@ def locate(*args, **kwargs):
 
     command.append(grammar)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Locating pattern '%s'..." % grammar)
@@ -879,6 +886,7 @@ def normalize(*args, **kwargs):
 
     command.append(text)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Normalizing text '%s'..." % text)
@@ -955,6 +963,7 @@ def sort_txt(*args, **kwargs):
 
     command.append(text)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Sorting file '%s'..." % text)
@@ -1050,6 +1059,7 @@ def tokenize(*args, **kwargs):
 
     command.append(text)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Tokenizing file '%s'..." % text)
@@ -1115,6 +1125,7 @@ def txt2tfst(*args, **kwargs):
 
     command.append(text)
 
+    command.append("-qutf8-no-bom")
     command = " ".join(command)
 
     LOGGER.info("Building text automaton for '%s'..." % text)
