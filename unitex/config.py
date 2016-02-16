@@ -10,7 +10,7 @@ from unitex import UnitexException, LOGGER
 class UnitexSettings:
 
     def __init__(self):
-        raise NotImplementedError
+        self.__settings = None
 
     def get(self, key, default=None):
         raise NotImplementedError
@@ -19,5 +19,7 @@ class UnitexSettings:
         raise NotImplementedError
 
     def load(self, f):
+        with open(f, 'r') as ymlfile:
+            self.__config = yaml.load(ymlfile)
         raise NotImplementedError
 

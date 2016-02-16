@@ -3,6 +3,9 @@
 
 import os, shutil, unittest
 
+# Compatibility Python 2/3
+from io import open
+
 from unitex.io import *
 
 
@@ -162,9 +165,9 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ok, "Listing VFS directory failed!")
 
     def test_11_01_01_unitex_file_read_hdd(self):
-        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
-        original = rf.read()
-        rf.close()
+        original = None
+        with open(self._arguments["file_source"], "r", encoding="utf-8") as rf:
+            original = rf.read()
 
         uf = UnitexFile()
         uf.open(self._arguments["file_source"], "r")
@@ -176,9 +179,9 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ok, "UnitexFile disk read failed!")
 
     def test_11_01_02_unitex_file_read_vfs(self):
-        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
-        original = rf.read()
-        rf.close()
+        original = None
+        with open(self._arguments["file_source"], "r", encoding="utf-8") as rf:
+            original = rf.read()
 
         ret = cp(self._arguments["file_source"], self._arguments["unitex_file_vfs"])
 
@@ -194,9 +197,9 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ok, "UnitexFile VFS read failed!")
 
     def test_11_02_01_unitex_file_write_hdd(self):
-        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
-        original = rf.read()
-        rf.close()
+        original = None
+        with open(self._arguments["file_source"], "r", encoding="utf-8") as rf:
+            original = rf.read()
 
         uf = UnitexFile()
         uf.open(self._arguments["unitex_file_hdd"], "w")
@@ -213,9 +216,9 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ok, "UnitexFile disk write failed!")
 
     def test_11_02_02_unitex_file_write_vfs(self):
-        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
-        original = rf.read()
-        rf.close()
+        original = None
+        with open(self._arguments["file_source"], "r", encoding="utf-8") as rf:
+            original = rf.read()
 
         uf = UnitexFile()
         uf.open(self._arguments["unitex_file_vfs"], "w")
@@ -232,9 +235,9 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ok, "UnitexFile VFS write failed!")
 
     def test_11_03_01_unitex_file_append_hdd(self):
-        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
-        original = rf.read()
-        rf.close()
+        original = None
+        with open(self._arguments["file_source"], "r", encoding="utf-8") as rf:
+            original = rf.read()
 
         uf = UnitexFile()
         uf.open(self._arguments["unitex_file_hdd"], "a")
@@ -251,9 +254,9 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ok, "UnitexFile disk append failed!")
 
     def test_11_03_02_unitex_file_append_vfs(self):
-        rf = open(self._arguments["file_source"], "r", encoding="utf-8")
-        original = rf.read()
-        rf.close()
+        original = None
+        with open(self._arguments["file_source"], "r", encoding="utf-8") as rf:
+            original = rf.read()
 
         uf = UnitexFile()
         uf.open(self._arguments["unitex_file_vfs"], "a")

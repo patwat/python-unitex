@@ -125,8 +125,8 @@ setup(
                   sources = ["extensions/_unitex.cpp"])
     ],
 
-    cmdclass = {
-        "build": CustomBuild,
-        "clean": CustomClean
-    }
+#    cmdclass = {
+#        "build": CustomBuild,
+#        "clean": CustomClean
+#    }
 )

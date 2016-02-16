@@ -446,15 +446,22 @@ static PyObject *unitex_write_file(PyObject *self, PyObject *args);
 
 PyObject *unitex_write_file(PyObject *self, PyObject *args) {
 	char *path;
-	char *content;
+	PyObject *ustring;
 	int *use_bom;
-	if (!PyArg_ParseTuple(args, "ssi", &path, &content, &use_bom))
+	if (!PyArg_ParseTuple(args, "sUi", &path, &ustring, &use_bom))
 		return NULL;
+
+	PyObject *bytes;
+	char *content;
+	Py_ssize_t length;
+
+	bytes = PyUnicode_AsUTF8String(ustring);
+	PyBytes_AsStringAndSize(bytes, &content, &length);
 
 	const unsigned char UTF8BOM[3] = { 0xef,0xbb,0xbf };
 
 	unsigned int ret;
-	ret = WriteUnitexFile(path, UTF8BOM, use_bom ? 3:0, content, strlen(content));
+	ret = WriteUnitexFile(path, UTF8BOM, use_bom ? 3:0, content, length);
 
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
@@ -466,12 +473,19 @@ static PyObject *unitex_append_to_file(PyObject *self, PyObject *args);
 
 PyObject *unitex_append_to_file(PyObject *self, PyObject *args) {
 	char *path;
-	char *content;
-	if (!PyArg_ParseTuple(args, "ss", &path, &content))
+	PyObject *ustring;
+	if (!PyArg_ParseTuple(args, "sU", &path, &ustring))
 		return NULL;
 
+	PyObject *bytes;
+	char *content;
+	Py_ssize_t length;
+
+	bytes = PyUnicode_AsUTF8String(ustring);
+	PyBytes_AsStringAndSize(bytes, &content, &length);
+
 	unsigned int ret;
-	ret = AppendUnitexFile(path, content, strlen(content));
+	ret = AppendUnitexFile(path, content, length);
 
 	return Py_BuildValue("O", ret ? Py_False: Py_True);
 }
@@ -532,7 +546,10 @@ PyMODINIT_FUNC PyInit__unitex(void) {
 	return module;
 }
 #else
-void init_unitex(void) {
-	PyObject *module = Py_InitModule("_unitex", unitex_methods);
+PyMODINIT_FUNC init_unitex(void) {
+	PyObject *module = Py_InitModule3("_unitex", unitex_methods, unitex_docstring);
+
+	if (module == NULL)
+		return;
 }
 #endif
