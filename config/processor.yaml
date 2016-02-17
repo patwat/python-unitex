@@ -2,6 +2,8 @@ global:
     debug: 1
     verbose: 1
 
+    tempdir: "/tmp"
+
     persistence: 1
     virtualization: 1
 
@@ -19,7 +21,8 @@ resources:
         - /home/resources/media/fr/unitex/dictionary/toponyms.bin
 
 # The 'options' section can contain any of the argument used by the unitex tools
-# functions.
+# functions. Note that some argument will be overriden to fit the 'tag' and 'extract'
+# behaviour. For intance, there is not point to define a font or a context for
+# 'concord'.
 options:
-    match-mode: longest
-    output-mode: merge
+    match_mode: longest
