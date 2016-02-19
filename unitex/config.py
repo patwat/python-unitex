@@ -3,9 +3,9 @@
 
 import os
 import tempfile
-import yaml
 
 from unitex import *
+from unitex.io import exists
 
 
 
@@ -182,7 +182,7 @@ class ConcordOptions(Options):
         directory = options.get("directory", None)
         if directory is not None and isinstance(directory, str) is False:
             raise UnitexException("[CONCORD] Wrong value for the 'directory' option. String required.")
-        if os.path.exists(directory) is False:
+        if exists(directory) is False:
             raise UnitexException("[CONCORD] The text 'directory' doesn't exist.")
         self["directory"] = directory
 
@@ -204,7 +204,7 @@ class DicoOptions(Options):
             if isinstance(morpho, list) is False:
                 raise UnitexException("[DICO] Wrong value for the 'morpho' option. List of string required.")
             for dictionary in morpho:
-                if os.path.exists(dictionary) is False:
+                if exists(dictionary) is False:
                     raise UnitexException("[DICO] Morphological dictionary '%s' doesn't exist." % dictionary)
         self["morpho"] = morpho
 
@@ -222,7 +222,7 @@ class DicoOptions(Options):
         if arabic_rules is not None:
             if isinstance(arabic_rules, str) is False:
                 raise UnitexException("[DICO] Wrong value for the 'arabic_rules' option. String required.")
-            if os.path.exists(arabic_rules) is False:
+            if exists(arabic_rules) is False:
                 raise UnitexException("[DICO] Rules file '%s' doesn't exist." % arabic_rules)
         self["arabic_rules"] = arabic_rules
 
@@ -246,7 +246,7 @@ class ExtractOptions(Options):
 
 
 
-class Fst2TxtOptions(Options)
+class Fst2TxtOptions(Options):
 
     def __init__(self):
         super(Fst2TxtOptions, self).__init__()
@@ -343,7 +343,7 @@ class LocateOptions(Options):
             if isinstance(morpho, list) is False:
                 raise UnitexException("[LOCATE] Wrong value for the 'morpho' option. List of string required.")
             for dictionary in morpho:
-                if os.path.exists(dictionary) is False:
+                if exists(dictionary) is False:
                     raise UnitexException("[LOCATE] Morphological dictionary '%s' doesn't exist." % dictionary)
         self["morpho"] = morpho
 
@@ -356,7 +356,7 @@ class LocateOptions(Options):
         if arabic_rules is not None:
             if isinstance(arabic_rules, str) is False:
                 raise UnitexException("[LOCATE] Wrong value for the 'arabic_rules' option. String required.")
-            if os.path.exists(arabic_rules) is False:
+            if exists(arabic_rules) is False:
                 raise UnitexException("[LOCATE] Rules file '%s' doesn't exist." % arabic_rules)
         self["arabic_rules"] = arabic_rules
 
@@ -364,7 +364,7 @@ class LocateOptions(Options):
         if sntdir is not None:
             if isinstance(sntdir, str) is False:
                 raise UnitexException("[LOCATE] Wrong value for the 'sntdir' option. String required.")
-            if os.path.exists(sntdir) is False:
+            if exists(sntdir) is False:
                 raise UnitexException("[LOCATE] Directory '%s' doesn't exist." % sntdir)
         self["sntdir"] = sntdir
 
@@ -450,12 +450,12 @@ class NormalizeOptions(Options):
         if input_offsets is not None:
             if isinstance(input_offsets, str) is False:
                 raise UnitexException("[NORMALIZE] Wrong value for the 'input_offsets' option. String required.")
-            if os.path.exists(input_offsets) is False:
+            if exists(input_offsets) is False:
                 raise UnitexException("[NORMALIZE] Offsets file '%s' doesn't exist." % input_offsets)
         self["input_offsets"] = input_offsets
 
         output_offsets = options.get("output_offsets", None)
-        if output_offsets is not None and if isinstance(output_offsets, str) is False:
+        if output_offsets is not None and isinstance(output_offsets, str) is False:
                 raise UnitexException("[NORMALIZE] Wrong value for the 'output_offsets' option. String required.")
         self["output_offsets"] = output_offsets
 
@@ -473,7 +473,7 @@ class NormalizeOptions(Options):
         if replacement_rules is not None:
             if isinstance(replacement_rules, str) is False:
                 raise UnitexException("[NORMALIZE] Wrong value for the 'replacement_rules' option. String required.")
-            if os.path.exists(replacement_rules) is False:
+            if exists(replacement_rules) is False:
                 raise UnitexException("[NORMALIZE] Rules file '%s' doesn't exist." % replacement_rules)
         self["replacement_rules"] = replacement_rules
 
@@ -499,7 +499,7 @@ class SortTxtOptions(Options):
         if sort_order is not None:
             if isinstance(sort_order, str) is False:
                 raise UnitexException("[SORTTXT] Wrong value for the 'sort_order' option. String required.")
-            if os.path.exists(sort_order) is False:
+            if exists(sort_order) is False:
                 raise UnitexException("[SORTTXT] Alphabet file '%s' doesn't exist." % sort_order)
         self["sort_order"] = sort_order
 
@@ -535,7 +535,7 @@ class TokenizeOptions(Options):
         if tokens is not None:
             if isinstance(tokens, str) is False:
                 raise UnitexException("[TOKENIZE] Wrong value for the 'tokens' option. String required.")
-            if os.path.exists(tokens) is False:
+            if exists(tokens) is False:
                 raise UnitexException("[TOKENIZE] Offsets file '%s' doesn't exist." % tokens)
         self["tokens"] = tokens
 
@@ -543,12 +543,12 @@ class TokenizeOptions(Options):
         if input_offsets is not None:
             if isinstance(input_offsets, str) is False:
                 raise UnitexException("[TOKENIZE] Wrong value for the 'input_offsets' option. String required.")
-            if os.path.exists(input_offsets) is False:
+            if exists(input_offsets) is False:
                 raise UnitexException("[TOKENIZE] Offsets file '%s' doesn't exist." % input_offsets)
         self["input_offsets"] = input_offsets
 
         output_offsets = options.get("output_offsets", None)
-        if output_offsets is not None and if isinstance(output_offsets, str) is False:
+        if output_offsets is not None and isinstance(output_offsets, str) is False:
                 raise UnitexException("[TOKENIZE] Wrong value for the 'output_offsets' option. String required.")
         self["output_offsets"] = output_offsets
 
@@ -574,7 +574,7 @@ class Txt2TFstOptions(Options):
         if normalization_grammar is not None:
             if isinstance(normalization_grammar, str) is False:
                 raise UnitexException("[TXT2TFST] Wrong value for the 'normalization_grammar' option. String required.")
-            if os.path.exists(normalization_grammar) is False:
+            if exists(normalization_grammar) is False:
                 raise UnitexException("[TXT2TFST] Offsets file '%s' doesn't exist." % normalization_grammar)
         self["normalization_grammar"] = normalization_grammar
 
@@ -582,7 +582,7 @@ class Txt2TFstOptions(Options):
         if tagset is not None:
             if isinstance(tagset, str) is False:
                 raise UnitexException("[TXT2TFST] Wrong value for the 'tagset' option. String required.")
-            if os.path.exists(tagset) is False:
+            if exists(tagset) is False:
                 raise UnitexException("[TXT2TFST] Offsets file '%s' doesn't exist." % tagset)
         self["tagset"] = tagset
 
@@ -607,14 +607,14 @@ class ResourcesOptions(Options):
         alphabet = options.get("alphabet", None)
         if alphabet is None:
             LOGGER.warning("[RESOURCES] No alphabet file provided.")
-        elif not os.path.exists(alphabet):
+        elif not exists(alphabet):
             raise UnitexException("[RESOURCES] Alphabet file '%s' doesn't exist." % alphabet)
         self["alphabet"] = alphabet
 
         alphabet_sort = options.get("alphabet-sort", None)
         if alphabet_sort is None:
             LOGGER.warning("[RESOURCES] No sorted alphabet file provided.")
-        elif not os.path.exists(alphabet_sort):
+        elif not exists(alphabet_sort):
             raise UnitexException("[RESOURCES] Sorted alphabet file '%s' doesn't exist." % alphabet_sort)
         self["alphabet-sort"] = alphabet_sort
 
@@ -625,7 +625,7 @@ class ResourcesOptions(Options):
             _, extension = os.path.splitext(sentence)
             if extension != ".fst2":
                 raise UnitexException("[RESOURCES] Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension.")
-            if not os.path.exists(sentence):
+            if not exists(sentence):
                 raise UnitexException("[RESOURCES] Sentence grammar file '%s' doesn't exist." % sentence)
         self["sentence"] = sentence
 
@@ -636,7 +636,7 @@ class ResourcesOptions(Options):
             _, extension = os.path.splitext(replace)
             if extension != ".fst2":
                 raise UnitexException("[RESOURCES] Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension.")
-            if not os.path.exists(replace):
+            if not exists(replace):
                 raise UnitexException("[RESOURCES] Replace grammar file '%s' doesn't exist." % replace)
         self["replace"] = replace
 
@@ -650,9 +650,9 @@ class ResourcesOptions(Options):
                 prefix, extension = os.path.splitext(dictionary)
                 if extension != ".bin" or extension != ".fst2":
                     raise UnitexException("[RESOURCES] Wrong extension for '%s'. Dictionaries must be compiled and have the '.bin' or the '.fst2' extension.")
-                if not os.path.exists(dictionary):
+                if not exists(dictionary):
                     raise UnitexException("[RESOURCES] Dictionary file '%s' doesn't exist." % dictionary)
-                if extension == ".bin" and not os.path.exists("%s.inf" % prefix):
+                if extension == ".bin" and not exists("%s.inf" % prefix):
                     raise UnitexException("[RESOURCES] Dictionary .inf file missing for '%s'." % dictionary)
         self["dictionaries"] = dictionaries
 
@@ -675,17 +675,17 @@ class UnitexConfig(Options):
         self["debug"] = debug
 
         tempdir = options.get("tempdir", tempfile.gettempdir())
-        if not os.path.exists(tempdir):
+        if not exists(tempdir):
             raise UnitexException("Temporary directory '%s' doesn't exist." % tempdir)
         self["tempdir"] = tempdir
 
         persistence = options.get("persistence", 0)
-        if persistence not in (0, 1)
+        if persistence not in (0, 1):
             raise UnitexException("Wrong value for the 'persistence' global option.")
         self["persistence"] = bool(persistence)
 
         virtualization = options.get("virtualization", 0)
-        if virtualization not in (0, 1)
+        if virtualization not in (0, 1):
             raise UnitexException("Wrong value for the 'virtualization' global option.")
         self["virtualization"] = bool(virtualization)
 

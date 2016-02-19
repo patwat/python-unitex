@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+
 from _unitex import *
-from unitex import UnitexException, LOGGER
+from unitex import UnitexException, UnitexConstants, LOGGER
 
 
 
@@ -164,6 +166,11 @@ def ls(path):
     """
     LOGGER.info("Listing directory '%s'..." % path)
     return unitex_ls(path)
+
+def exists(path):
+    if path.startswith(UnitexConstants.VFS_PREFIX) is False:
+        return os.path.exists(path)
+    return path in ls(path)
 
 
 
