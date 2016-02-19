@@ -3,6 +3,7 @@
 
 from _unitex import unitex_tool
 from unitex import UnitexException, UnitexConstants, LOGGER
+from unitex.io import exists
 
 
 
@@ -27,7 +28,7 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
     options = CheckDicOptions()
     options.load(kwargs)
 
-    if os.path.exists(dictionary) is False:
+    if exists(dictionary) is False:
         raise UnitexException("[CHECKDIC] Dictionary file '%s' doesn't exists" % dictionary)
 
     command = ["UnitexTool", "CheckDic"]
@@ -89,7 +90,7 @@ def compress(dictionary, **kwargs):
     options = CompressOptions()
     options.load(kwargs)
 
-    if os.path.exists(dictionary) is False:
+    if exists(dictionary) is False:
         raise UnitexException("[COMPRESS] Dictionary file '%s' doesn't exists" % dictionary)
 
     command = ["UnitexTool", "Compress"]
@@ -218,9 +219,9 @@ def concord(index, alphabet, **kwargs):
     options = ConcordOptions()
     options.load(kwargs)
 
-    if os.path.exists(index) is False:
+    if exists(index) is False:
         raise UnitexException("[CONCORD] Index file '%s' doesn't exists" % index)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[CONCORD] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Concord"]
@@ -340,11 +341,11 @@ def dico(dictionaries, text, alphabet, **kwargs):
     options.load(kwargs)
 
     for dictionary in dictionaries:
-        if os.path.exists(dictionary) is False:
+        if exists(dictionary) is False:
             raise UnitexException("[DICO] Dictionary file '%s' doesn't exists" % dictionary)
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[DICO] Text file '%s' doesn't exists" % text)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[DICO] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Dico"]
@@ -396,9 +397,9 @@ def extract(text, output, index, **kwargs):
     options = ExtractOptions()
     options.load(kwargs)
 
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[EXTRACT] Text file '%s' doesn't exists" % text)
-    if os.path.exists(index) is False:
+    if exists(index) is False:
         raise UnitexException("[EXTRACT] Index file '%s' doesn't exists" % index)
 
     command = ["UnitexTool", "Extract"]
@@ -452,11 +453,11 @@ def fst2txt(grammar, text, alphabet, **kwargs):
     options = Fst2TxtOptions()
     options.load(kwargs)
 
-    if os.path.exists(grammar) is False:
+    if exists(grammar) is False:
         raise UnitexException("[FST2TXT] Grammar file '%s' doesn't exists" % grammar)
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[FST2TXT] Text file '%s' doesn't exists" % text)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[FST2TXT] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Fst2Txt"]
@@ -536,9 +537,9 @@ def grf2fst2(grammar, alphabet, **kwargs):
     options = Grf2Fst2Options()
     options.load(kwargs)
 
-    if os.path.exists(grammar) is False:
+    if exists(grammar) is False:
         raise UnitexException("[GRF2FST2] Grammar file '%s' doesn't exists" % grammar)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[GRF2FST2] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Grf2Fst2"]
@@ -654,11 +655,11 @@ def locate(grammar, text, alphabet, **kwargs):
     options = LocateOptions()
     options.load(kwargs)
 
-    if os.path.exists(grammar) is False:
+    if exists(grammar) is False:
         raise UnitexException("[LOCATE] Grammar file '%s' doesn't exists" % grammar)
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[LOCATE] Text file '%s' doesn't exists" % text)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[LOCATE] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Locate"]
@@ -782,7 +783,7 @@ def normalize(text, **kwargs):
     options = NormalizeOptions()
     options.load(kwargs)
 
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[NORMALIZE] Text file '%s' doesn't exists" % text)
 
     command = ["UnitexTool", "Normalize"]
@@ -844,7 +845,7 @@ def sort_txt(text, **kwargs):
     options = SortTxtOptions()
     options.load(kwargs)
 
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[SORTTXT] Text file '%s' doesn't exists" % text)
 
     command = ["UnitexTool", "SortTxt"]
@@ -928,9 +929,9 @@ def tokenize(text, alphabet, **kwargs):
     options = TokenizeOptions()
     options.load(kwargs)
 
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[TOKENIZE] Text file '%s' doesn't exists" % text)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[TOKENIZE] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Tokenize"]
@@ -993,9 +994,9 @@ def txt2tfst(text, alphabet, **kwargs):
     options = Txt2TFstOptions()
     options.load(kwargs)
 
-    if os.path.exists(text) is False:
+    if exists(text) is False:
         raise UnitexException("[TXT2TFST] Text file '%s' doesn't exists" % text)
-    if os.path.exists(alphabet) is False:
+    if exists(alphabet) is False:
         raise UnitexException("[TXT2TFST] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Txt2Tfst"]
