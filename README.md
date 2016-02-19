@@ -20,6 +20,8 @@ UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 
 ## Getting started
 
+**NOTE: The texts must be encoded in UTF-8. There's no support so far for UTF-16-(LE|BE).**
+
 There is three ways to use the Unitex Python library:
 
 1. The `_unitex` C++ extension.

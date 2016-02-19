@@ -66,12 +66,6 @@ def disable_stderr():
 
 
 
-class UnitexIOConstants:
-
-    VFS_PREFIX = "$:"
-
-
-
 def cp(source_path, target_path):
     """This function copies a file. Both pathes can be on the virtual filesystem
     or the disk filesystem. Therefor, this function can be used to virtualize a

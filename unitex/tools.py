@@ -2,56 +2,44 @@
 # -*- coding: utf-8 -*-
 
 from _unitex import unitex_tool
-from unitex import UnitexException, LOGGER
+from unitex import UnitexException, UnitexConstants, LOGGER
 
 
 
-def check_dic(*args, **kwargs):
+def check_dic(dictionary, dtype, alphabet, **kwargs):
     """This function checks the format of <dela> and produces a file named
     CHECK_DIC.TXT that contains check result informations. This file is
     stored in the <dela> directory.
 
-    Arguments (length: 1):
-        0 -- the dictionary file
+    Arguments:
+        dictionary [str] -- the dictionary file path
+        dtype [str]      -- the dictionary type: UnitexConstants.DELAF (inflected)
+                                                 UnitexConstants.DELAS (non inflected)
+        alphabet [str]   -- the alphabet file path
 
     Keyword arguments:
-        type [str]              -- 'delas' checks a non inflected dictionary
-                                   'delaf' checks an inflected dictionary
-        alphabet [str]          -- alphabet file to use
         strict [bool]           -- strict syntax checking against unprotected dot and comma (default: False) 
         no_space_warning [bool] -- tolerates spaces in grammatical/semantic/inflectional codes (default: True) 
 
     Return [bool]:
         The function returns 'True' if it succeeds and 'False' otherwise.
     """
+    options = CheckDicOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one dictionary to check...")
-    dictionary = args[0]
-
-    dtype = kwargs.get("type", None)
-    if dtype is None:
-        raise UnitexException("You must specify the dictionary type...")
-    elif dtype not in ("delaf", "delas"):
-        raise UnitexException("Unknown dictionary type '%s'..." % dtype)
-
-    alphabet = kwargs.get("alphabet")
-    if alphabet is None:
-        raise UnitexException("You must specify the alphabet file path...")
-
-    strict = kwargs.get("strict", False)
-    no_space_warning = kwargs.get("no_space_warning", True)
+    if os.path.exists(dictionary) is False:
+        raise UnitexException("[CHECKDIC] Dictionary file '%s' doesn't exists" % dictionary)
 
     command = ["UnitexTool", "CheckDic"]
 
-    if dtype == "delaf":
+    if dtype == UnitexConstants.DELAF:
         command.append("--delaf")
-    elif dtype == "delas":
+    elif dtype == UnitexConstants.DELAS:
         command.append("--delas")
 
-    if strict is True:
+    if options["strict"] is True:
         command.append("--strict")
-    if no_space_warning is True:
+    if options["no_space_warning"] is True:
         command.append("--no_space_warning")
 
     command .append("--alphabet=%s" % alphabet)
@@ -69,7 +57,7 @@ def check_dic(*args, **kwargs):
 
 
 
-def compress(*args, **kwargs):
+def compress(dictionary, **kwargs):
     """This function takes a DELAF dictionary as a parameter and compresses it. The
     compression of a dictionary dico.dic produces two files:
 
@@ -79,8 +67,8 @@ def compress(*args, **kwargs):
                     of the dictionary lines from the inflected forms contained in the
                     automaton.
 
-    Arguments (length: 1):
-        0 -- the dictionary file
+    Arguments:
+        dictionary [str] -- the dictionary file path
 
     Keyword arguments:
         output [str]   -- sets the output file. By default, a file xxx.dic will
@@ -98,31 +86,24 @@ def compress(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = CompressOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one dictionary to check...")
-    dictionary = args[0]
-
-    output = kwargs.get("output", None)
-    flip = kwargs.get("flip", False)
-    semitic = kwargs.get("semitic", False)
-
-    version = kwargs.get("version", "v2")
-    if version not in ("v1", "v2"):
-        raise UnitexException("Unknown dictionary version '%s'..." % version)
+    if os.path.exists(dictionary) is False:
+        raise UnitexException("[COMPRESS] Dictionary file '%s' doesn't exists" % dictionary)
 
     command = ["UnitexTool", "Compress"]
 
-    if output is not None:
-        command.append("--output=%s" % output)
-    if flip is True:
+    if options["output"] is not None:
+        command.append("--output=%s" % options["output"])
+    if options["flip"] is True:
         command.append("--flip")
-    if semitic is True:
+    if options["semitic"] is True:
         command.append("--semitic")
 
-    if version == "v1":
+    if options["version"] == UnitexConstants.DICTIONARY_VERSION_1:
         command.append("--v1")
-    elif version == "v2":
+    elif options["version"] == UnitexConstants.DICTIONARY_VERSION_2:
         command.append("--v2")
 
     command.append(dictionary)
@@ -138,7 +119,7 @@ def compress(*args, **kwargs):
 
 
 
-def concord(*args, **kwargs):
+def concord(index, alphabet, **kwargs):
     """This function takes a concordance index file produced by the function Locate and
     produces a concordance. It is also possible to produce a modified text version taking
     into account the transducer outputs associated to the occurrences. 
@@ -154,8 +135,9 @@ def concord(*args, **kwargs):
     and ending positions of the occurrence in characters in the file text_name.snt. Z
     represents the number of the sentence in which the occurrence was found.
 
-    Arguments (length: 1):
-        0 -- index file
+    Arguments:
+        index [str]     -- the index file path (produced by the 'locate' function)
+        alphabet [str]  -- alphabet file used for sorting
 
     Keyword arguments:
 
@@ -182,13 +164,13 @@ def concord(*args, **kwargs):
             will end at 40 characters at most, less if the {S} tag is found before.
 
       - Sort options:
-            sort [str] -- 'TO': order in which the occurrences appear in the text (default)
-                          'LC': left context for primary sort, then occurrence for secondary sort
-                          'LR': left context, then right context
-                          'CL': occurrence, then left context
-                          'CR': occurrence, then right context
-                          'RL': right context, then left context
-                          'RC': left context, then occurrence
+            sort [str] -- 'UnitexConstants.SORT_TEXT_ORDER': order in which the occurrences appear in the text (default)
+                          'UnitexConstants.SORT_LEFT_CENTER': left context for primary sort, then occurrence for secondary sort
+                          'UnitexConstants.SORT_LEFT_RIGHT': left context, then right context
+                          'UnitexConstants.SORT_CENTER_LEFT': occurrence, then left context
+                          'UnitexConstants.SORT_CENTER_RIGHT': occurrence, then right context
+                          'UnitexConstants.SORT_RIGHT_LEFT': right context, then left context
+                          'UnitexConstants.SORT_RIGHT_CENTER': left context, then occurrence
 
       - Output options:
             format [str]   -- 'html': produces a concordance in HTML format encoded in UTF-8 (default)
@@ -228,123 +210,79 @@ def concord(*args, **kwargs):
       - Other options:
             directory [str] -- indicates to the function that it must not work in the same directory
                                than <index> but in 'directory'
-            alphabet [str]  -- alphabet file used for sorting
             thai [bool]     -- option to use for Thai concordances (default: False)
 
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = ConcordOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one concordance index...")
-    index = args[0]
-
-    font = kwargs.get("font", None)
-    fontsize = kwargs.get("fontsize", None)
-    only_ambiguous = kwargs.get("only_ambiguous", False)
-    only_matches = kwargs.get("only_matches", False)
-    left = kwargs.get("left", 0)
-    right = kwargs.get("right", 0)
-
-    sort = kwargs.get("sort", "TO")
-    if sort not in ("TO", "LC", "LR", "CL", "CR", "RL", "RC"):
-        raise UnitexException("Unknown sort order '%s'..." % sort)
-
-    script = None
-    offsets = None
-    unxmlize = None
-    output = None
-
-    format = kwargs.get("format", "html")
-    if format in ("glossanet", "script"):
-        script = kwargs.get("script", None)
-        if script is None:
-            raise UnitexException("You must provide the 'script' argument for 'glossanet' and 'script' formats...")
-    elif format == "uima":
-        offsets = kwargs.get("offsets", None)
-        if offsets is None:
-            raise UnitexException("You must provide the 'offsets' argument for 'uima' and 'prlg' formats...")
-    elif format == "prlg":
-        offsets = kwargs.get("offsets", None)
-        if offsets is None:
-            raise UnitexException("You must provide the 'offsets' argument for 'uima' and 'prlg' formats...")
-        unxmlize = kwargs.get("unxmlize", None)
-        if unxmlize is None:
-            raise UnitexException("You must provide the 'unxmlize' argument for 'prlg' format...")
-    elif format == "merge":
-        output = kwargs.get("output", None)
-        if output is None:
-            raise UnitexException("You must provide the 'output' argument for 'merge' format...")
-    elif format not in ("html", "text", "index", "xml", "xml-with-header", "axis", "xalign"):
-        raise UnitexException("Unknown output format '%s'..." % format)
-
-    directory = kwargs.get("directory", None)
-    thai = kwargs.get("thai", False)
-
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must provide the 'alphabet' argument...")
+    if os.path.exists(index) is False:
+        raise UnitexException("[CONCORD] Index file '%s' doesn't exists" % index)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[CONCORD] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Concord"]
 
-    if font is not None:
-        command.append("--font=%s" % font)
-    if fontsize is not None:
-        command.append("--fontsize=%s" % fontsize)
-    if only_ambiguous is True:
+    if self["font"] is not None:
+        command.append("--font=%s" % self["font"])
+    if self["fontsize"] is not None:
+        command.append("--fontsize=%s" % self["fontsize"])
+    if self["only_ambiguous"] is True:
         command.append("--only_ambiguous")
-    if only_matches is True:
+    if self["only_matches"] is True:
         command.append("--only_matches")
 
-    command.append("--left=%s" % left)
-    command.append("--right=%s" % right)
+    command.append("--left=%s" % self["left"])
+    command.append("--right=%s" % self["right"])
 
-    if sort == "TO":
+    if self["sort"] == UnitexConstants.SORT_TEXT_ORDER:
         command.append("--TO")
-    elif sort == "LC":
+    elif self["sort"] == UnitexConstants.SORT_LEFT_CENTER:
         command.append("--LC")
-    elif sort == "LR":
+    elif self["sort"] == UnitexConstants.SORT_LEFT_RIGHT:
         command.append("--LR")
-    elif sort == "CL":
+    elif self["sort"] == UnitexConstants.SORT_CENTER_LEFT:
         command.append("--CL")
-    elif sort == "CR":
+    elif self["sort"] == UnitexConstants.SORT_CENTER_RIGHT:
         command.append("--CR")
-    elif sort == "RL":
+    elif self["sort"] == UnitexConstants.SORT_RIGHT_LEFT:
         command.append("--RL")
-    elif sort == "RC":
+    elif self["sort"] == UnitexConstants.SORT_RIGHT_CENTER:
         command.append("--RC")
 
-    if format == "html":
+    if self["format"] == UnitexConstants.FORMAT_HTML:
         command.append("--html")
-    elif format == "text":
+    elif self["format"] == UnitexConstants.FORMAT_TEXT:
         command.append("--text")
-    elif format == "glossanet":
-        command.append("--glossanet=%s" % script)
-    elif format == "script":
-        command.append("--script=%s" % script)
-    elif format == "index":
+    elif self["format"] == UnitexConstants.FORMAT_GLOSSANET:
+        command.append("--glossanet=%s" % self["script"])
+    elif self["format"] == UnitexConstants.FORMAT_SCRIPT:
+        command.append("--script=%s" % self["script"])
+    elif self["format"] == UnitexConstants.FORMAT_INDEX:
         command.append("--index")
-    elif format == "uima":
-        command.append("--uima=%s" % offsets)
-    elif format == "prlg":
-        command.append("--PRLG=%s,%s" % unxmlize, offsets)
-    elif format == "xml":
+    elif self["format"] == UnitexConstants.FORMAT_UIMA:
+        command.append("--uima=%s" % self["offsets"])
+    elif self["format"] == UnitexConstants.FORMAT_PRLG:
+        command.append("--PRLG=%s,%s" % self["unxmlize"], self["offsets"])
+    elif self["format"] == UnitexConstants.FORMAT_XML:
         command.append("--xml")
-    elif format == "xml-with-header":
+    elif self["format"] == UnitexConstants.FORMAT_XML_WITH_HEADERS:
         command.append("--xml-with-header")
-    elif format == "axis":
+    elif self["format"] == UnitexConstants.FORMAT_AXIS:
         command.append("--axis")
-    elif format == "xalign":
+    elif self["format"] == UnitexConstants.FORMAT_XALIGN:
         command.append("--xalign")
-    elif format == "merge":
-        command.append("--merge=%s" % output)
+    elif self["format"] == UnitexConstants.FORMAT_MERGE:
+        command.append("--merge=%s" % self["output"])
 
-    if directory is not None:
-        command.append("--directory=%s" % directory)
+    if self["directory"] is not None:
+        command.append("--directory=%s" % self["directory"])
 
     command.append("--alphabet=%s" % alphabet)
 
-    if thai is not None:
+    if self["thai"] is not True:
         command.append("--thai")
 
     command.append(index)
@@ -360,7 +298,7 @@ def concord(*args, **kwargs):
 
 
 
-def dico(*args, **kwargs):
+def dico(dictionaries, text, alphabet, **kwargs):
     """This function applies dictionaries to a text. The text must have been cut up into
     lexical units by the 'tokenize' function.
 
@@ -379,12 +317,12 @@ def dico(*args, **kwargs):
     NOTE: Files dlf, dlc, err and tags_err are not sorted. Use the function sort_txt
     to sort them
 
-    Arguments (length: number of dictionaries):
-        List of dictionaries ('bin' or 'fst2' formats)
+    Arguments:
+        dictionaries [list(str)] -- list of dictionary pathes ('bin' or 'fst2' formats)
+        text     [str]           -- text (snt format) file path
+        alphabet [str]           -- alphabet file path
 
     Keyword arguments:
-        text [str]         -- text (snt format) file path
-        alphabet [str]     -- the alphabet file path
         morpho [list(str)] -- this optional argument indicates which morphological mode
                               dictionaries are to be used, if needed by some .fst2
                               dictionaries. The argument is a list of dictionary path
@@ -398,41 +336,34 @@ def dico(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = DicoOptions()
+    options.load(kwargs)
 
-    if not args:
-        raise UnitexException("You must provide the list of dictionaries to apply...")
-
-    text = kwargs.get("text", None)
-    if text is None:
-        raise UnitexException("You must provide the text file path (snt format)...")
-
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must provide the alphabet file path...")
-
-    morpho = kwargs.get("morpho", None)
-    korean = kwargs.get("korean", False)
-    semitic = kwargs.get("semitic", False)
-    arabic_rules = kwargs.get("arabic_rules", None)
-    raw = kwargs.get("raw", None)
+    for dictionary in dictionaries:
+        if os.path.exists(dictionary) is False:
+            raise UnitexException("[DICO] Dictionary file '%s' doesn't exists" % dictionary)
+    if os.path.exists(text) is False:
+        raise UnitexException("[DICO] Text file '%s' doesn't exists" % text)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[DICO] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Dico"]
 
     command.append("--text=%s" % text)
     command.append("--alphabet=%s" % alphabet)
 
-    if morpho is not None:
-        command.append("--morpho=%s" % ",".join(morpho))
-    if korean is True:
+    if options["morpho"] is not None:
+        command.append("--morpho=%s" % ",".join(self["morpho"]))
+    if options["korean"] is True:
         command.append("--korean")
-    if semitic is True:
+    if options["semitic"] is True:
         command.append("--semitic")
-    if arabic_rules is not None:
-        command.append("--arabic_rules=%s" % arabic_rules)
-    if raw is not None:
+    if options["arabic_rules"] is not None:
+        command.append("--arabic_rules=%s" % self["arabic_rules"])
+    if options["raw"] is not None:
         command.append("--raw=%s" % raw)
 
-    command += args
+    command += dictionaries
 
     command.append("-qutf8-no-bom")
     command = " ".join(command)
@@ -445,63 +376,105 @@ def dico(*args, **kwargs):
 
 
 
-def fst2txt(*args, **kwargs):
+def extract(text, output, index, **kwargs):
+    """This program extracts from the given text all sentences that contain at least one
+    occurrence from the concordance. The parameter <text> represents the complete
+    path of the text file, without omitting the extension .snt.
+
+    Arguments:
+        text [str]   -- the text file (.snt format)
+        output [str] -- the output text file
+        index [str]  -- the index file path (produced by the 'locate' function)
+
+    Keyword arguments:
+        non_matching_sentences [bool] -- extracts all sentences that don’t contain matching
+                                         units (default: False)
+
+    Return [bool]:
+        The function return 'True' if it succeeds and 'False' otherwise.
+    """
+    options = ExtractOptions()
+    options.load(kwargs)
+
+    if os.path.exists(text) is False:
+        raise UnitexException("[EXTRACT] Text file '%s' doesn't exists" % text)
+    if os.path.exists(index) is False:
+        raise UnitexException("[EXTRACT] Index file '%s' doesn't exists" % index)
+
+    command = ["UnitexTool", "Extract"]
+
+    if self["non_matching_sentence"] is False:
+        command.append("--yes")
+    else:
+        command.append("--no")
+
+    command.append("--output=%s" % output)
+    command.append("--index=%s" % index)
+
+    command.append(text)
+
+    command.append("-qutf8-no-bom")
+    command = " ".join(command)
+
+    LOGGER.info("Extracting sentences")
+    LOGGER.debug("Command: %s", command)
+    ret = unitex_tool(command)
+
+    return ret
+
+
+
+def fst2txt(grammar, text, alphabet, **kwargs):
     """This function applies a transducer to a text in longest match mode at the preprocessing
     stage, when the text has not been cut into lexical units yet. This function modifies the input
     text file.
 
     This function modifies the input text file.
 
-    Arguments (length: 1):
-        0 -- The fst2 to apply on the text
+    Arguments:
+        grammar [str]  -- The fst2 to apply on the text
+        text [str]     -- the text file to be modified, with extension .snt
+        alphabet [str] -- the alphabet file of the language of the text
 
     Keyword arguments:
-        text [str]            -- the text file to be modified, with extension .snt
-        alphabet [str]        -- the alphabet file of the language of the text
         start_on_space [bool] -- this parameter indicates that the search will start at
                                  any position in the text, even before a space. This parameter
                                  should only be used to carry out morphological searches
                                  (default: False)
         char_by_char [bool]   -- works in character by character tokenization mode.
                                  This is useful for languages like Thai (default: False)
-        merge [bool]          -- merge transducer outputs with text inputs (default: True)
+        merge [bool]          -- merge (instead of replace) transducer outputs with text inputs
+                                 (default: True)
 
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = Fst2TxtOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one grammar to apply...")
-    grammar = args[0]
-
-    text = kwargs.get("text", None)
-    if text is None:
-        raise UnitexException("You must provide the text file path (snt format)...")
-
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must provide the alphabet file path...")
-
-    start_on_space = kwargs.get("start_on_space", False)
-    char_by_char = kwargs.get("char_by_char", False)
-    merge = kwargs.get("merge", True)
+    if os.path.exists(grammar) is False:
+        raise UnitexException("[FST2TXT] Grammar file '%s' doesn't exists" % grammar)
+    if os.path.exists(text) is False:
+        raise UnitexException("[FST2TXT] Text file '%s' doesn't exists" % text)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[FST2TXT] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Fst2Txt"]
 
     command.append("--text=%s" % text)
     command.append("--alphabet=%s" % alphabet)
 
-    if start_on_space is False:
+    if options["start_on_space"] is False:
         command.append("--dont_start_on_space")
     else:
         command.append("--start_on_space")
 
-    if char_by_char is False:
+    if options["char_by_char"] is False:
         command.append("--word_by_word")
     else:
         command.append("--char_by_char")
 
-    if merge is True:
+    if options["merge"] is True:
         command.append("--merge")
     else:
         command.append("--replace")
@@ -519,7 +492,7 @@ def fst2txt(*args, **kwargs):
 
 
 
-def grf2fst2(*args, **kwargs):
+def grf2fst2(grammar, alphabet, **kwargs):
     """This program compiles a grammar into a .fst2 file (for more details see section
     6.2). The parameter <grf> denotes the complete path of the main graph of the
     grammar, without omitting the extension .grf.
@@ -528,14 +501,13 @@ def grf2fst2(*args, **kwargs):
     parameter, but with extension .fst2. This file is saved in the same directory as
     <grf>.
 
-    Arguments (length: 1):
-        0 -- The grf to compile
+    Arguments:
+        grammar [str]  -- The grf to compile
+        alphabet [str] -- specifies the alphabet file to be used for tokenizing the content of
+                          the grammar boxes into lexical units
 
     Keyword arguments:
         loop_check [bool]              -- enables error (loop) checking (default: False)
-        alphabet [str]                 -- specifies the alphabet file to be used for
-                                          tokenizing the content of the grammar boxes into
-                                          lexical units
         char_by_char [bool]            -- tokenization will be done character by character.
                                           If neither -c nor -a option is used, lexical units
                                           will be sequences of any Unicode letters (default: False)
@@ -561,50 +533,38 @@ def grf2fst2(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = Grf2Fst2Options()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one grammar to compile...")
-    grammar = args[0]
-
-    loop_check = kwargs.get("loop_check", False)
-
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must provide the alphabet file path...")
-
-    char_by_char = kwargs.get("char_by_char", False)
-    pkgdir = kwargs.get("pkgdir", None)
-    no_empty_graph_warning = kwargs.get("no_empty_graph_warning", False)
-    tfst_check = kwargs.get("tfst_check", False)
-    silent_grf_name = kwargs.get("silent_grf_name", False)
-    named_repositories = kwargs.get("named_repositories", None)
-    debug = kwargs.get("debug", False)
-    check_variables = kwargs.get("check_variables", False)
+    if os.path.exists(grammar) is False:
+        raise UnitexException("[GRF2FST2] Grammar file '%s' doesn't exists" % grammar)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[GRF2FST2] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Grf2Fst2"]
 
-    if loop_check is False:
+    if options["loop_check"] is False:
         command.append("--no_loop_check")
     else:
         command.append("--loop_check")
 
-    command.append("--alphabet=%s" % alphabet)
+    command.append("--alphabet=%s" % options["alphabet"])
 
-    if char_by_char is True:
+    if options["char_by_char"] is True:
         command.append("--char_by_char")
-    if pkgdir is not None:
-        command.append("--pkgdir=%s" % pkgdir)
-    if no_empty_graph_warning is True:
+    if options["pkgdir"] is not None:
+        command.append("--pkgdir=%s" % options["pkgdir"])
+    if options["no_empty_graph_warning"] is True:
         command.append("--no_empty_graph_warning")
-    if tfst_check is True:
+    if options["tfst_check"] is True:
         command.append("--tfst_check")
-    if silent_grf_name is True:
+    if options["silent_grf_name"] is True:
         command.append("--silent_grf_name")
-    if named_repositories is not None:
-        command.append("--named_repositories=%s" % named_repositories)
-    if debug is True:
+    if options["named_repositories"] is not None:
+        command.append("--named_repositories=%s" % ";".join(options["named_repositories"]))
+    if options["debug"] is True:
         command.append("--debug")
-    if check_variables is True:
+    if options["check_variables"] is True:
         command.append("--check_variables")
 
     command.append(grammar)
@@ -620,7 +580,7 @@ def grf2fst2(*args, **kwargs):
 
 
 
-def locate(*args, **kwargs):
+def locate(grammar, text, alphabet, **kwargs):
     """This function applies a grammar to a text and constructs an index of the occurrences
     found.
 
@@ -629,13 +589,13 @@ def locate(*args, **kwargs):
     well as the percentage of recognized units within the text are saved in a file called
     concord.n. These two files are stored in the directory of the text.
 
-    Arguments (length: 1):
-        0 -- The fst2 to apply on the text
+    Arguments:
+        grammar [str]  -- The fst2 to apply on the text
+        text [str]     -- the text file, with extension .snt
+        alphabet [str] -- the alphabet file of the language of the text
 
     Keyword arguments:
       - Generic options:
-            text [str]              -- the text file, with extension .snt
-            alphabet [str]          -- the alphabet file of the language of the text
             start_on_space [bool]   -- this parameter indicates that the search will start at
                                        any position in the text, even before a space. This parameter
                                        should only be used to carry out morphological searches
@@ -659,8 +619,8 @@ def locate(*args, **kwargs):
             number_of_matches [int] -- stops after the first N matches (default: all matches)
 
       - Maximum iterations per token options:
-            stop_token_count [tuple(int_1, int_2)] --  emits a warning after 'int_1' iterations on a
-                                                       token and stops after 'int_2' iterations.
+            stop_token_count [list(int_1, int_2)] -- emits a warning after 'int_1' iterations on a
+                                                     token and stops after 'int_2' iterations.
 
       - Matching mode options:
             match_mode [str] -- 'shortest': shortest match mode
@@ -668,22 +628,22 @@ def locate(*args, **kwargs):
                                 'all': all match mode
 
       - Output options:
-            output_mode [str]              -- 'ignore': ignore transducer outputs (default)
-                                              'merge': merge transducer outputs with text inputs 
-                                              'replace': replace texts inputs with corresponding transducer
-                                                         outputs
-            protect_dic_chars [bool]       -- when 'merge' or 'replace' mode is used, this option protects some
-                                              input characters with a backslash. This is useful when Locate is
-                                              called by Dico in order to avoid producing bad lines like: 3,14,.PI.NUM
-                                              (default: True)
-            variable [tuple(str_1, str_2)] -- sets an output variable named str_1 with content str_2. Note that str_2
-                                              must be ASCII.
+            output_mode [str]             -- 'ignore': ignore transducer outputs (default)
+                                             'merge': merge transducer outputs with text inputs 
+                                             'replace': replace texts inputs with corresponding transducer
+                                                        outputs
+            protect_dic_chars [bool]      -- when 'merge' or 'replace' mode is used, this option protects some
+                                             input characters with a backslash. This is useful when Locate is
+                                             called by Dico in order to avoid producing bad lines like: 3,14,.PI.NUM
+                                             (default: True)
+            variable [list(str_1, str_2)] -- sets an output variable named str_1 with content str_2. Note that str_2
+                                             must be ASCII.
 
       - Ambiguous output options:
             ambiguous_outputs [bool] -- allows the production of several matches with same input but different
-                                        outputs (default: True). If False, in case of ambiguous outputs, one will
-                                        be arbitrarily chosen and kept, depending on the internal state of the
-                                        function (default: True)
+                                        outputs. If False, in case of ambiguous outputs, one will be arbitrarily
+                                        chosen and kept, depending on the internal state of the function
+                                        (default: True)
             variable_error [str]     -- 'exit': kills the function if variable has an empty content
                                         'ignore': ignore the errors (default)
                                         'backtrack': stop the current path exploration
@@ -691,116 +651,84 @@ def locate(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = LocateOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one grammar to apply...")
-    grammar = args[0]
-
-    text = kwargs.get("text", None)
-    if text is None:
-        raise UnitexException("You must provide the text file path (snt format)...")
-
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must provide the alphabet file path...")
-
-    morpho = kwargs.get("morpho", None)
-    start_on_space = kwargs.get("start_on_space", False)
-    char_by_char = kwargs.get("char_by_char", False)
-    sntdir = kwargs.get("sntdir", None)
-    korean = kwargs.get("korean", False)
-    arabic_rules = kwargs.get("arabic_rules", None)
-    negation_operator = kwargs.get("negation_operator", None)
-
-    number_of_matches = kwargs.get("number_of_matches", None)
-
-    stop_token_count = kwargs.get("stop_token_count", None)
-
-    match_mode = kwargs.get("match_mode", "longest")
-    if match_mode not in ("shortest", "longest", "all"):
-        raise UnitexException("Invalid match mode '%s'..." % match_mode)
-
-    output_mode = kwargs.get("output_mode", "ignore")
-    if output_mode not in ("ignore", "merge", "replace"):
-        raise UnitexException("Invalid output mode '%s'..." % output_mode)
-
-    protect_dic_chars = kwargs.get("protect_dic_chars", False)
-    variable = kwargs.get("variable", "ignore")
-
-    ambiguous_outputs = kwargs.get("ambiguous_outputs", True)
-
-    variable_error = kwargs.get("variable_error", "")
-    if variable_error not in ("exit", "ignore", "backtrack"):
-        raise UnitexException("Invalid variable error handling mode '%s'..." % variable_error)
+    if os.path.exists(grammar) is False:
+        raise UnitexException("[LOCATE] Grammar file '%s' doesn't exists" % grammar)
+    if os.path.exists(text) is False:
+        raise UnitexException("[LOCATE] Text file '%s' doesn't exists" % text)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[LOCATE] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Locate"]
 
     command.append("--text=%s" % text)
     command.append("--alphabet=%s" % alphabet)
 
-    if morpho is not None:
-        command.append("--morpho=%s" % ",".join(morpho))
+    if options["morpho"] is not None:
+        command.append("--morpho=%s" % ",".join(self["morpho"]))
 
-    if start_on_space is False:
+    if options["start_on_space"] is False:
         command.append("--dont_start_on_space")
     else:
         command.append("--start_on_space")
 
-    if char_by_char is False:
+    if options["char_by_char"] is False:
         command.append("--word_by_word")
     else:
         command.append("--char_by_char")
 
-    if sntdir is not None:
-        command.append("--sntdir=%s" % sntdir)
-    if korean is True:
+    if options["sntdir"] is not None:
+        command.append("--sntdir=%s" % self["sntdir"])
+    if options["korean"] is True:
         command.append("--korean")
-    if arabic_rules is not None:
-        command.append("--arabic_rules=%s" % arabic_rules)
-    if negation_operator is not None:
-        command.append("--negation_operator=%s" % negation_operator)
+    if options["arabic_rules"] is not None:
+        command.append("--arabic_rules=%s" % self["arabic_rules"])
+    if options["negation_operator"] is not None:
+        command.append("--negation_operator=%s" % self["negation_operator"])
 
-    if number_of_matches is None:
+    if options["number_of_matches"] is None:
         command.append("--all")
     else:
-        command.append("--number_of_matches=%s" % number_of_matches)
+        command.append("--number_of_matches=%s" % self["number_of_matches"])
 
-    if stop_token_count is not None:
-        if stop_token_count[0] is None:
+    if options["stop_token_count"] is not None:
+        if options["stop_token_count[0]"] is None:
             command.append("--stop_token_count=%s" % stop_token_count[1])
         else:
             command.append("--stop_token_count=%s,%s" % (stop_token_count[0], stop_token_count[1]))
 
-    if match_mode == "longest":
+    if options["match_mode"] == UnitexConstants.MATCH_MODE_LONGEST:
         command.append("--longest_matches")
-    elif match_mode == "shortest":
+    elif options["match_mode"] == UnitexConstants.MATCH_MODE_SHORTEST:
         command.append("--shortest_matches")
-    elif match_mode == "all":
+    elif options["match_mode"] == UnitexConstants.MATCH_MODE_ALL:
         command.append("--all_matches")
 
-    if output_mode == "ignore":
+    if options["output_mode"] == UnitexConstants.OUTPUT_MODE_IGNORE:
         command.append("--ignore")
-    elif output_mode == "merge":
+    elif options["output_mode"] == UnitexConstants.OUTPUT_MODE_MERGE:
         command.append("--merge")
-    elif output_mode == "replace":
+    elif options["output_mode"] == UnitexConstants.OUTPUT_MODE_RELACE:
         command.append("--replace")
 
-    if protect_dic_chars is True:
+    if options["protect_dic_chars"] is True:
         command.append("--protect_dic_chars")
 
-    if variable is not None:
-        command.append("--variable=%s=%s" % (variable[0], variable[1]))
+    if options["variable"] is not None:
+        command.append("--variable=%s=%s" % (self["variable"][0], self["variable"][1]))
 
-    if ambiguous_outputs is True:
+    if options["ambiguous_outputs"] is True:
         command.append("--ambiguous_outputs")
     else:
         command.append("--no_ambiguous_outputs")
 
-    if variable_error == "ignore":
+    if options["variable_error"] == UnitexConstants.ON_ERROR_IGNORE:
         command.append("--ignore_variable_error")
-    elif variable_error == "exit":
+    elif options["variable_error"] == UnitexConstants.ON_ERROR_EXIT:
         command.append("--exit_on_variable_error")
-    elif variable_error == "backtrack":
+    elif options["variable_error"] == UnitexConstants.ON_ERROR_BACKTRACK:
         command.append("--backtrack_on_variable_error")
 
     command.append(grammar)
@@ -816,7 +744,7 @@ def locate(*args, **kwargs):
 
 
 
-def normalize(*args, **kwargs):
+def normalize(text, **kwargs):
     """This function carries out a normalization of text separators. The separators are
     space, tab, and newline. Every sequence of separators that contains at least one
     newline is replaced by a unique newline. All other sequences of separators are replaced
@@ -833,8 +761,8 @@ def normalize(*args, **kwargs):
     anything else. So, you have to be very careful if you manipulate separators in such
     rules.
 
-    Arguments (length: 1):
-        0 -- The text file to normalize
+    Arguments:
+        text [str] -- The text file to normalize
 
     Keyword arguments:
         no_carriage_return [bool]         -- every separator sequence will be turned into a single
@@ -851,37 +779,26 @@ def normalize(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = NormalizeOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one text to normalize...")
-    text = args[0]
-
-    no_carriage_return = kwargs.get("no_carriage_return", False)
-
-    input_offsets = kwargs.get("input_offsets", None)
-    output_offsets = kwargs.get("output_offsets", None)
-    if input_offsets is None and output_offsets is not None:
-        raise UnitexException("You must provide both input and output offsets...")
-    if input_offsets is not None and output_offsets is None:
-        raise UnitexException("You must provide both input and output offsets...")
-
-    replacement_rules = kwargs.get("replacement_rules", None)
-    no_separator_normalization = kwargs.get("no_separator_normalization", False)
+    if os.path.exists(text) is False:
+        raise UnitexException("[NORMALIZE] Text file '%s' doesn't exists" % text)
 
     command = ["UnitexTool", "Normalize"]
 
-    if no_carriage_return is True:
+    if options["no_carriage_return"] is True:
         command.append("--no_carriage_return")
 
-    if input_offsets is not None:
-        command.append("--input_offsets=%s" % input_offsets)
-    if output_offsets is not None:
-        command.append("--output_offsets=%s" % output_offsets)
+    if options["input_offsets"] is not None:
+        command.append("--input_offsets=%s" % self["input_offsets"])
+    if options["output_offsets"] is not None:
+        command.append("--output_offsets=%s" % self["output_offsets"])
 
-    if replacement_rules is not None:
-        command.append("--replacement_rules=%s" % replacement_rules)
+    if options["replacement_rules"] is not None:
+        command.append("--replacement_rules=%s" % self["replacement_rules"])
 
-    if no_separator_normalization is True:
+    if options["no_separator_normalization"] is True:
         command.append("--no_separator_normalization")
 
     command.append(text)
@@ -897,15 +814,15 @@ def normalize(*args, **kwargs):
 
 
 
-def sort_txt(*args, **kwargs):
+def sort_txt(text, **kwargs):
     """This function carries out a lexicographical sorting of the lines of file <txt>. <txt>
     represents the complete path of the file to be sorted.
 
     The input text file is modified. By default, the sorting is performed in the order of
     Unicode characters, removing duplicate lines.
 
-    Arguments (length: 1):
-        0 -- The text file to sort
+    Arguments:
+        text [str] -- The text file to sort
 
     Keyword arguments:
         duplicates [bool]                   -- keep duplicate lines (default: False)
@@ -924,41 +841,28 @@ def sort_txt(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = SortTxtOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one text to normalize...")
-    text = args[0]
-
-    duplicates = kwargs.get("duplicates", False)
-    reverse = kwargs.get("reverse", False)
-
-    sort_order = kwargs.get("sort_order", None)
-    if sort_order is None:
-        raise UnitexException("You must provide the sort_order argument...")
-
-    line_info = kwargs.get("line_info", None)
-    if line_info is None:
-        raise UnitexException("You must provide the line_info argument...")
-
-    thai = kwargs.get("thai", False)
-    factorize_inflectional_codes = kwargs.get("factorize_inflectional_codes", False)
+    if os.path.exists(text) is False:
+        raise UnitexException("[SORTTXT] Text file '%s' doesn't exists" % text)
 
     command = ["UnitexTool", "SortTxt"]
 
-    if duplicates is False:
+    if options["duplicates"] is False:
         command.append("--no_duplicates")
     else:
         command.append("--duplicates")
 
-    if reverse is True:
+    if options["reverse"] is True:
         command.append("--reverse")
-    if sort_order is None:
-        command.append("--sort_order=%s" % sort_order)
-    if line_info is None:
-        command.append("--line_info=%s" % line_info)
-    if thai is True:
+    if options["sort_order"] is None:
+        command.append("--sort_order=%s" % self["sort_order"])
+    if options["line_info"] is None:
+        command.append("--line_info=%s" % self["line_info"])
+    if options["thai"] is True:
         command.append("--thai")
-    if factorize_inflectional_codes is True:
+    if options["factorize_inflectional_codes"] is True:
         command.append("--factorize_inflectional_codes")
 
     command.append(text)
@@ -974,7 +878,7 @@ def sort_txt(*args, **kwargs):
 
 
 
-def tokenize(*args, **kwargs):
+def tokenize(text, alphabet, **kwargs):
     """This function tokenizes a tet text into lexical units. <txt> the complete path of the
     text file, without omitting the .snt extension.
 
@@ -1000,12 +904,12 @@ def tokenize(*args, **kwargs):
 
     All produced files are saved in the text directory
 
-    Arguments (length: 1):
-        0 -- The text file to tokenize (snt format)
+    Arguments:
+        text [str]     -- the text file to tokenize (snt format)
+        alphabet [str] -- the alphabet file
 
     Keyword arguments:
       - Generic options:
-            alphabet [str]      -- alphabet file
             char_by_char [bool] -- indicates whether the program is applied character by
                                    character, with the exceptions of the sentence delimiter
                                    {S}, the stop marker {STOP} and lexical tags like
@@ -1021,41 +925,30 @@ def tokenize(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
+    options = TokenizeOptions()
+    options.load(kwargs)
 
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one text to normalize...")
-    text = args[0]
-
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must specify the alphabet file path...")
-
-    char_by_char = kwargs.get("char_by_char", False)
-    tokens = kwargs.get("tokens", None)
-
-    input_offsets = kwargs.get("input_offsets", None)
-    output_offsets = kwargs.get("output_offsets", None)
-    if input_offsets is None and output_offsets is not None:
-        raise UnitexException("You must provide both input and output offsets...")
-    if input_offsets is not None and output_offsets is None:
-        raise UnitexException("You must provide both input and output offsets...")
+    if os.path.exists(text) is False:
+        raise UnitexException("[TOKENIZE] Text file '%s' doesn't exists" % text)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[TOKENIZE] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Tokenize"]
 
     command.append("--alphabet=%s" % alphabet)
 
-    if char_by_char is True:
+    if options["char_by_char"] is True:
         command.append("--char_by_char")
     else:
         command.append("--word_by_word")
 
-    if tokens is not None:
-        command.append("--tokens=%s" % tokens)
+    if options["tokens"] is not None:
+        command.append("--tokens=%s" % self["tokens"])
 
-    if input_offsets is not None:
-        command.append("--input_offsets=%s" % input_offsets)
-    if output_offsets is not None:
-        command.append("--output_offsets=%s" % output_offsets)
+    if options["input_offsets"] is not None:
+        command.append("--input_offsets=%s" % self["input_offsets"])
+    if options["output_offsets"] is not None:
+        command.append("--output_offsets=%s" % self["output_offsets"])
 
     command.append(text)
 
@@ -1070,7 +963,7 @@ def tokenize(*args, **kwargs):
 
 
 
-def txt2tfst(*args, **kwargs):
+def txt2tfst(text, alphabet, **kwargs):
     """This function constructs an automaton of a text.
 
     If the text is separated into sentences, the function constructs an automaton for each
@@ -1080,11 +973,11 @@ def txt2tfst(*args, **kwargs):
     The result is a file called text.tfst which is saved in the directory of the text.
     Another file named text.tind is also produced.
 
-    Arguments (length: 1):
-        0 -- the path to the text file in snt format.
+    Arguments:
+        text [str]     -- the path to the text file in snt format.
+        alphabet [str] -- the alphabet file
 
     Keyword arguments:
-        alphabet [str]              -- the alphabet file of the language of the text
         clean [bool]                -- indicates whether the rule of conservation of the best
                                        paths (see section 7.2.4) should be applied
                                        (default: False)
@@ -1097,30 +990,25 @@ def txt2tfst(*args, **kwargs):
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
     """
-    if len(args) != 1:
-        raise UnitexException("You must specify one and only one text to normalize...")
-    text = args[0]
+    options = Txt2TFstOptions()
+    options.load(kwargs)
 
-    alphabet = kwargs.get("alphabet", None)
-    if alphabet is None:
-        raise UnitexException("You must specify the alphabet file path...")
-
-    clean = kwargs.get("clean", False)
-    normalization_grammar = kwargs.get("normalization_grammar", None)
-    tagset = kwargs.get("tagset", None)
-    korean = kwargs.get("korean", False)
+    if os.path.exists(text) is False:
+        raise UnitexException("[TXT2TFST] Text file '%s' doesn't exists" % text)
+    if os.path.exists(alphabet) is False:
+        raise UnitexException("[TXT2TFST] Alphabet file '%s' doesn't exists" % alphabet)
 
     command = ["UnitexTool", "Txt2Tfst"]
 
     command.append("--alphabet=%s" % alphabet)
 
-    if clean is not False:
+    if options["clean"] is not False:
         command.append("--clean")
-    if normalization_grammar is not None:
-        command.append("--normalization_grammar=%s" % normalization_grammar)
-    if tagset is not None:
-        command.append("--tagset=%s" % tagset)
-    if korean is not False:
+    if options["normalization_grammar"] is not None:
+        command.append("--normalization_grammar=%s" % self["normalization_grammar"])
+    if options["tagset"] is not None:
+        command.append("--tagset=%s" % self["tagset"])
+    if options["korean"] is not False:
         command.append("--korean")
 
     command.append(text)

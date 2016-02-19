@@ -6,6 +6,7 @@ import os, shutil, unittest
 # Compatibility Python 2/3
 from io import open
 
+from unitex import UnitexConstants
 from unitex.io import *
 
 
@@ -18,17 +19,17 @@ class Arguments:
         self.__arguments["file_source"] = "data/corpus.txt"
         self.__arguments["file_target_hdd_01"] = "data/corpus-hdd-01.txt"
         self.__arguments["file_target_hdd_02"] = "data/corpus-hdd-02.txt"
-        self.__arguments["file_target_vfs_01"] = "%sdata/corpus-vfs-01.txt" % UnitexIOConstants.VFS_PREFIX
-        self.__arguments["file_target_vfs_02"] = "%sdata/corpus-vfs-02.txt" % UnitexIOConstants.VFS_PREFIX
+        self.__arguments["file_target_vfs_01"] = "%sdata/corpus-vfs-01.txt" % UnitexConstants.VFS_PREFIX
+        self.__arguments["file_target_vfs_02"] = "%sdata/corpus-vfs-02.txt" % UnitexConstants.VFS_PREFIX
 
         self.__arguments["hdd_root"] = "data/"
-        self.__arguments["vfs_root"] = "%sdata/" % UnitexIOConstants.VFS_PREFIX
+        self.__arguments["vfs_root"] = "%sdata/" % UnitexConstants.VFS_PREFIX
 
         self.__arguments["hdd_name"] = "corpus.txt"
         self.__arguments["vfs_name"] = "$:data/unitex-file-corpus.txt"
 
         self.__arguments["unitex_file_hdd"] = "data/unitex-file-corpus.txt"
-        self.__arguments["unitex_file_vfs"] = "%sdata/unitex-file-corpus.txt" % UnitexIOConstants.VFS_PREFIX
+        self.__arguments["unitex_file_vfs"] = "%sdata/unitex-file-corpus.txt" % UnitexConstants.VFS_PREFIX
 
         self.__arguments["directory"] = "data/biniou/"
 
