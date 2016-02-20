@@ -35,15 +35,17 @@ The following sections gives some sample codes to illustrate each of them.
 ```python
 from _unitex import unitex_tool
 
-command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=data/Alphabet.txt data/grammar.grf -qutf8-no-bom"
+command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=Alphabet.txt grammar.grf -qutf8-no-bom"
 
 ret = unitex_tool(command)
 ```
 ### The Unitex basic commands and features.
 
 ```python
-grammar = self._arguments["grf"]
-alphabet = self._arguments["alphabet"]
+from unitex.tools import grf2fst2
+
+grammar = "grammar.grf"
+alphabet = "Alphabet.txt"
 
 kwargs = {}
 kwargs["loop_check"] = False
