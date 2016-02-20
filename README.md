@@ -2,11 +2,11 @@
 
 This package provides access to the Unitex C++ Library.
 
-## Features
+## Main features
 
 * Unitex as a library
-* Persistence
-* Virtualization
+* Linguistic resources persistence
+* File virtualization
 
 ## Installation
 
@@ -31,8 +31,37 @@ There is three ways to use the Unitex Python library:
 The following sections gives some sample codes to illustrate each of them.
 
 ### The `_unitex` C++ extension.
+
+```python
+from _unitex import unitex_tool
+
+command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=data/Alphabet.txt data/grammar.grf -qutf8-no-bom"
+
+ret = unitex_tool(command)
+```
 ### The Unitex basic commands and features.
+
+```python
+grammar = self._arguments["grf"]
+alphabet = self._arguments["alphabet"]
+
+kwargs = {}
+kwargs["loop_check"] = False
+kwargs["char_by_char"] = False
+kwargs["pkgdir"] = None
+kwargs["no_empty_graph_warning"] = False
+kwargs["tfst_check"] = False
+kwargs["silent_grf_name"] = False
+kwargs["named_repositories"] = None
+kwargs["debug"] = False
+kwargs["check_variables"] = False
+
+ret = grf2fst2(grammar, alphabet, **kwargs)
+```
+
 ### The `Processor` high-level class.
+
+**TODO**
 
 ## Useful links
 
