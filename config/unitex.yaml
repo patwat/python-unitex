@@ -1,0 +1,122 @@
+global:
+    debug: 1
+    verbose: 1
+
+    tempdir: "/tmp"
+
+    persistence: True
+    virtualization: True
+
+resources:
+    language: "fr"
+
+    alphabet: "/home/resources/media/fr/unitex/preprocessing/Alphabet.txt"
+    alphabet-sorted: "/home/resources/media/fr/unitex/preprocessing/Alphabet_sort.txt"
+    sentence: "/home/resources/media/fr/unitex/preprocessing/sentence/Sentence.fst2"
+    replace: "/home/resources/media/fr/unitex/preprocessing/replace/Replace.fst2"
+
+    dictionaries:
+        - "/home/resources/media/fr/unitex/dictionary/delaf-short.bin"
+        - "/home/resources/media/fr/unitex/dictionary/delacf-light.bin"
+        - "/home/resources/media/fr/unitex/dictionary/toponyms.bin"
+
+# The 'options' section can contain any of the argument used by the unitex tools
+# functions. Note that, if you use the 'Processor' high-level class some argument
+# could be overriden to fit the 'tag', 'extract' and 'search' functions
+# behaviour. For intance, there is not point to define a font or a context for
+# 'concord'.
+options:
+    check_dic:
+        strict: False
+        no_space_warning: False
+
+    compress:
+        output: null
+        flip: False
+        semitic: False
+        version: "v2"
+
+    concord:
+        font: null
+        fontsize: null
+        only_ambiguous: False
+        only_matches: False
+        left: 0
+        right: 0
+        sort: "TO"
+        format: "text"
+        script: null
+        offsets: null
+        unxmlize: null
+        directory: null
+        thai: False
+
+    dico:
+        morpho: null
+        korean: False
+        semitic: False
+        arabic_rules: null
+        raw: null
+
+    extract:
+        non_matching_sentences: False
+
+    fst2txt:
+        start_on_space: False
+        word_by_word: False
+        merge: True
+
+    grf2fst2:
+        loop_check: False
+        char_by_char: False
+        pkgdir: null
+        no_empty_graph_warning: False
+        tfst_check: False
+        silent_grf_name: True
+        named_repository: null
+        debug: False
+        check_variables: True
+
+    locate:
+        start_on_space: False
+        char_by_char: False
+        morpho: null
+        korean: False
+        arabic_rules: null
+        sntdir: null
+        negation_operator: "tilde"
+        number_of_matches: null
+        stop_token_count: null
+        match_mode: "longest"
+        output_mode: "merge"
+        protect_dic_chars: True
+        variable: null
+        ambiguous_outputs: True
+        variable_error: "ignore"
+
+    normalize:
+        no_carriage_return: False
+        input_offsets: null
+        output_offsets: null
+        no_separator_normalization: False
+        replacement_rules: null
+
+    sort_txt:
+        duplicates: False
+        revers: False
+        sort_order: null
+        line_info: null
+        thai: False
+        factorize_inflectional_codes: False
+
+    tokenize:
+        char_by_char: False
+        tokens: null
+        input_offsets: null
+        output_offsets: null
+
+    txt2fst:
+        clean: False
+        normalization_grammar: null
+        tagset: null
+        korean: False

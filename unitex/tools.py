@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
+
 from _unitex import unitex_tool
-from unitex import UnitexException, UnitexConstants, LOGGER
+from unitex import UnitexException, UnitexConstants
+from unitex.config import *
 from unitex.io import exists
+
+LOGGER = logging.getLogger(__name__)
 
 
 
@@ -174,32 +179,34 @@ def concord(index, alphabet, **kwargs):
                           'UnitexConstants.SORT_RIGHT_CENTER': left context, then occurrence
 
       - Output options:
-            format [str]   -- 'html': produces a concordance in HTML format encoded in UTF-8 (default)
-                              'text': produces a concordance in Unicode text format
-                              'glossanet': produces a concordance for GlossaNet in HTML format where occurrences
-                                           are links described by the 'script' argument (cf. Unitex manual p. 268).
-                                           The HTML file is encoded in UTF-8
-                              'script': produces a HTML concordance file where occurrences are links described by
-                                        the 'script' argument
-                              'index': produces an index of the concordance, made of the content of the occurrences
-                                       (with the grammar outputs, if any), preceded by the positions of the
-                                       occurrences in the text file given in characters
-                              'uima': produces an index of the concordance relative to the original text file,
-                                      before any Unitex operation. The 'offsets' argument must be provided
-                              'prlg': produces a concordance for PRLG corpora where each line is prefixed by
-                                      information extracted with Unxmlize’s 'prlg' option. You must provide both the
-                                      'offsets' and the 'unxmlize' argument
-                              'xml': produces xml index of the concordance
-                              'xml-with-header': produces xml index of the concordance with full xml header
-                              'axis': quite the same as 'index', but the numbers represent the median character of
-                                      each occurrence
-                              'xalign': another index file, used by the text alignment module. Each line is made of
-                                        3 integers X Y Z followed by the content of the occurrence. X is the sentence
-                                        number, starting from 1. Y and Z are the starting and ending positions of the
-                                        occurrence in the sentence, given in characters
-                              'merge': indicates to the function that it is supposed to produce a modified version of
-                                       the text and save it in a file. The filename must be provided with the 'output'
-                                       argument
+            format [str]   -- UnitexConstants.FORMAT_HTML: produces a concordance in HTML format encoded in UTF-8 (default)
+                              UnitexConstants.FORMAT_TEXT: produces a concordance in Unicode text format
+                              UnitexConstants.FORMAT_GLOSSANET: produces a concordance for GlossaNet in HTML format where
+                                                                occurrences are links described by the 'script' argument
+                                                                (cf. Unitex manual p. 268). The HTML file is encoded in UTF-8
+                              UnitexConstants.FORMAT_SCRIPT: produces a HTML concordance file where occurrences are links
+                                                             described by the 'script' argument
+                              UnitexConstants.FORMAT_INDEX: produces an index of the concordance, made of the content of the
+                                                            occurrences (with the grammar outputs, if any), preceded by the
+                                                            positions of the occurrences in the text file given in characters
+                              UnitexConstants.FORMAT_UIMA: produces an index of the concordance relative to the original text
+                                                           file, before any Unitex operation. The 'offsets' argument must be
+                                                           provided
+                              UnitexConstants.FORMAT_PRLG: produces a concordance for PRLG corpora where each line is prefixed
+                                                           by information extracted with Unxmlize’s 'prlg' option. You must
+                                                           provide both the 'offsets' and the 'unxmlize' argument
+                              UnitexConstants.FORMAT_XML: produces xml index of the concordance
+                              UnitexConstants.FORMAT_XML_WITH_HEADER: produces xml index of the concordance with full xml header
+                              UnitexConstants.FORMAT_AXIS: quite the same as 'index', but the numbers represent the median
+                                                           character of each occurrence
+                              UnitexConstants.FORMAT_XALIGN: another index file, used by the text alignment module. Each line is
+                                                             made of 3 integers X Y Z followed by the content of the occurrence.
+                                                             X is the sentence number, starting from 1. Y and Z are the starting
+                                                             and ending positions of the occurrence in the sentence, given in
+                                                             characters
+                              UnitexConstants.FORMAT_MERGE: indicates to the function that it is supposed to produce a modified
+                                                            version of the text and save it in a file. The filename must be
+                                                            provided with the 'output' argument
             script [str]   -- string describing the links format for 'glossanet' and 'script' output. For instance,
                               if you use 'http://www.google.com/search?q=', you will obtain a HTML concordance
                               file where occurrences are hyperlinks to Google queries
@@ -226,64 +233,64 @@ def concord(index, alphabet, **kwargs):
 
     command = ["UnitexTool", "Concord"]
 
-    if self["font"] is not None:
-        command.append("--font=%s" % self["font"])
-    if self["fontsize"] is not None:
-        command.append("--fontsize=%s" % self["fontsize"])
-    if self["only_ambiguous"] is True:
+    if options["font"] is not None:
+        command.append("--font=%s" % options["font"])
+    if options["fontsize"] is not None:
+        command.append("--fontsize=%s" % options["fontsize"])
+    if options["only_ambiguous"] is True:
         command.append("--only_ambiguous")
-    if self["only_matches"] is True:
+    if options["only_matches"] is True:
         command.append("--only_matches")
 
-    command.append("--left=%s" % self["left"])
-    command.append("--right=%s" % self["right"])
+    command.append("--left=%s" % options["left"])
+    command.append("--right=%s" % options["right"])
 
-    if self["sort"] == UnitexConstants.SORT_TEXT_ORDER:
+    if options["sort"] == UnitexConstants.SORT_TEXT_ORDER:
         command.append("--TO")
-    elif self["sort"] == UnitexConstants.SORT_LEFT_CENTER:
+    elif options["sort"] == UnitexConstants.SORT_LEFT_CENTER:
         command.append("--LC")
-    elif self["sort"] == UnitexConstants.SORT_LEFT_RIGHT:
+    elif options["sort"] == UnitexConstants.SORT_LEFT_RIGHT:
         command.append("--LR")
-    elif self["sort"] == UnitexConstants.SORT_CENTER_LEFT:
+    elif options["sort"] == UnitexConstants.SORT_CENTER_LEFT:
         command.append("--CL")
-    elif self["sort"] == UnitexConstants.SORT_CENTER_RIGHT:
+    elif options["sort"] == UnitexConstants.SORT_CENTER_RIGHT:
         command.append("--CR")
-    elif self["sort"] == UnitexConstants.SORT_RIGHT_LEFT:
+    elif options["sort"] == UnitexConstants.SORT_RIGHT_LEFT:
         command.append("--RL")
-    elif self["sort"] == UnitexConstants.SORT_RIGHT_CENTER:
+    elif options["sort"] == UnitexConstants.SORT_RIGHT_CENTER:
         command.append("--RC")
 
-    if self["format"] == UnitexConstants.FORMAT_HTML:
+    if options["format"] == UnitexConstants.FORMAT_HTML:
         command.append("--html")
-    elif self["format"] == UnitexConstants.FORMAT_TEXT:
+    elif options["format"] == UnitexConstants.FORMAT_TEXT:
         command.append("--text")
-    elif self["format"] == UnitexConstants.FORMAT_GLOSSANET:
-        command.append("--glossanet=%s" % self["script"])
-    elif self["format"] == UnitexConstants.FORMAT_SCRIPT:
-        command.append("--script=%s" % self["script"])
-    elif self["format"] == UnitexConstants.FORMAT_INDEX:
+    elif options["format"] == UnitexConstants.FORMAT_GLOSSANET:
+        command.append("--glossanet=%s" % options["script"])
+    elif options["format"] == UnitexConstants.FORMAT_SCRIPT:
+        command.append("--script=%s" % options["script"])
+    elif options["format"] == UnitexConstants.FORMAT_INDEX:
         command.append("--index")
-    elif self["format"] == UnitexConstants.FORMAT_UIMA:
-        command.append("--uima=%s" % self["offsets"])
-    elif self["format"] == UnitexConstants.FORMAT_PRLG:
-        command.append("--PRLG=%s,%s" % self["unxmlize"], self["offsets"])
-    elif self["format"] == UnitexConstants.FORMAT_XML:
+    elif options["format"] == UnitexConstants.FORMAT_UIMA:
+        command.append("--uima=%s" % options["offsets"])
+    elif options["format"] == UnitexConstants.FORMAT_PRLG:
+        command.append("--PRLG=%s,%s" % options["unxmlize"], options["offsets"])
+    elif options["format"] == UnitexConstants.FORMAT_XML:
         command.append("--xml")
-    elif self["format"] == UnitexConstants.FORMAT_XML_WITH_HEADERS:
+    elif options["format"] == UnitexConstants.FORMAT_XML_WITH_HEADERS:
         command.append("--xml-with-header")
-    elif self["format"] == UnitexConstants.FORMAT_AXIS:
+    elif options["format"] == UnitexConstants.FORMAT_AXIS:
         command.append("--axis")
-    elif self["format"] == UnitexConstants.FORMAT_XALIGN:
+    elif options["format"] == UnitexConstants.FORMAT_XALIGN:
         command.append("--xalign")
-    elif self["format"] == UnitexConstants.FORMAT_MERGE:
-        command.append("--merge=%s" % self["output"])
+    elif options["format"] == UnitexConstants.FORMAT_MERGE:
+        command.append("--merge=%s" % options["output"])
 
-    if self["directory"] is not None:
-        command.append("--directory=%s" % self["directory"])
+    if options["directory"] is not None:
+        command.append("--directory=%s" % options["directory"])
 
     command.append("--alphabet=%s" % alphabet)
 
-    if self["thai"] is not True:
+    if options["thai"] is not True:
         command.append("--thai")
 
     command.append(index)
@@ -354,13 +361,13 @@ def dico(dictionaries, text, alphabet, **kwargs):
     command.append("--alphabet=%s" % alphabet)
 
     if options["morpho"] is not None:
-        command.append("--morpho=%s" % ",".join(self["morpho"]))
+        command.append("--morpho=%s" % ",".join(options["morpho"]))
     if options["korean"] is True:
         command.append("--korean")
     if options["semitic"] is True:
         command.append("--semitic")
     if options["arabic_rules"] is not None:
-        command.append("--arabic_rules=%s" % self["arabic_rules"])
+        command.append("--arabic_rules=%s" % options["arabic_rules"])
     if options["raw"] is not None:
         command.append("--raw=%s" % raw)
 
@@ -404,7 +411,7 @@ def extract(text, output, index, **kwargs):
 
     command = ["UnitexTool", "Extract"]
 
-    if self["non_matching_sentence"] is False:
+    if options["non_matching_sentences"] is False:
         command.append("--yes")
     else:
         command.append("--no")
@@ -522,14 +529,14 @@ def grf2fst2(grammar, alphabet, **kwargs):
         tfst_check [bool]              -- checks wether the given graph can be considered as a
                                           valid sentence automaton or not (default: False)
         silent_grf_name [bool]         -- does not print the graph names (needed for consistent
-                                          log files across several systems; default: False)
+                                          log files across several systems; default: True)
         named_repositories [list(str)] -- declaration of named repositories. This argument is made
                                           of one or more X=Y sequences, separated by ‘;’, where X is
                                           the name of the repository denoted by pathname Y. You can
                                           use this option several times
         debug [bool]                   -- compile graphs in debug mode (default: False)
         check_variables [bool]         -- check output validity to avoid malformed variable
-                                          expressions (default: False)
+                                          expressions (default: True)
 
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
@@ -549,7 +556,7 @@ def grf2fst2(grammar, alphabet, **kwargs):
     else:
         command.append("--loop_check")
 
-    command.append("--alphabet=%s" % options["alphabet"])
+    command.append("--alphabet=%s" % alphabet)
 
     if options["char_by_char"] is True:
         command.append("--char_by_char")
@@ -624,15 +631,15 @@ def locate(grammar, text, alphabet, **kwargs):
                                                      token and stops after 'int_2' iterations.
 
       - Matching mode options:
-            match_mode [str] -- 'shortest': shortest match mode
-                                'longest': longest match mode (default)
-                                'all': all match mode
+            match_mode [str] -- UnitexConstants.MATCH_MODE_SHORTEST: shortest match mode
+                                UnitexConstants.MATCH_MODE_LONGEST: longest match mode (default)
+                                UnitexConstants.MATCH_MODE_ALL: all match mode
 
       - Output options:
-            output_mode [str]             -- 'ignore': ignore transducer outputs (default)
-                                             'merge': merge transducer outputs with text inputs 
-                                             'replace': replace texts inputs with corresponding transducer
-                                                        outputs
+            output_mode [str]             -- UnitexConstants.OUTPUT_MODE_IGNORE: ignore outputs (default)
+                                             UnitexConstants.OUTPUT_MODE_MERGE: merge outputs with text
+                                             UnitexConstants.OUTPUT_MODE_REPLACE: replace texts inputs with
+                                                                                  corresponding transducer outputs
             protect_dic_chars [bool]      -- when 'merge' or 'replace' mode is used, this option protects some
                                              input characters with a backslash. This is useful when Locate is
                                              called by Dico in order to avoid producing bad lines like: 3,14,.PI.NUM
@@ -645,9 +652,9 @@ def locate(grammar, text, alphabet, **kwargs):
                                         outputs. If False, in case of ambiguous outputs, one will be arbitrarily
                                         chosen and kept, depending on the internal state of the function
                                         (default: True)
-            variable_error [str]     -- 'exit': kills the function if variable has an empty content
-                                        'ignore': ignore the errors (default)
-                                        'backtrack': stop the current path exploration
+            variable_error [str]     -- UnitexConstants.ON_ERROR_EXIT: kills the function if variable has an empty content
+                                        UnitexConstants.ON_ERROR_IGNORE: ignore the errors (default)
+                                        UnitexConstants.ON_ERROR_BACKTRACK: stop the current path exploration
 
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.
@@ -668,7 +675,7 @@ def locate(grammar, text, alphabet, **kwargs):
     command.append("--alphabet=%s" % alphabet)
 
     if options["morpho"] is not None:
-        command.append("--morpho=%s" % ",".join(self["morpho"]))
+        command.append("--morpho=%s" % ",".join(options["morpho"]))
 
     if options["start_on_space"] is False:
         command.append("--dont_start_on_space")
@@ -681,18 +688,18 @@ def locate(grammar, text, alphabet, **kwargs):
         command.append("--char_by_char")
 
     if options["sntdir"] is not None:
-        command.append("--sntdir=%s" % self["sntdir"])
+        command.append("--sntdir=%s" % options["sntdir"])
     if options["korean"] is True:
         command.append("--korean")
     if options["arabic_rules"] is not None:
-        command.append("--arabic_rules=%s" % self["arabic_rules"])
+        command.append("--arabic_rules=%s" % options["arabic_rules"])
     if options["negation_operator"] is not None:
-        command.append("--negation_operator=%s" % self["negation_operator"])
+        command.append("--negation_operator=%s" % options["negation_operator"])
 
     if options["number_of_matches"] is None:
         command.append("--all")
     else:
-        command.append("--number_of_matches=%s" % self["number_of_matches"])
+        command.append("--number_of_matches=%s" % options["number_of_matches"])
 
     if options["stop_token_count"] is not None:
         if options["stop_token_count[0]"] is None:
@@ -718,7 +725,7 @@ def locate(grammar, text, alphabet, **kwargs):
         command.append("--protect_dic_chars")
 
     if options["variable"] is not None:
-        command.append("--variable=%s=%s" % (self["variable"][0], self["variable"][1]))
+        command.append("--variable=%s=%s" % (options["variable"][0], options["variable"][1]))
 
     if options["ambiguous_outputs"] is True:
         command.append("--ambiguous_outputs")
@@ -792,12 +799,12 @@ def normalize(text, **kwargs):
         command.append("--no_carriage_return")
 
     if options["input_offsets"] is not None:
-        command.append("--input_offsets=%s" % self["input_offsets"])
+        command.append("--input_offsets=%s" % options["input_offsets"])
     if options["output_offsets"] is not None:
-        command.append("--output_offsets=%s" % self["output_offsets"])
+        command.append("--output_offsets=%s" % options["output_offsets"])
 
     if options["replacement_rules"] is not None:
-        command.append("--replacement_rules=%s" % self["replacement_rules"])
+        command.append("--replacement_rules=%s" % options["replacement_rules"])
 
     if options["no_separator_normalization"] is True:
         command.append("--no_separator_normalization")
@@ -858,9 +865,9 @@ def sort_txt(text, **kwargs):
     if options["reverse"] is True:
         command.append("--reverse")
     if options["sort_order"] is None:
-        command.append("--sort_order=%s" % self["sort_order"])
+        command.append("--sort_order=%s" % options["sort_order"])
     if options["line_info"] is None:
-        command.append("--line_info=%s" % self["line_info"])
+        command.append("--line_info=%s" % options["line_info"])
     if options["thai"] is True:
         command.append("--thai")
     if options["factorize_inflectional_codes"] is True:
@@ -944,12 +951,12 @@ def tokenize(text, alphabet, **kwargs):
         command.append("--word_by_word")
 
     if options["tokens"] is not None:
-        command.append("--tokens=%s" % self["tokens"])
+        command.append("--tokens=%s" % options["tokens"])
 
     if options["input_offsets"] is not None:
-        command.append("--input_offsets=%s" % self["input_offsets"])
+        command.append("--input_offsets=%s" % options["input_offsets"])
     if options["output_offsets"] is not None:
-        command.append("--output_offsets=%s" % self["output_offsets"])
+        command.append("--output_offsets=%s" % options["output_offsets"])
 
     command.append(text)
 
@@ -1006,9 +1013,9 @@ def txt2tfst(text, alphabet, **kwargs):
     if options["clean"] is not False:
         command.append("--clean")
     if options["normalization_grammar"] is not None:
-        command.append("--normalization_grammar=%s" % self["normalization_grammar"])
+        command.append("--normalization_grammar=%s" % options["normalization_grammar"])
     if options["tagset"] is not None:
-        command.append("--tagset=%s" % self["tagset"])
+        command.append("--tagset=%s" % options["tagset"])
     if options["korean"] is not False:
         command.append("--korean")
 

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__all__ = ["io", "tools", "processor"]
-
 import logging
 import os
 import sys
@@ -93,7 +91,7 @@ else:
     if DEBUG not in (0, 1):
         raise UnitexException( "Wrong $UNITEX_DEBUG value..." )
 
-# If a log file is specified, the log will be duplicated
+# If a log file is specified, the log will be redirected
 # to this file
 LOG = os.path.expandvars('$UNITEX_LOG')
 if LOG != '$UNITEX_LOG':
@@ -101,37 +99,22 @@ if LOG != '$UNITEX_LOG':
 else:
     LOG = None
 
-LOGGER = logging.getLogger("unitex")
-
-ch = logging.StreamHandler()
+kwargs = {}
 
 if DEBUG == 1:
-    ch.setLevel(logging.DEBUG)
+    kwargs["level"] = logging.DEBUG
 elif VERBOSE == 1:
-    ch.setLevel(logging.WARNING)
+    kwargs["level"] = logging.WARNING
 elif VERBOSE == 2:
-    ch.setLevel(logging.INFO)
+    kwargs["level"] = logging.INFO
 else:
-    ch.setLevel(logging.ERROR)
-
-cf = logging.Formatter("%(name)-12s: %(levelname)-8s %(message)s")
-ch.setFormatter(cf)
-
-LOGGER.addHandler(ch)
+    kwargs["level"] = logging.ERROR
 
 if LOG is not None:
-    fh = logging.FileHandler(LOG)
+    kwargs["format"] = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    kwargs["filename"] = LOG
+    kwargs["filemode"] = "a"
+else:
+    kwargs["format"] = "%(name)-12s: %(levelname)-8s %(message)s"
 
-    if DEBUG == 1:
-        fh.setLevel(logging.DEBUG)
-    elif VERBOSE == 1:
-        fh.setLevel(logging.WARNING)
-    elif VERBOSE == 2:
-        fh.setLevel(logging.INFO)
-    else:
-        fh.setLevel(logging.ERROR)
-
-    ff = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    fh.setFormatter(ff)
-
-    LOGGER.addHandler(fh)
+logging.basicConfig(**kwargs)

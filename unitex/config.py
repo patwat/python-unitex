@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 import tempfile
 
 from unitex import *
 from unitex.io import exists
 
+LOGGER = logging.getLogger(__name__)
+
 
 
 class Options(object):
 
-    def __init__(self):
+    def __init__(self, options=None):
         self.__options = {}
+
+        if options is not None:
+            self.load(options)
 
     def __contains__(self, key):
         return key in self.__options
@@ -180,10 +186,11 @@ class ConcordOptions(Options):
             self["output"] = output
 
         directory = options.get("directory", None)
-        if directory is not None and isinstance(directory, str) is False:
-            raise UnitexException("[CONCORD] Wrong value for the 'directory' option. String required.")
-        if exists(directory) is False:
-            raise UnitexException("[CONCORD] The text 'directory' doesn't exist.")
+        if directory is not None:
+            if isinstance(directory, str) is False:
+                raise UnitexException("[CONCORD] Wrong value for the 'directory' option. String required.")
+            if exists(directory) is False:
+                raise UnitexException("[CONCORD] The text 'directory' doesn't exist.")
         self["directory"] = directory
 
         thai = options.get("thai", False)
@@ -218,7 +225,7 @@ class DicoOptions(Options):
             raise UnitexException("[DICO] Wrong value for the 'semitic' option. Boolean required.")
         self["semitic"] = semitic
 
-        arabic_rules = options.get("arabic_rules", False)
+        arabic_rules = options.get("arabic_rules", None)
         if arabic_rules is not None:
             if isinstance(arabic_rules, str) is False:
                 raise UnitexException("[DICO] Wrong value for the 'arabic_rules' option. String required.")
@@ -226,7 +233,7 @@ class DicoOptions(Options):
                 raise UnitexException("[DICO] Rules file '%s' doesn't exist." % arabic_rules)
         self["arabic_rules"] = arabic_rules
 
-        raw = options.get("raw", False)
+        raw = options.get("raw", None)
         if raw is not None and isinstance(raw, str) is False:
             raise UnitexException("[DICO] Wrong value for the 'raw' option. String required.")
         self["raw"] = raw
@@ -257,10 +264,10 @@ class Fst2TxtOptions(Options):
             raise UnitexException("[FST2TXT] Wrong value for the 'start_on_space' option. Boolean required.")
         self["start_on_space"] = start_on_space
 
-        word_by_word = options.get("word_by_word", False)
-        if isinstance(word_by_word, bool) is False:
-            raise UnitexException("[FST2TXT] Wrong value for the 'word_by_word' option. Boolean required.")
-        self["word_by_word"] = word_by_word
+        char_by_char = options.get("char_by_char", False)
+        if isinstance(char_by_char, bool) is False:
+            raise UnitexException("[FST2TXT] Wrong value for the 'char_by_char' option. Boolean required.")
+        self["char_by_char"] = char_by_char
 
         merge = options.get("merge", True)
         if isinstance(merge, bool) is False:
@@ -306,7 +313,7 @@ class Grf2Fst2Options(Options):
         self["silent_grf_name"] = silent_grf_name
 
         named_repositories = options.get("named_repositories", None)
-        if isinstance(named_repositories, str) is False:
+        if named_repositories is not None and isinstance(named_repositories, str) is False:
             raise UnitexException("[GRF2FST2] Wrong value for the 'named_repositories' option. String required.")
         self["named_repositories"] = named_repositories
 
@@ -315,7 +322,7 @@ class Grf2Fst2Options(Options):
             raise UnitexException("[GRF2FST2] Wrong value for the 'debug' option. Boolean required.")
         self["debug"] = debug
 
-        check_variables = options.get("check_variables", False)
+        check_variables = options.get("check_variables", True)
         if isinstance(check_variables, bool) is False:
             raise UnitexException("[GRF2FST2] Wrong value for the 'check_variables' option. Boolean required.")
         self["check_variables"] = check_variables
@@ -368,8 +375,8 @@ class LocateOptions(Options):
                 raise UnitexException("[LOCATE] Directory '%s' doesn't exist." % sntdir)
         self["sntdir"] = sntdir
 
-        negation_operator = options.get("negation_operator", None)
-        if negation_operator is not None and negation_operator not in (UnitexConstants.NEGATION_OPERATOR, UnitexConstants.NEGATION_OPERATOR_OLD):
+        negation_operator = options.get("negation_operator", UnitexConstants.NEGATION_OPERATOR)
+        if negation_operator not in (UnitexConstants.NEGATION_OPERATOR, UnitexConstants.NEGATION_OPERATOR_OLD):
             raise UnitexException("[LOCATE] Wrong value for the 'negation_operator' option. UnitexConstants.NEGATION_OPERATOR(_OLD) required.")
         self["negation_operator"] = negation_operator
 
@@ -469,7 +476,7 @@ class NormalizeOptions(Options):
             raise UnitexException("[NORMALIZE] Wrong value for the 'no_separator_normalization' option. Boolean required.")
         self["no_separator_normalization"] = no_separator_normalization
 
-        replacement_rules = options.get("replacement_rules", False)
+        replacement_rules = options.get("replacement_rules", None)
         if replacement_rules is not None:
             if isinstance(replacement_rules, str) is False:
                 raise UnitexException("[NORMALIZE] Wrong value for the 'replacement_rules' option. String required.")
@@ -536,7 +543,7 @@ class TokenizeOptions(Options):
             if isinstance(tokens, str) is False:
                 raise UnitexException("[TOKENIZE] Wrong value for the 'tokens' option. String required.")
             if exists(tokens) is False:
-                raise UnitexException("[TOKENIZE] Offsets file '%s' doesn't exist." % tokens)
+                raise UnitexException("[TOKENIZE] Tokens file '%s' doesn't exist." % tokens)
         self["tokens"] = tokens
 
         input_offsets = options.get("input_offsets", None)
@@ -664,6 +671,8 @@ class UnitexConfig(Options):
         super(UnitexConfig, self).__init__()
 
     def load(self, settings):
+        options = settings.get("global", {})
+
         verbose = options.get("verbose", VERBOSE)
         if verbose not in (0, 1, 2):
             raise UnitexException("Wrong value for the 'verbose' global option.")
@@ -689,25 +698,19 @@ class UnitexConfig(Options):
             raise UnitexException("Wrong value for the 'virtualization' global option.")
         self["virtualization"] = bool(virtualization)
 
-        resources = ResourcesOptions()
-        self["resources"] = resources.load(settings.get("resources", {}))
+        self["resources"] = ResourcesOptions(settings.get("resources", {}))
 
         options = settings.get("options", {})
 
-        normalize = NormalizeOptions()
-        self["normalize"] = normalize.load(options.get("normalize", {}))
-
-        tokenize = TokenizeOptions()
-        self["tokenize"] = current.load(options.get("tokenize", {}))
-
-        dico = DicoOptions()
-        self["dico"] = current.load(options.get("dico", {}))
-
-        locate = LocateOptions()
-        self["locate"] = current.load(options.get("locate", {}))
-
-        concord = ConcordOptions()
-        self["concord"] = current.load(options.get("concord", {}))
-
-        extract = ExtractOptions()
-        self["extract"] = current.load(options.get("extract", {}))
+        self["check_dic"] = CheckDicOptions(options.get("normalize", {}))
+        self["compress"] = CheckDicOptions(options.get("normalize", {}))
+        self["concord"] = ConcordOptions(options.get("concord", {}))
+        self["dico"] = DicoOptions(options.get("dico", {}))
+        self["extract"] = ExtractOptions(options.get("extract", {}))
+        self["fst2txt"] = Fst2TxtOptions(options.get("extract", {}))
+        self["Grf2Fst2"] = Grf2Fst2Options(options.get("extract", {}))
+        self["locate"] = LocateOptions(options.get("locate", {}))
+        self["normalize"] = NormalizeOptions(options.get("normalize", {}))
+        self["sort_txt"] = SortTxtOptions(options.get("normalize", {}))
+        self["tokenize"] = TokenizeOptions(options.get("tokenize", {}))
+        self["txt2tfst"] = Txt2TFstOptions(options.get("tokenize", {}))

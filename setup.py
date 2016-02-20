@@ -87,46 +87,39 @@ class CustomClean(clean):
 
 
 
-setup(
-    name = "unitex",
-    version = "1.0",
-    description = "Python 3 binding for the Unitex library",
-    long_description = open('README.md').read(),
-
-    author = "Patrick Watrin",
-    author_email = "patrick.watrin@gmail.com",
-
-    # https://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers = [
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Programming Language :: Python",
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-        "Topic :: Scientific/Engineering :: Information Analysis",
-    ],
-    keywords = "Unitex, Finite-States Transducers, Natural Language Processing",
-
-    license = "GPLv3",
-    install_requires = [
-        # TO FILL
-    ],
-
-    packages = ["unitex"],
-    package_dir = {'unitex': 'unitex'},
-
-    data_files = [
-    ],
-
-    ext_modules=[
-        Extension("_unitex",
-                  include_dirs = [UNITEX_INC, get_python_inc()],
-                  libraries=["unitex"],
-                  library_dirs=['/usr/local/lib'],
-                  sources = ["extensions/_unitex.cpp"])
-    ],
-
-#    cmdclass = {
-#        "build": CustomBuild,
-#        "clean": CustomClean
-#    }
+setup(name = "unitex",
+      version = "1.0",
+      description = "Python 3 binding for the Unitex library",
+      long_description = open('README.md').read(),
+      
+      author = "Patrick Watrin",
+      author_email = "patrick.watrin@gmail.com",
+      
+      # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers = ["License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+                     "Programming Language :: Python",
+                     "Development Status :: 4 - Beta",
+                     "Intended Audience :: Developers",
+                     "Topic :: Scientific/Engineering :: Information Analysis"],
+      
+      keywords = "Unitex, Finite-States Transducers, Natural Language Processing",
+      
+      license = "GPLv3",
+      install_requires = [],
+      
+      package_dir = {"unitex":"unitex"},
+      packages = ["unitex"],
+      
+      data_files = [],
+      
+      ext_modules=[Extension("_unitex",
+                             include_dirs = [UNITEX_INC, get_python_inc()],
+                             libraries=["unitex"],
+                             library_dirs=['/usr/local/lib'],
+                             sources = ["extensions/_unitex.cpp"])],
+      
+       #cmdclass = {
+       #    "build": CustomBuild,
+       #    "clean": CustomClean
+       #}
 )

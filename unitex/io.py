@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 
 from _unitex import *
-from unitex import UnitexException, UnitexConstants, LOGGER
+from unitex import UnitexException, UnitexConstants
+
+LOGGER = logging.getLogger(__name__)
 
 
 
@@ -168,6 +171,14 @@ def ls(path):
     return unitex_ls(path)
 
 def exists(path):
+    """This function verify if a file exists (on disk or virtual filesystem).
+
+    Argument:
+        path [str] -- directory path
+
+    Return [bool]:
+        The function returns 'True' if it succeeds and 'False' otherwise.
+    """
     if path.startswith(UnitexConstants.VFS_PREFIX) is False:
         return os.path.exists(path)
     return path in ls(path)

@@ -5,8 +5,8 @@ import os
 import shutil
 import unittest
 
+from unitex import *
 from unitex.tools import *
-
 
 
 class Arguments:
@@ -15,7 +15,7 @@ class Arguments:
         self.__arguments = {}
 
         self.__arguments["dic"] = "data/dictionary.dic" 
-        self.__arguments["dic_type"] = "delaf"
+        self.__arguments["dic_type"] = UnitexConstants.DELAF
         self.__arguments["dic_check"] = "data/CHECK_DIC.TXT" 
 
         self.__arguments["bin"] = "data/dictionary.bin" 
@@ -29,6 +29,7 @@ class Arguments:
         self.__arguments["txt"] = "data/corpus.txt" 
         self.__arguments["snt"] = "data/corpus.snt" 
         self.__arguments["dir"] = "data/corpus_snt" 
+        self.__arguments["xtr"] = "data/corpus.xtr" 
 
         self.__arguments["text.cod"] = os.path.join(self.__arguments["dir"], "text.cod")
         self.__arguments["tok_by_freq.txt"] = os.path.join(self.__arguments["dir"], "tok_by_freq.txt")
@@ -90,37 +91,42 @@ class TestUnitexTools(unittest.TestCase):
         if os.path.exists(self._arguments["fst"]):
             os.remove(self._arguments["fst"])
 
+        # Removing output file from the 'extract' command.
+        if os.path.exists(self._arguments["xtr"]):
+            os.remove(self._arguments["xtr"])
+
     def test_01_check_dic(self):
-        args = [self._arguments["dic"]]
+        dictionary = self._arguments["dic"]
+        dtype = self._arguments["dic_type"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
-        kwargs["type"] = self._arguments["dic_type"]
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["strict"] = False
         kwargs["no_space_warning"] = True
 
-        ret = check_dic(*args, **kwargs)
+        ret = check_dic(dictionary, dtype, alphabet, **kwargs)
 
         ok = os.path.exists(self._arguments["dic_check"]) and ret
 
         self.assertTrue(ok, "Dictionary checking failed!")
 
     def test_02_compress(self):
-        args = [self._arguments["dic"]]
+        dictionary = self._arguments["dic"]
 
         kwargs = {}
+        kwargs["output"] = None
         kwargs["flip"] = False
         kwargs["semitic"] = False
-        kwargs["version"] = "v2"
+        kwargs["version"] = UnitexConstants.DICTIONARY_VERSION_1
 
-        ret = compress(*args, **kwargs)
+        ret = compress(dictionary, **kwargs)
 
         ok = os.path.exists(self._arguments["bin"]) and os.path.exists(self._arguments["inf"]) and ret
 
         self.assertTrue(ok, "Compression failed!")
 
     def test_03_normalize(self):
-        args = [self._arguments["txt"]]
+        text = self._arguments["txt"]
 
         kwargs = {}
         kwargs["no_carriage_return"] = False
@@ -129,23 +135,23 @@ class TestUnitexTools(unittest.TestCase):
         kwargs["replacement_rules"] = None
         kwargs["no_separator_normalization"] = False
 
-        ret = normalize(*args, **kwargs)
+        ret = normalize(text, **kwargs)
 
         ok = os.path.exists(self._arguments["snt"]) and ret
 
         self.assertTrue(ok, "Normalisation failed!")
 
     def test_04_fst2txt(self):
-        args = [self._arguments["sentence"]]
+        grammar = self._arguments["sentence"]
+        text = self._arguments["snt"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
-        kwargs["text"] = self._arguments["snt"]
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["start_on_space"] = False
         kwargs["char_by_char"] = False
         kwargs["merge"] = True
 
-        ret = fst2txt(*args, **kwargs)
+        ret = fst2txt(grammar, text, alphabet, **kwargs)
 
         ok = ret
 
@@ -155,16 +161,16 @@ class TestUnitexTools(unittest.TestCase):
         if not os.path.exists(self._arguments["dir"]):
             os.mkdir(self._arguments["dir"])
 
-        args = [self._arguments["snt"]]
+        text = self._arguments["snt"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["char_by_char"] = False
         kwargs["tokens"] = None
         kwargs["input_offsets"] = None
         kwargs["output_offsets"] = None
 
-        ret = tokenize(*args, **kwargs)
+        ret = tokenize(text, alphabet, **kwargs)
 
         ok = ret
         ok = ok and os.path.exists(self._arguments["text.cod"])
@@ -176,18 +182,18 @@ class TestUnitexTools(unittest.TestCase):
         self.assertTrue(ok, "Tokenisation failed!")
 
     def test_06_dico(self):
-        args = [self._arguments["bin"]]
+        dictionaries = [self._arguments["bin"]]
+        text = self._arguments["snt"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
-        kwargs["text"] = self._arguments["snt"]
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["morpho"] = None
         kwargs["korean"] = False
         kwargs["semitic"] = False
         kwargs["arabic_rules"] = None
         kwargs["raw"] = None
 
-        ret = dico(*args, **kwargs)
+        ret = dico(dictionaries, text, alphabet, **kwargs)
 
         ok = ret
         ok = ok and os.path.exists(self._arguments["dlf"])
@@ -216,21 +222,19 @@ class TestUnitexTools(unittest.TestCase):
 
         ok = True
 
-        for f in files:
-            args = [f]
-
-            ret = sort_txt(*args, **kwargs)
+        for text in files:
+            ret = sort_txt(text, **kwargs)
 
             ok = ok and ret
 
         self.assertTrue(ok, "Sorting failed!")
 
     def test_08_grf2fst2(self):
-        args = [self._arguments["grf"]]
+        grammar = self._arguments["grf"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
         kwargs["loop_check"] = False
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["char_by_char"] = False
         kwargs["pkgdir"] = None
         kwargs["no_empty_graph_warning"] = False
@@ -240,47 +244,48 @@ class TestUnitexTools(unittest.TestCase):
         kwargs["debug"] = False
         kwargs["check_variables"] = False
 
-        ret = grf2fst2(*args, **kwargs)
+        ret = grf2fst2(grammar, alphabet, **kwargs)
 
         ok = os.path.exists(self._arguments["fst"]) and ret
 
         self.assertTrue(ok, "Grammar compilation failed!")
 
     def test_09_locate(self):
-        args = [self._arguments["fst"]]
+        grammar = self._arguments["fst"]
+        text = self._arguments["snt"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
-        kwargs["text"] = self._arguments["snt"]
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["start_on_space"] = False
         kwargs["char_by_char"] = False
         kwargs["morpho"] = None
         kwargs["korean"] = False
         kwargs["arabic_rules"] = None
         kwargs["sntdir"] = None
-        kwargs["negation_operator"] = None
+        kwargs["negation_operator"] = UnitexConstants.NEGATION_OPERATOR
 
         kwargs["number_of_matches"] = None
 
         kwargs["stop_token_count"] = None
 
-        kwargs["match_mode"] = "longest"
+        kwargs["match_mode"] = UnitexConstants.MATCH_MODE_LONGEST
 
-        kwargs["output_mode"] = "merge"
+        kwargs["output_mode"] = UnitexConstants.OUTPUT_MODE_MERGE
         kwargs["protect_dic_chars"] = True
         kwargs["variable"] = None
 
         kwargs["ambiguous_outputs"] = True
-        kwargs["variable_error"] = "ignore"
+        kwargs["variable_error"] = UnitexConstants.ON_ERROR_IGNORE
 
-        ret = locate(*args, **kwargs)
+        ret = locate(grammar, text, alphabet, **kwargs)
 
         ok = os.path.exists(self._arguments["ind"]) and os.path.exists(self._arguments["concord.n"]) and ret
 
         self.assertTrue(ok, "Locate failed!")
 
     def test_10_concord(self):
-        args = [self._arguments["ind"]]
+        index = self._arguments["ind"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
         kwargs["font"] = None
@@ -290,35 +295,34 @@ class TestUnitexTools(unittest.TestCase):
         kwargs["left"] = "1000s"
         kwargs["right"] = "1000s"
 
-        kwargs["sort"] = "CR"
+        kwargs["sort"] = UnitexConstants.SORT_CENTER_RIGHT
 
-        kwargs["format"] = "text"
+        kwargs["format"] = UnitexConstants.FORMAT_TEXT
         kwargs["script"] = None
         kwargs["offsets"] = None
         kwargs["unxmlize"] = None
         kwargs["output"] = None
 
         kwargs["directory"] = None
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["thai"] = False
 
-        ret = concord(*args, **kwargs)
+        ret = concord(index, alphabet, **kwargs)
 
         ok = os.path.exists(self._arguments["concordances"]) and ret
 
         self.assertTrue(ok, "Concord failed!")
 
     def test_11_txt2tfst(self):
-        args = [self._arguments["snt"]]
+        text = self._arguments["snt"]
+        alphabet = self._arguments["alphabet"]
 
         kwargs = {}
-        kwargs["alphabet"] = self._arguments["alphabet"]
         kwargs["clean"] = False
         kwargs["normalization_grammar"] = None
         kwargs["tagset"] = None
         kwargs["korean"] = False
 
-        ret = txt2tfst(*args, **kwargs)
+        ret = txt2tfst(text, alphabet, **kwargs)
 
         ok = ret
         ok = ok and os.path.exists(self._arguments["text.tfst"])
@@ -326,6 +330,20 @@ class TestUnitexTools(unittest.TestCase):
 
         self.assertTrue(ok, "Txt2Tfst failed!")
 
+    def test_12_extract(self):
+        text = self._arguments["snt"]
+        output = self._arguments["xtr"]
+        index = self._arguments["ind"]
+
+        kwargs = {}
+        kwargs["non_matching_sentences"] = False
+
+        ret = extract(text, output, index, **kwargs)
+
+        ok = ret
+        ok = ok and os.path.exists(self._arguments["xtr"])
+
+        self.assertTrue(ok, "Extract failed!")
 
 
 if __name__ == '__main__':

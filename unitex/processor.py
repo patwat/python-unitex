@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
+
 from unitex import *
 from unitex.resources import *
 from unitex.tools import *
+
+LOGGER = logging.getLogger(__name__)
 
 
 
