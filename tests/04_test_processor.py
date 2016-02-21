@@ -104,7 +104,7 @@ class TestUnitexIO(unittest.TestCase):
         kwargs = {}
         kwargs["xml"] = True
 
-        ret = processor.tag(self._arguments["fst2"], self._arguments["tag"], **kwargs)
+        ret = processor.tag(self._arguments["fst2"], self._arguments["xml"], **kwargs)
 
         processor.close(clean=True, free=True)
         self.assertTrue(ret, "Tagging process failed (xml format)!")
