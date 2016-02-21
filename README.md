@@ -74,5 +74,6 @@ ret = grf2fst2(grammar, alphabet, **kwargs)
 
 * The **Unitex/GramLab** corpus processor: [homepage](http://www-igm.univ-mlv.fr/~unitex/) and [documentation](http://igm.univ-mlv.fr/~unitex/UnitexManual3.1.pdf)
 
+* The **Unitex library**: [documentation](http://unitex-library-fr.readthedocs.org/)
 
 
