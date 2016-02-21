@@ -35,17 +35,22 @@ The following sections gives some sample codes to illustrate each of them.
 ```python
 from _unitex import unitex_tool
 
-command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=Alphabet.txt grammar.grf -qutf8-no-bom"
+alphabet = unitex_load_persistent_alphabet("Alphabet.txt")
+
+command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=%s grammar.grf -qutf8-no-bom" % alphabet
 
 ret = unitex_tool(command)
 ```
 ### The Unitex basic commands and features.
 
+The main difference with the `_unitex` extension is the argument checking.
+
 ```python
-from unitex.tools import grf2fst2
+from unitex.tools import *
+from unitex.resources import *
 
 grammar = "grammar.grf"
-alphabet = "Alphabet.txt"
+alphabet = load_persistent_alphabet("Alphabet.txt")
 
 kwargs = {}
 kwargs["loop_check"] = False
