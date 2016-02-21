@@ -33,7 +33,7 @@ The following sections gives some sample codes to illustrate each of them.
 ### The `_unitex` C++ extension.
 
 ```python
-from _unitex import unitex_tool
+from _unitex import *
 
 alphabet = unitex_load_persistent_alphabet("Alphabet.txt")
 
