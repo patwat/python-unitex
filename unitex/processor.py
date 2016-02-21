@@ -359,8 +359,8 @@ class UnitexProcessor(object):
             raise UnitexException("No (temporary) tagged file produced!")
 
         tagged = open(output, "w", encoding="utf-8")
-        tagged.write("<?xml version='1.0' encoding='UTF-8'?>\n")
-        tagged.write("<TAGFILE query='%s'>\n" % grammar)
+        tagged.write(u"<?xml version='1.0' encoding='UTF-8'?>\n")
+        tagged.write(u"<TAGFILE query='%s'>\n" % grammar)
 
         merged = UnitexFile()
         merged.open(_output, "r")
@@ -370,7 +370,7 @@ class UnitexProcessor(object):
         content = escape(content)
         tagged.write(content)
 
-        tagged.write("</TAGFILE>\n")
+        tagged.write(u"</TAGFILE>\n")
         tagged.close()
         rm(_output)
 
