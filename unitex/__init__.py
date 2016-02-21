@@ -5,6 +5,11 @@ import logging
 import os
 import sys
 
+from _unitex import unitex_enable_stdout,\
+                    unitex_disable_stdout,\
+                    unitex_enable_stderr,\
+                    unitex_disable_stderr
+
 
 
 class UnitexException(Exception):
@@ -16,6 +21,8 @@ class UnitexException(Exception):
 
 
 class UnitexConstants(object):
+
+    DEFAULT_ENCODING="utf-8"
 
     VFS_PREFIX = "$:"
 
@@ -67,28 +74,27 @@ class UnitexConstants(object):
 
 
 
-DEFAULT_ENCODING="utf-8"
-
 # VERBOSE = 0: ERROR logging level
 # VERBOSE = 1: WARNING logging level
 # VERBOSE = 2: INFO logging level
+# VERBOSE = 3: activate Unitex standard output
 VERBOSE = os.path.expandvars('$UNITEX_VERBOSE')
 if VERBOSE == '$UNITEX_VERBOSE':
     VERBOSE = 0
 else:
     VERBOSE = int(VERBOSE)
-    if VERBOSE not in (0, 1, 2):
+    if VERBOSE not in (0, 1, 2, 3):
         raise UnitexException( "Wrong $UNITEX_VERBOSE value..." )
 
 # DEBUG = 0: --
 # DEBUG = 1: DEBUG logging level
-#  -> if set to 1, it overrides the VERBOSE variable
+# DEBUG = 2: activate Unitex error output
 DEBUG = os.path.expandvars('$UNITEX_DEBUG')
 if DEBUG == '$UNITEX_DEBUG':
     DEBUG = 0
 else:
     DEBUG = int(DEBUG)
-    if DEBUG not in (0, 1):
+    if DEBUG not in (0, 1, 2):
         raise UnitexException( "Wrong $UNITEX_DEBUG value..." )
 
 # If a log file is specified, the log will be redirected
@@ -99,22 +105,101 @@ if LOG != '$UNITEX_LOG':
 else:
     LOG = None
 
-kwargs = {}
+_LOGGER = logging.getLogger(__name__)
 
-if DEBUG == 1:
-    kwargs["level"] = logging.DEBUG
-elif VERBOSE == 1:
-    kwargs["level"] = logging.WARNING
-elif VERBOSE == 2:
-    kwargs["level"] = logging.INFO
-else:
-    kwargs["level"] = logging.ERROR
 
-if LOG is not None:
-    kwargs["format"] = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    kwargs["filename"] = LOG
-    kwargs["filemode"] = "a"
-else:
-    kwargs["format"] = "%(name)-12s: %(levelname)-8s %(message)s"
 
-logging.basicConfig(**kwargs)
+def enable_stdout():
+    """This function enables Unitex standard output. This is the default but
+    should be used for debug purposes only.
+
+    Return [bool]:
+        The function returns 'True' if it succeeds and 'False' otherwise.
+    """
+    _LOGGER.info("Enabling standard output...")
+    ret = unitex_enable_stdout()
+    if ret is False:
+        _LOGGER.error("Enabling standard output failed!")
+
+    return ret
+
+def disable_stdout():
+    """This function disables Unitex standard output to ensure multithread
+    output consistency (i.e. avoid output mixing between threads) and to
+    improve performances.
+
+    Return [bool]:
+        The function returns 'True' if it succeeds and 'False' otherwise.
+    """
+    _LOGGER.info("Disabling standard output...")
+    ret = unitex_disable_stdout()
+    if ret is False:
+        _LOGGER.error("Disabling standard output failed!")
+
+    return ret
+
+def enable_stderr():
+    """This function enables Unitex error output. This is the default but
+    should be used for debug purposes only.
+
+    Return [bool]:
+        The function returns 'True' if it succeeds and 'False' otherwise.
+    """
+    _LOGGER.info("Enabling error output...")
+    ret = unitex_enable_stderr()
+    if ret is False:
+        _LOGGER.error("Enabling error output failed!")
+
+    return ret
+
+def disable_stderr():
+    """This function disables Unitex error output to ensure multithread
+    output consistency (i.e. avoid output mixing between threads) and to
+    improve performances.
+
+    Return [bool]:
+        The function returns 'True' if it succeeds and 'False' otherwise.
+    """
+    _LOGGER.info("Disabling error output...")
+    ret = unitex_disable_stderr()
+    if ret is False:
+        _LOGGER.error("Disabling error output failed!")
+
+    return ret
+
+
+
+def init_log_system(verbose, debug, log=None):
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+    kwargs = {}
+
+    if debug >= 1:
+        kwargs["level"] = logging.DEBUG
+    elif verbose == 1:
+        kwargs["level"] = logging.WARNING
+    elif verbose >= 2:
+        kwargs["level"] = logging.INFO
+    else:
+        kwargs["level"] = logging.ERROR
+
+    if log:
+        kwargs["format"] = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        kwargs["filename"] = LOG
+        kwargs["filemode"] = "a"
+    else:
+        kwargs["format"] = "%(name)-12s: %(levelname)-8s %(message)s"
+
+    logging.basicConfig(**kwargs)
+
+    if verbose == 3:
+        enable_stdout()
+    else:
+        disable_stdout()
+
+    if debug == 2:
+        enable_stderr()
+    else:
+        disable_stderr()
+
+init_log_system(VERBOSE, DEBUG, LOG)

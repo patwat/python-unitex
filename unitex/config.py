@@ -8,7 +8,7 @@ import tempfile
 from unitex import *
 from unitex.io import exists
 
-LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 
@@ -38,8 +38,8 @@ class Options(object):
 
 class CheckDicOptions(Options):
 
-    def __init__(self):
-        super(CheckDicOptions, self).__init__()
+    def __init__(self, options=None):
+        super(CheckDicOptions, self).__init__(options)
 
     def load(self, options):
         strict = options.get("strict", False)
@@ -56,8 +56,8 @@ class CheckDicOptions(Options):
 
 class CompressOptions(Options):
 
-    def __init__(self):
-        super(CompressOptions, self).__init__()
+    def __init__(self, options=None):
+        super(CompressOptions, self).__init__(options)
 
     def load(self, options):
         output = options.get("output", None)
@@ -84,8 +84,8 @@ class CompressOptions(Options):
 
 class ConcordOptions(Options):
 
-    def __init__(self):
-        super(ConcordOptions, self).__init__()
+    def __init__(self, options=None):
+        super(ConcordOptions, self).__init__(options)
 
     def load(self, options):
         font = options.get("font", None)
@@ -202,8 +202,8 @@ class ConcordOptions(Options):
 
 class DicoOptions(Options):
 
-    def __init__(self):
-        super(DicoOptions, self).__init__()
+    def __init__(self, options=None):
+        super(DicoOptions, self).__init__(options)
 
     def load(self, options):
         morpho = options.get("morpho", None)
@@ -242,8 +242,8 @@ class DicoOptions(Options):
 
 class ExtractOptions(Options):
 
-    def __init__(self):
-        super(ExtractOptions, self).__init__()
+    def __init__(self, options=None):
+        super(ExtractOptions, self).__init__(options)
 
     def load(self, options):
         non_matching_sentences = options.get("non_matching_sentences", False)
@@ -255,8 +255,8 @@ class ExtractOptions(Options):
 
 class Fst2TxtOptions(Options):
 
-    def __init__(self):
-        super(Fst2TxtOptions, self).__init__()
+    def __init__(self, options=None):
+        super(Fst2TxtOptions, self).__init__(options)
 
     def load(self, options):
         start_on_space = options.get("start_on_space", False)
@@ -278,8 +278,8 @@ class Fst2TxtOptions(Options):
 
 class Grf2Fst2Options(Options):
 
-    def __init__(self):
-        super(Grf2Fst2Options, self).__init__()
+    def __init__(self, options=None):
+        super(Grf2Fst2Options, self).__init__(options)
 
     def load(self, options):
         loop_check = options.get("loop_check", False)
@@ -331,8 +331,8 @@ class Grf2Fst2Options(Options):
 
 class LocateOptions(Options):
 
-    def __init__(self):
-        super(LocateOptions, self).__init__()
+    def __init__(self, options=None):
+        super(LocateOptions, self).__init__(options)
 
     def load(self, options):
         start_on_space = options.get("start_on_space", False)
@@ -444,8 +444,8 @@ class LocateOptions(Options):
 
 class NormalizeOptions(Options):
 
-    def __init__(self):
-        super(NormalizeOptions, self).__init__()
+    def __init__(self, options=None):
+        super(NormalizeOptions, self).__init__(options)
 
     def load(self, options):
         no_carriage_return = options.get("no_carriage_return", False)
@@ -488,8 +488,8 @@ class NormalizeOptions(Options):
 
 class SortTxtOptions(Options):
 
-    def __init__(self):
-        super(SortTxtOptions, self).__init__()
+    def __init__(self, options=None):
+        super(SortTxtOptions, self).__init__(options)
 
     def load(self, options):
         duplicates = options.get("duplicates", False)
@@ -529,8 +529,8 @@ class SortTxtOptions(Options):
 
 class TokenizeOptions(Options):
 
-    def __init__(self):
-        super(TokenizeOptions, self).__init__()
+    def __init__(self, options=None):
+        super(TokenizeOptions, self).__init__(options)
 
     def load(self, options):
         char_by_char = options.get("char_by_char", False)
@@ -568,8 +568,8 @@ class TokenizeOptions(Options):
 
 class Txt2TFstOptions(Options):
 
-    def __init__(self):
-        super(Txt2TFstOptions, self).__init__()
+    def __init__(self, options=None):
+        super(Txt2TFstOptions, self).__init__(options)
 
     def load(self, options):
         clean = options.get("clean", False)
@@ -602,8 +602,8 @@ class Txt2TFstOptions(Options):
 
 class ResourcesOptions(Options):
 
-    def __init__(self):
-        super(ResourcesOptions, self).__init__()
+    def __init__(self, options=None):
+        super(ResourcesOptions, self).__init__(options)
 
     def load(self, options):
         language = options.get("language", None)
@@ -613,50 +613,50 @@ class ResourcesOptions(Options):
 
         alphabet = options.get("alphabet", None)
         if alphabet is None:
-            LOGGER.warning("[RESOURCES] No alphabet file provided.")
+            _LOGGER.warning("[RESOURCES] No alphabet file provided.")
         elif not exists(alphabet):
             raise UnitexException("[RESOURCES] Alphabet file '%s' doesn't exist." % alphabet)
         self["alphabet"] = alphabet
 
-        alphabet_sort = options.get("alphabet-sort", None)
-        if alphabet_sort is None:
-            LOGGER.warning("[RESOURCES] No sorted alphabet file provided.")
-        elif not exists(alphabet_sort):
-            raise UnitexException("[RESOURCES] Sorted alphabet file '%s' doesn't exist." % alphabet_sort)
-        self["alphabet-sort"] = alphabet_sort
+        alphabet_sorted = options.get("alphabet-sorted", None)
+        if alphabet_sorted is None:
+            _LOGGER.warning("[RESOURCES] No sorted alphabet file provided.")
+        elif not exists(alphabet_sorted):
+            raise UnitexException("[RESOURCES] Sorted alphabet file '%s' doesn't exist." % alphabet_sorted)
+        self["alphabet-sorted"] = alphabet_sorted
 
         sentence = options.get("sentence", None)
         if sentence is None:
-            LOGGER.warning("[RESOURCES] No sentence grammar provided.")
+            _LOGGER.warning("[RESOURCES] No sentence grammar provided.")
         else:
             _, extension = os.path.splitext(sentence)
             if extension != ".fst2":
-                raise UnitexException("[RESOURCES] Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension.")
+                raise UnitexException("[RESOURCES] Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension." % sentence)
             if not exists(sentence):
                 raise UnitexException("[RESOURCES] Sentence grammar file '%s' doesn't exist." % sentence)
         self["sentence"] = sentence
 
         replace = options.get("replace", None)
         if replace is None:
-            LOGGER.warning("[RESOURCES] No replace grammar provided.")
+            _LOGGER.warning("[RESOURCES] No replace grammar provided.")
         else:
             _, extension = os.path.splitext(replace)
             if extension != ".fst2":
-                raise UnitexException("[RESOURCES] Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension.")
+                raise UnitexException("[RESOURCES] Wrong extension for '%s'. Grammars must be compiled and have the '.fst2' extension." % replace)
             if not exists(replace):
                 raise UnitexException("[RESOURCES] Replace grammar file '%s' doesn't exist." % replace)
         self["replace"] = replace
 
         dictionaries = options.get("dictionaries", None)
         if dictionaries is None:
-            LOGGER.warning("[RESOURCES] No dictionaries provided.")
+            _LOGGER.warning("[RESOURCES] No dictionaries provided.")
         else:
             if not isinstance(dictionaries, list):
                 raise UnitexException("[RESOURCES] The 'dictionaries' element must be a list of .bin or .fst2 files.")
             for dictionary in dictionaries:
                 prefix, extension = os.path.splitext(dictionary)
-                if extension != ".bin" or extension != ".fst2":
-                    raise UnitexException("[RESOURCES] Wrong extension for '%s'. Dictionaries must be compiled and have the '.bin' or the '.fst2' extension.")
+                if extension != ".bin" and extension != ".fst2":
+                    raise UnitexException("[RESOURCES] Wrong extension for '%s'. Dictionaries must be compiled and have the '.bin' or the '.fst2' extension." % dictionary)
                 if not exists(dictionary):
                     raise UnitexException("[RESOURCES] Dictionary file '%s' doesn't exist." % dictionary)
                 if extension == ".bin" and not exists("%s.inf" % prefix):
@@ -667,50 +667,55 @@ class ResourcesOptions(Options):
 
 class UnitexConfig(Options):
 
-    def __init__(self):
-        super(UnitexConfig, self).__init__()
+    def __init__(self, options=None):
+        super(UnitexConfig, self).__init__(options)
 
     def load(self, settings):
         options = settings.get("global", {})
 
         verbose = options.get("verbose", VERBOSE)
-        if verbose not in (0, 1, 2):
-            raise UnitexException("Wrong value for the 'verbose' global option.")
+        if verbose not in (0, 1, 2, 3):
+            raise UnitexException("Wrong value for the 'verbose' global option. 0: disable; 1|2|3: the three output levels.")
         self["verbose"] = verbose
 
         debug = options.get("debug", DEBUG)
-        if debug not in (0, 1):
-            raise UnitexException("Wrong value for the 'debug' global option.")
+        if debug not in (0, 1, 2):
+            raise UnitexException("Wrong value for the 'debug' global option. 0: disable; 1|2: the two debug levels.")
         self["debug"] = debug
+
+        log = options.get("log", LOG)
+        if log is not None and isinstance(log, str) is False:
+            raise UnitexException("Wrong value for the 'log' global option. String required.")
+        self["log"] = log
 
         tempdir = options.get("tempdir", tempfile.gettempdir())
         if not exists(tempdir):
             raise UnitexException("Temporary directory '%s' doesn't exist." % tempdir)
         self["tempdir"] = tempdir
 
-        persistence = options.get("persistence", 0)
-        if persistence not in (0, 1):
-            raise UnitexException("Wrong value for the 'persistence' global option.")
+        persistence = options.get("persistence", False)
+        if isinstance(persistence, bool) is False:
+            raise UnitexException("Wrong value for the 'persistence' global option. Boolean required.")
         self["persistence"] = bool(persistence)
 
-        virtualization = options.get("virtualization", 0)
-        if virtualization not in (0, 1):
-            raise UnitexException("Wrong value for the 'virtualization' global option.")
+        virtualization = options.get("virtualization", False)
+        if isinstance(virtualization, bool) is False:
+            raise UnitexException("Wrong value for the 'virtualization' global option. Boolean required.")
         self["virtualization"] = bool(virtualization)
 
         self["resources"] = ResourcesOptions(settings.get("resources", {}))
 
         options = settings.get("options", {})
 
-        self["check_dic"] = CheckDicOptions(options.get("normalize", {}))
-        self["compress"] = CheckDicOptions(options.get("normalize", {}))
+        self["check_dic"] = CheckDicOptions(options.get("check_dic", {}))
+        self["compress"] = CheckDicOptions(options.get("compress", {}))
         self["concord"] = ConcordOptions(options.get("concord", {}))
         self["dico"] = DicoOptions(options.get("dico", {}))
         self["extract"] = ExtractOptions(options.get("extract", {}))
-        self["fst2txt"] = Fst2TxtOptions(options.get("extract", {}))
-        self["Grf2Fst2"] = Grf2Fst2Options(options.get("extract", {}))
+        self["fst2txt"] = Fst2TxtOptions(options.get("fst2txt", {}))
+        self["grf2fst2"] = Grf2Fst2Options(options.get("grf2fst2", {}))
         self["locate"] = LocateOptions(options.get("locate", {}))
         self["normalize"] = NormalizeOptions(options.get("normalize", {}))
-        self["sort_txt"] = SortTxtOptions(options.get("normalize", {}))
+        self["sort_txt"] = SortTxtOptions(options.get("sort_txt", {}))
         self["tokenize"] = TokenizeOptions(options.get("tokenize", {}))
-        self["txt2tfst"] = Txt2TFstOptions(options.get("tokenize", {}))
+        self["txt2tfst"] = Txt2TFstOptions(options.get("txt2tfst", {}))

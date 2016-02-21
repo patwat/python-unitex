@@ -4,70 +4,19 @@
 import logging
 import os
 
-from _unitex import *
-from unitex import UnitexException, UnitexConstants
+from _unitex import unitex_cp,\
+                    unitex_rm,\
+                    unitex_mv,\
+                    unitex_mkdir,\
+                    unitex_rmdir,\
+                    unitex_ls,\
+                    unitex_write_file,\
+                    unitex_append_to_file,\
+                    unitex_read_file
 
-LOGGER = logging.getLogger(__name__)
+from unitex import *
 
-
-
-def enable_stdout():
-    """This function enables Unitex standard output. This is the default but
-    should be used for debug purposes only.
-
-    Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
-    """
-    LOGGER.info("Enabling standard output...")
-    ret = unitex_enable_stdout()
-    if ret is False:
-        LOGGER.info("[FAILED!]")
-
-    return ret
-
-def disable_stdout():
-    """This function disables Unitex standard output to ensure multithread
-    output consistency (i.e. avoid output mixing between threads) and to
-    improve performances.
-
-    Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
-    """
-    LOGGER.info("Disabling standard output...")
-    ret = unitex_disable_stdout()
-    if ret is False:
-        LOGGER.info("[FAILED!]")
-
-    return ret
-
-def enable_stderr():
-    """This function enables Unitex error output. This is the default but
-    should be used for debug purposes only.
-
-    Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
-    """
-    LOGGER.info("Enabling error output...")
-    ret = unitex_enable_stderr()
-    if ret is False:
-        LOGGER.info("[FAILED!]")
-
-    return ret
-
-def disable_stderr():
-    """This function disables Unitex error output to ensure multithread
-    output consistency (i.e. avoid output mixing between threads) and to
-    improve performances.
-
-    Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
-    """
-    LOGGER.info("Disabling error output...")
-    ret = unitex_disable_stderr()
-    if ret is False:
-        LOGGER.info("[FAILED!]")
-
-    return ret
+_LOGGER = logging.getLogger(__name__)
 
 
 
@@ -83,10 +32,10 @@ def cp(source_path, target_path):
     Return [bool]:
         The function returns 'True' if it succeeds and 'False' otherwise.
     """
-    LOGGER.info("Copying file '%s' to '%s'..." % (source_path, target_path))
+    _LOGGER.info("Copying file '%s' to '%s'..." % (source_path, target_path))
     ret = unitex_cp(source_path, target_path)
     if ret is False:
-        LOGGER.info("[FAILED!]")
+        _LOGGER.info("[FAILED!]")
 
     return ret
 
@@ -100,10 +49,10 @@ def rm(path):
     Return [bool]:
         The function returns 'True' if it succeeds and 'False' otherwise.
     """
-    LOGGER.info("Removing file '%s'..." % path)
+    _LOGGER.info("Removing file '%s'..." % path)
     ret = unitex_rm(path)
     if ret is False:
-        LOGGER.info("[FAILED!]")
+        _LOGGER.info("[FAILED!]")
 
     return ret
 
@@ -118,10 +67,10 @@ def mv(old_path, new_path):
     Return [bool]:
         The function returns 'True' if it succeeds and 'False' otherwise.
     """
-    LOGGER.info("Moving file '%s' to '%s'..." % (old_path, new_path))
+    _LOGGER.info("Moving file '%s' to '%s'..." % (old_path, new_path))
     ret = unitex_mv(old_path, new_path)
     if ret is False:
-        LOGGER.info("[FAILED!]")
+        _LOGGER.info("[FAILED!]")
 
     return ret
 
@@ -134,10 +83,10 @@ def mkdir(path):
     Return [bool]:
         The function returns 'True' if it succeeds and 'False' otherwise.
     """
-    LOGGER.info("Creating directory '%s'..." % path)
+    _LOGGER.info("Creating directory '%s'..." % path)
     ret = unitex_mkdir(path)
     if ret is False:
-        LOGGER.info("[FAILED!]")
+        _LOGGER.info("[FAILED!]")
 
     return ret
 
@@ -150,10 +99,10 @@ def rmdir(path):
     Return [bool]:
         The function returns 'True' if it succeeds and 'False' otherwise.
     """
-    LOGGER.info("Removing directory '%s'..." % path)
+    _LOGGER.info("Removing directory '%s'..." % path)
     ret = unitex_rmdir(path)
     if ret is False:
-        LOGGER.info("[FAILED!]")
+        _LOGGER.info("[FAILED!]")
 
     return ret
 
@@ -167,7 +116,7 @@ def ls(path):
         The function returns a list of files (not directories) if the directory
         is not empty and an empty list otherwise.
     """
-    LOGGER.info("Listing directory '%s'..." % path)
+    _LOGGER.info("Listing directory '%s'..." % path)
     return unitex_ls(path)
 
 def exists(path):

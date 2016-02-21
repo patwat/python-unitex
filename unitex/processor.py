@@ -2,45 +2,88 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import yaml
 
 from unitex import *
+from unitex.config import UnitexConfig
+from unitex.io import *
 from unitex.resources import *
 from unitex.tools import *
 
-LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 
 class UnitexProcessor(object):
 
-    def __init__(self, config=None):
-        self.__config = None
+    def __init__(self, config):
+        self.__options = None
 
         self.__persisted_objects = None
         self.__working_directory = None
 
-        if config is not None:
-            self.reset(config)
+        self.init(config)
 
-    def reset(self, config):
-        self.__config = UnitexConfig()
-        self.__config.load(config)
+    def init(self, config):
+        options = None
+        with open(config, "r") as f:
+            options = yaml.load(f)
 
-        for handler in LOGGER.handlers:
-            if self.__config["debug"] == 1:
-                fh.setLevel(logging.DEBUG)
-            elif self.__config["verbose"] == 1:
-                fh.setLevel(logging.WARNING)
-            elif self.__config["verbose"] == 2:
-                fh.setLevel(logging.INFO)
-            else:
-                fh.setLevel(logging.ERROR)
+        self.__options = UnitexConfig()
+        self.__options.load(options)
+
+        verbose = self.__options["verbose"]
+        debug = self.__options["debug"]
+        log = self.__options["log"]
+
+        init_log_system(verbose, debug, log)
 
         self.load()
 
     def load(self):
-        if self.__config["persistence"] is False:
+        if self.__options["persistence"] is False:
             return
+        self.__persisted_objects = []
+
+        if self.__options["resources"]["alphabet"] is not None:
+            _type = UnitexConstants.ALPHABET
+            _object = load_persistent_alphabet(self.__options["resources"]["alphabet"])
+
+            self.__persisted_objects.append((_type, _object))
+            self.__options["resources"]["alphabet"] = _object
+
+        if self.__options["resources"]["alphabet-sorted"] is not None:
+            _type = UnitexConstants.ALPHABET
+            _object = load_persistent_alphabet(self.__options["resources"]["alphabet-sorted"])
+
+            self.__persisted_objects.append((_type, _object))
+            self.__options["resources"]["alphabet-sorted"] = _object
+
+        if self.__options["resources"]["sentence"] is not None:
+            _type = UnitexConstants.GRAMMAR
+            _object = load_persistent_fst2(self.__options["resources"]["sentence"])
+
+            self.__persisted_objects.append((_type, _object))
+            self.__options["resources"]["sentence"] = _object
+
+        if self.__options["resources"]["replace"] is not None:
+            _type = UnitexConstants.GRAMMAR
+            _object = load_persistent_fst2(self.__options["resources"]["replace"])
+
+            self.__persisted_objects.append((_type, _object))
+            self.__options["resources"]["replace"] = _object
+
+        if self.__options["resources"]["dictionaries"] is not None:
+            _objects = []
+
+            _type = UnitexConstants.DICTIONARY
+            for dictionary in self.__options["resources"]["dictionaries"]:
+                _object = load_persistent_dictionary(dictionary)
+
+                self.__persisted_objects.append((_type, _object))
+                _objects.append(_object)
+
+            self.__options["resources"]["dictionaries"] = _objects
 
     def free(self):
         if self.__persisted_objects is None:
@@ -57,20 +100,23 @@ class UnitexProcessor(object):
     def clean(self):
         if self.__working_directory is None:
             return
-        rmdir
+        rmdir(self.__working_directory)
 
-    def open(self, path, mode="srtlf", encoding=None, tagged=False, virtualize=False):
-        if encoding is None:
-            encoding = DEFAULT_ENCODING
+    def open(self, path, mode="srtlf", tagged=False):
+        pass
 
     def close(self, clean=True, free=False):
+        if clean is True:
+            self.clean()
+
+        if free is True:
+            self.free()
+
+    def tag(self, grammar, output, **kwargs):
         raise NotImplementedError
 
-    def tag(self, *args, **kwargs):
+    def search(self, grammar, output, **kwargs):
         raise NotImplementedError
 
-    def search(self, *args, **kwargs):
-        raise NotImplementedError
-
-    def extract(self, *args, **kwargs):
+    def extract(self, grammar, output, **kwargs):
         raise NotImplementedError

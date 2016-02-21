@@ -43,7 +43,7 @@ ret = unitex_tool(command)
 ```
 ### The Unitex basic commands and features.
 
-The main difference with the `_unitex` extension is the argument checking.
+The main difference with the `_unitex` extension is the argument checking, the config file support and some kind of logging.
 
 ```python
 from unitex.tools import *
@@ -68,7 +68,24 @@ ret = grf2fst2(grammar, alphabet, **kwargs)
 
 ### The `Processor` high-level class.
 
-**TODO**
+```python
+from unitex.resources import load_persistent_fst2, free_persistent_fst2
+from unitex.processor import UnitexProcessor
+
+grammar = load_persistent_fst2("grammar.fst2")
+
+processor = UnitexProcessor("unitex.yaml")
+processor.open("corpus.txt", mode="srtlf", tagged=False)
+
+kwargs = {}
+kwarg["xml"] = True
+
+processor.tag(grammar, "corpus.tag", **kwargs)
+
+processor.close(clean=True, free=True)
+
+free_persistent_fst2(grammar)
+```
 
 ## Useful links
 

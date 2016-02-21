@@ -4,11 +4,23 @@
 import logging
 
 from _unitex import unitex_tool
-from unitex import UnitexException, UnitexConstants
-from unitex.config import *
+
+from unitex import *
+from unitex.config import CheckDicOptions,\
+                          CompressOptions,\
+                          ConcordOptions,\
+                          DicoOptions,\
+                          ExtractOptions,\
+                          Fst2TxtOptions,\
+                          Grf2Fst2Options,\
+                          LocateOptions,\
+                          NormalizeOptions,\
+                          SortTxtOptions,\
+                          TokenizeOptions,\
+                          Txt2TFstOptions
 from unitex.io import exists
 
-LOGGER = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 
@@ -55,8 +67,8 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Checking dic '%s'" % dictionary)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Checking dic '%s'" % dictionary)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -117,8 +129,8 @@ def compress(dictionary, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Compressing dic '%s'" % dictionary)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Compressing dic '%s'" % dictionary)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -298,8 +310,8 @@ def concord(index, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Create concordance for '%s'" % index)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Create concordance for '%s'" % index)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -376,8 +388,8 @@ def dico(dictionaries, text, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Applying dictionaries")
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Applying dictionaries")
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -424,8 +436,8 @@ def extract(text, output, index, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Extracting sentences")
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Extracting sentences")
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -492,8 +504,8 @@ def fst2txt(grammar, text, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Applying grammar '%s'..." % grammar)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Applying grammar '%s'..." % grammar)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -580,8 +592,8 @@ def grf2fst2(grammar, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Compiling grammar '%s'..." % grammar)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Compiling grammar '%s'..." % grammar)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -744,8 +756,8 @@ def locate(grammar, text, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Locating pattern '%s'..." % grammar)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Locating pattern '%s'..." % grammar)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -814,8 +826,8 @@ def normalize(text, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Normalizing text '%s'..." % text)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Normalizing text '%s'..." % text)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -878,8 +890,8 @@ def sort_txt(text, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Sorting file '%s'..." % text)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Sorting file '%s'..." % text)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -963,8 +975,8 @@ def tokenize(text, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Tokenizing file '%s'..." % text)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Tokenizing file '%s'..." % text)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret
@@ -1024,8 +1036,8 @@ def txt2tfst(text, alphabet, **kwargs):
     command.append("-qutf8-no-bom")
     command = " ".join(command)
 
-    LOGGER.info("Building text automaton for '%s'..." % text)
-    LOGGER.debug("Command: %s", command)
+    _LOGGER.info("Building text automaton for '%s'..." % text)
+    _LOGGER.debug("Command: %s", command)
     ret = unitex_tool(command)
 
     return ret

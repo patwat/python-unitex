@@ -3,9 +3,19 @@
 
 import logging
 
-from _unitex import *
+from _unitex import unitex_load_persistent_dictionary,\
+                    unitex_is_persistent_dictionary,\
+                    unitex_free_persistent_dictionary,\
+                    unitex_load_persistent_fst2,\
+                    unitex_is_persistent_fst2,\
+                    unitex_free_persistent_fst2,\
+                    unitex_load_persistent_alphabet,\
+                    unitex_is_persistent_alphabet,\
+                    unitex_free_persistent_alphabet
 
-LOGGER = logging.getLogger(__name__)
+from unitex import *
+
+_LOGGER = logging.getLogger(__name__)
 
 
 
@@ -20,7 +30,7 @@ def load_persistent_dictionary(path):
         depending of implementation). This path must be used by the unitex tools and the
         'free_persistent_dictionary' function.
     """
-    LOGGER.info("Load persistent dictionary '%s'..." % path)
+    _LOGGER.info("Load persistent dictionary '%s'..." % path)
     return unitex_load_persistent_dictionary(path)
 
 def is_persistent_dictionary(path):
@@ -41,6 +51,7 @@ def free_persistent_dictionary(path):
         path [str] -- the persistent file path returned by the 'load_persistent_dictionary'
                       function
     """
+    _LOGGER.info("Free persistent dictionary '%s'..." % path)
     unitex_free_persistent_dictionary(path)
 
 
@@ -56,7 +67,7 @@ def load_persistent_fst2(path):
         depending of implementation). This path must be used by the unitex tools and the
         'free_persistent_fst2' function.
     """
-    LOGGER.info("Load persistent fst2 '%s'..." % path)
+    _LOGGER.info("Load persistent fst2 '%s'..." % path)
     return unitex_load_persistent_fst2(path)
 
 def is_persistent_fst2(path):
@@ -77,6 +88,7 @@ def free_persistent_fst2(path):
         path [str] -- the persistent file path returned by the 'load_persistent_fst2'
                       function
     """
+    _LOGGER.info("Free persistent fst2 '%s'..." % path)
     unitex_free_persistent_fst2(path)
 
 
@@ -92,7 +104,7 @@ def load_persistent_alphabet(path):
         depending of implementation). This path must be used by the unitex tools and the
         'free_persistent_alphabet' function.
     """
-    LOGGER.info("Load persistent alphabet '%s'..." % path)
+    _LOGGER.info("Load persistent alphabet '%s'..." % path)
     return unitex_load_persistent_alphabet(path)
 
 def is_persistent_alphabet(path):
@@ -113,4 +125,5 @@ def free_persistent_alphabet(path):
         path [str] -- the persistent file path returned by the 'load_persistent_alphabet'
                       function
     """
+    _LOGGER.info("Free persistent alphabet '%s'..." % path)
     unitex_free_persistent_alphabet(path)

@@ -1,6 +1,7 @@
 global:
     debug: 1
-    verbose: 1
+    verbose: 2
+    log: null
 
     tempdir: "/tmp"
 
@@ -23,7 +24,7 @@ resources:
 # The 'options' section can contain any of the argument used by the unitex tools
 # functions. Note that, if you use the 'Processor' high-level class some argument
 # could be overriden to fit the 'tag', 'extract' and 'search' functions
-# behaviour. For intance, there is not point to define a font or a context for
+# behaviour. For intance, there is no point to define a font or a context for
 # 'concord'.
 options:
     check_dic:
@@ -41,8 +42,8 @@ options:
         fontsize: null
         only_ambiguous: False
         only_matches: False
-        left: 0
-        right: 0
+        left: "0"
+        right: "0"
         sort: "TO"
         format: "text"
         script: null
