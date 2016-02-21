@@ -110,7 +110,8 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def enable_stdout():
-    """This function enables Unitex standard output. This is the default but
+    """
+    This function enables Unitex standard output. This is the default but
     should be used for debug purposes only.
 
     Return [bool]:
@@ -124,7 +125,8 @@ def enable_stdout():
     return ret
 
 def disable_stdout():
-    """This function disables Unitex standard output to ensure multithread
+    """
+    This function disables Unitex standard output to ensure multithread
     output consistency (i.e. avoid output mixing between threads) and to
     improve performances.
 
@@ -139,7 +141,8 @@ def disable_stdout():
     return ret
 
 def enable_stderr():
-    """This function enables Unitex error output. This is the default but
+    """
+    This function enables Unitex error output. This is the default but
     should be used for debug purposes only.
 
     Return [bool]:
@@ -153,7 +156,8 @@ def enable_stderr():
     return ret
 
 def disable_stderr():
-    """This function disables Unitex error output to ensure multithread
+    """
+    This function disables Unitex error output to ensure multithread
     output consistency (i.e. avoid output mixing between threads) and to
     improve performances.
 

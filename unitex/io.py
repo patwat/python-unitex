@@ -21,7 +21,8 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def cp(source_path, target_path):
-    """This function copies a file. Both pathes can be on the virtual filesystem
+    """
+    This function copies a file. Both pathes can be on the virtual filesystem
     or the disk filesystem. Therefor, this function can be used to virtualize a
     file or to dump a virtual file.
 
@@ -40,7 +41,8 @@ def cp(source_path, target_path):
     return ret
 
 def rm(path):
-    """This function removes a file. The path can be on the virtual filesystem
+    """
+    This function removes a file. The path can be on the virtual filesystem
     or the disk filesystem.
 
     Argument:
@@ -57,7 +59,8 @@ def rm(path):
     return ret
 
 def mv(old_path, new_path):
-    """This function moves/renames a file. Both pathes can be on the virtual
+    """
+    This function moves/renames a file. Both pathes can be on the virtual
     filesystem or the disk filesystem.
 
     Arguments:
@@ -75,7 +78,8 @@ def mv(old_path, new_path):
     return ret
 
 def mkdir(path):
-    """This function creates a directory on the disk.
+    """
+    This function creates a directory on the disk.
 
     Argument:
         path [str] -- directory path
@@ -91,7 +95,8 @@ def mkdir(path):
     return ret
 
 def rmdir(path):
-    """This function removes a directory on the disk.
+    """
+    This function removes a directory on the disk.
 
     Argument:
         path [str] -- directory path
@@ -107,7 +112,8 @@ def rmdir(path):
     return ret
 
 def ls(path):
-    """This function lists (disk or virtual) directory contents.
+    """
+    This function lists (disk or virtual) directory contents.
 
     Argument:
         path [str] -- directory path
@@ -120,7 +126,8 @@ def ls(path):
     return unitex_ls(path)
 
 def exists(path):
-    """This function verify if a file exists (on disk or virtual filesystem).
+    """
+    This function verify if a file exists (on disk or virtual filesystem).
 
     Argument:
         path [str] -- directory path
@@ -135,7 +142,8 @@ def exists(path):
 
 
 class UnitexFile(object):
-    """The UnitexFile class provides the minimum functionality necessary to
+    """
+    The UnitexFile class provides the minimum functionality necessary to
     manipulate files on the disk and the virtual filesystems. It's mainly
     useful to read files from virtual filesystem whithout having to copy them
     to the disk.

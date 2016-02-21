@@ -25,7 +25,8 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def check_dic(dictionary, dtype, alphabet, **kwargs):
-    """This function checks the format of <dela> and produces a file named
+    """
+    This function checks the format of <dela> and produces a file named
     CHECK_DIC.TXT that contains check result informations. This file is
     stored in the <dela> directory.
 
@@ -76,7 +77,8 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
 
 
 def compress(dictionary, **kwargs):
-    """This function takes a DELAF dictionary as a parameter and compresses it. The
+    """
+    This function takes a DELAF dictionary as a parameter and compresses it. The
     compression of a dictionary dico.dic produces two files:
 
         - dico.bin: a binary file containing the minimum automaton of the inflected
@@ -138,7 +140,8 @@ def compress(dictionary, **kwargs):
 
 
 def concord(index, alphabet, **kwargs):
-    """This function takes a concordance index file produced by the function Locate and
+    """
+    This function takes a concordance index file produced by the function Locate and
     produces a concordance. It is also possible to produce a modified text version taking
     into account the transducer outputs associated to the occurrences. 
 
@@ -319,7 +322,8 @@ def concord(index, alphabet, **kwargs):
 
 
 def dico(dictionaries, text, alphabet, **kwargs):
-    """This function applies dictionaries to a text. The text must have been cut up into
+    """
+    This function applies dictionaries to a text. The text must have been cut up into
     lexical units by the 'tokenize' function.
 
     The function 'dico' produces the following files, and saves them in the directory of
@@ -397,7 +401,8 @@ def dico(dictionaries, text, alphabet, **kwargs):
 
 
 def extract(text, output, index, **kwargs):
-    """This program extracts from the given text all sentences that contain at least one
+    """
+    This function extracts from the given text all sentences that contain at least one
     occurrence from the concordance. The parameter <text> represents the complete
     path of the text file, without omitting the extension .snt.
 
@@ -445,7 +450,8 @@ def extract(text, output, index, **kwargs):
 
 
 def fst2txt(grammar, text, alphabet, **kwargs):
-    """This function applies a transducer to a text in longest match mode at the preprocessing
+    """
+    This function applies a transducer to a text in longest match mode at the preprocessing
     stage, when the text has not been cut into lexical units yet. This function modifies the input
     text file.
 
@@ -513,11 +519,12 @@ def fst2txt(grammar, text, alphabet, **kwargs):
 
 
 def grf2fst2(grammar, alphabet, **kwargs):
-    """This program compiles a grammar into a .fst2 file (for more details see section
+    """
+    This function compiles a grammar into a .fst2 file (for more details see section
     6.2). The parameter <grf> denotes the complete path of the main graph of the
     grammar, without omitting the extension .grf.
 
-    The result is a file with the same name as the graph passed to the program as a
+    The result is a file with the same name as the graph passed to the function as a
     parameter, but with extension .fst2. This file is saved in the same directory as
     <grf>.
 
@@ -601,7 +608,8 @@ def grf2fst2(grammar, alphabet, **kwargs):
 
 
 def locate(grammar, text, alphabet, **kwargs):
-    """This function applies a grammar to a text and constructs an index of the occurrences
+    """
+    This function applies a grammar to a text and constructs an index of the occurrences
     found.
 
     This function saves the references to the found occurrences in a file called concord.ind.
@@ -765,7 +773,8 @@ def locate(grammar, text, alphabet, **kwargs):
 
 
 def normalize(text, **kwargs):
-    """This function carries out a normalization of text separators. The separators are
+    """
+    This function carries out a normalization of text separators. The separators are
     space, tab, and newline. Every sequence of separators that contains at least one
     newline is replaced by a unique newline. All other sequences of separators are replaced
     by a single space.
@@ -791,7 +800,7 @@ def normalize(text, **kwargs):
         output_offsets [str]              -- offset file to be produced
         replacement_rules [str]           -- specifies the normalization rule file
                                              to be used. See section 14.13.6 for details about the
-                                             format of this file. By default, the program only
+                                             format of this file. By default, the function only
                                              replaces { and } by [ and ]
         no_separator_normalization [bool] -- only applies replacement rules specified with -r
                                              (default: False)
@@ -835,7 +844,8 @@ def normalize(text, **kwargs):
 
 
 def sort_txt(text, **kwargs):
-    """This function carries out a lexicographical sorting of the lines of file <txt>. <txt>
+    """
+    This function carries out a lexicographical sorting of the lines of file <txt>. <txt>
     represents the complete path of the file to be sorted.
 
     The input text file is modified. By default, the sorting is performed in the order of
@@ -899,12 +909,13 @@ def sort_txt(text, **kwargs):
 
 
 def tokenize(text, alphabet, **kwargs):
-    """This function tokenizes a tet text into lexical units. <txt> the complete path of the
+    """
+    This function tokenizes a tet text into lexical units. <txt> the complete path of the
     text file, without omitting the .snt extension.
 
-    The program codes each unit as a whole. The list of units is saved in a text file called
+    The function codes each unit as a whole. The list of units is saved in a text file called
     tokens.txt. The sequence of codes representing the units now allows the coding
-    of the text. This sequence is saved in a binary file named text.cod. The program
+    of the text. This sequence is saved in a binary file named text.cod. The function
     also produces the following four files:
         - tok_by_freq.txt: text file containing the units sorted by frequency
         - tok_by_alph.txt: text file containing the units sorted alphabetically
@@ -915,9 +926,9 @@ def tokenize(text, alphabet, **kwargs):
                      coded representation of the text does not contain newlines, but spaces.
                      Since a newline counts as two characters and a space as a single one,
                      it is necessary to know where newlines occur in the text when the
-                     positions of occurrences located by the Locate program are to be
+                     positions of occurrences located by the 'locate' function are to be
                      synchronized with the text file. File enter.pos is used for this by
-                     the Concord program. Thanks to this, when clicking on an occurrence in
+                     the 'concord' function. Thanks to this, when clicking on an occurrence in
                      a concordance, it is correctly selected in the text. File enter.pos is
                      a binary file containing the list of the positions of newlines in the
                      text.
@@ -930,7 +941,7 @@ def tokenize(text, alphabet, **kwargs):
 
     Keyword arguments:
       - Generic options:
-            char_by_char [bool] -- indicates whether the program is applied character by
+            char_by_char [bool] -- indicates whether the function is applied character by
                                    character, with the exceptions of the sentence delimiter
                                    {S}, the stop marker {STOP} and lexical tags like
                                    {today,.ADV} which are considered to be single units
@@ -984,10 +995,11 @@ def tokenize(text, alphabet, **kwargs):
 
 
 def txt2tfst(text, alphabet, **kwargs):
-    """This function constructs an automaton of a text.
+    """
+    This function constructs an automaton of a text.
 
     If the text is separated into sentences, the function constructs an automaton for each
-    sentence. If this is not the case, the program arbitrarily cuts the text into sequences
+    sentence. If this is not the case, the function arbitrarily cuts the text into sequences
     of 2000 tokens and produces an automaton for each of these sequences.
 
     The result is a file called text.tfst which is saved in the directory of the text.
