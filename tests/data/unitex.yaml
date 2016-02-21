@@ -9,13 +9,13 @@ global:
 resources:
     language: "fr"
 
-    alphabet: "/full/path/to/Alphabet.txt"
-    alphabet-sorted: "/full/path/to/Alphabet_sort.txt"
-    sentence: "/full/path/to/Sentence.fst2"
-    replace: "/full/path/to/Replace.fst2"
+    alphabet: "data/Alphabet.txt"
+    alphabet-sorted: "data/Alphabet_sort.txt"
+    sentence: "data/Sentence.fst2"
+    replace: "data/Replace.fst2"
 
     dictionaries:
-        - "/full/path/to/dictionary.bin"
+        - "data/dictionary.bin"
 
 # The 'tools' section can contain any of the argument used by the unitex tools
 # functions. Note that, if you use the 'Processor' high-level class some argument

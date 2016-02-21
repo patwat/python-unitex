@@ -3,6 +3,7 @@
 
 import os, unittest
 
+from unitex import UnitexConstants
 from unitex.resources import *
 from unitex.tools import compress
 
@@ -48,14 +49,13 @@ class TestUnitexResources(unittest.TestCase):
             os.remove(self._arguments["inf"])
 
     def test_01_load_dictionary(self):
-        args = [self._arguments["dic"]]
-
         kwargs = {}
+        kwargs["output"] = None
         kwargs["flip"] = False
         kwargs["semitic"] = False
-        kwargs["version"] = "v2"
+        kwargs["version"] = UnitexConstants.DICTIONARY_VERSION_1
 
-        ret = compress(*args, **kwargs)
+        ret = compress(self._arguments["dic"], **kwargs)
 
         path = self._arguments["bin"]
 

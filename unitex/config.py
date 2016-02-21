@@ -12,24 +12,11 @@ _LOGGER = logging.getLogger(__name__)
 
 
 
-class Options(object):
+class Options(dict):
 
     def __init__(self, options=None):
-        self.__options = {}
-
         if options is not None:
             self.load(options)
-
-    def __contains__(self, key):
-        return key in self.__options
-
-    def __getitem__(self, key):
-        if key not in self.__options:
-            raise UnitexException("Key '%s' not found!" % key)
-        return self.__options[key]
-
-    def __setitem__(self, key, value):
-        self.__options[key] = value
 
     def load(self, options):
         raise NotImplementedError
@@ -359,7 +346,7 @@ class LocateOptions(Options):
             raise UnitexException("[LOCATE] Wrong value for the 'korean' option. Boolean required.")
         self["korean"] = korean
 
-        arabic_rules = options.get("arabic_rules", False)
+        arabic_rules = options.get("arabic_rules", None)
         if arabic_rules is not None:
             if isinstance(arabic_rules, str) is False:
                 raise UnitexException("[LOCATE] Wrong value for the 'arabic_rules' option. String required.")
@@ -405,8 +392,8 @@ class LocateOptions(Options):
 
         output_mode = options.get("output_mode", UnitexConstants.OUTPUT_MODE_IGNORE)
         if output_mode not in (UnitexConstants.OUTPUT_MODE_IGNORE,
-                              UnitexConstants.OUTPUT_MODE_MERGE,
-                              UnitexConstants.OUTPUT_MODE_RELACE):
+                               UnitexConstants.OUTPUT_MODE_MERGE,
+                               UnitexConstants.OUTPUT_MODE_RELACE):
             raise UnitexException("[LOCATE] Wrong value for the 'output_mode' option. UnitexConstants.OUTPUT_MODE_X required.")
         self["output_mode"] = output_mode
 
@@ -688,11 +675,6 @@ class UnitexConfig(Options):
             raise UnitexException("Wrong value for the 'log' global option. String required.")
         self["log"] = log
 
-        tempdir = options.get("tempdir", tempfile.gettempdir())
-        if not exists(tempdir):
-            raise UnitexException("Temporary directory '%s' doesn't exist." % tempdir)
-        self["tempdir"] = tempdir
-
         persistence = options.get("persistence", False)
         if isinstance(persistence, bool) is False:
             raise UnitexException("Wrong value for the 'persistence' global option. Boolean required.")
@@ -705,17 +687,18 @@ class UnitexConfig(Options):
 
         self["resources"] = ResourcesOptions(settings.get("resources", {}))
 
-        options = settings.get("options", {})
+        tools = settings.get("tools", {})
 
-        self["check_dic"] = CheckDicOptions(options.get("check_dic", {}))
-        self["compress"] = CheckDicOptions(options.get("compress", {}))
-        self["concord"] = ConcordOptions(options.get("concord", {}))
-        self["dico"] = DicoOptions(options.get("dico", {}))
-        self["extract"] = ExtractOptions(options.get("extract", {}))
-        self["fst2txt"] = Fst2TxtOptions(options.get("fst2txt", {}))
-        self["grf2fst2"] = Grf2Fst2Options(options.get("grf2fst2", {}))
-        self["locate"] = LocateOptions(options.get("locate", {}))
-        self["normalize"] = NormalizeOptions(options.get("normalize", {}))
-        self["sort_txt"] = SortTxtOptions(options.get("sort_txt", {}))
-        self["tokenize"] = TokenizeOptions(options.get("tokenize", {}))
-        self["txt2tfst"] = Txt2TFstOptions(options.get("txt2tfst", {}))
+        self["tools"] = {}
+        self["tools"]["check_dic"] = CheckDicOptions(tools.get("check_dic", {}))
+        self["tools"]["compress"] = CheckDicOptions(tools.get("compress", {}))
+        self["tools"]["concord"] = ConcordOptions(tools.get("concord", {}))
+        self["tools"]["dico"] = DicoOptions(tools.get("dico", {}))
+        self["tools"]["extract"] = ExtractOptions(tools.get("extract", {}))
+        self["tools"]["fst2txt"] = Fst2TxtOptions(tools.get("fst2txt", {}))
+        self["tools"]["grf2fst2"] = Grf2Fst2Options(tools.get("grf2fst2", {}))
+        self["tools"]["locate"] = LocateOptions(tools.get("locate", {}))
+        self["tools"]["normalize"] = NormalizeOptions(tools.get("normalize", {}))
+        self["tools"]["sort_txt"] = SortTxtOptions(tools.get("sort_txt", {}))
+        self["tools"]["tokenize"] = TokenizeOptions(tools.get("tokenize", {}))
+        self["tools"]["txt2tfst"] = Txt2TFstOptions(tools.get("txt2tfst", {}))

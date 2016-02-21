@@ -22,7 +22,7 @@ class Arguments:
         self.__arguments["inf"] = "data/dictionary.inf" 
 
         self.__arguments["alphabet"] = "data/Alphabet.txt" 
-        self.__arguments["alphabet_sort"] = "data/Alphabet_sort.txt" 
+        self.__arguments["alphabet-sorted"] = "data/Alphabet_sort.txt" 
 
         self.__arguments["sentence"] = "data/Sentence.fst2" 
 
@@ -215,7 +215,7 @@ class TestUnitexTools(unittest.TestCase):
         kwargs = {}
         kwargs["duplicates"] = False
         kwargs["reverse"] = False
-        kwargs["sort_order"] = self._arguments["alphabet_sort"]
+        kwargs["sort_order"] = self._arguments["alphabet-sorted"]
         kwargs["line_info"] = self._arguments["stat_dic.n"]
         kwargs["thai"] = False
         kwargs["factorize_inflectional_codes"] = False
@@ -285,7 +285,7 @@ class TestUnitexTools(unittest.TestCase):
 
     def test_10_concord(self):
         index = self._arguments["ind"]
-        alphabet = self._arguments["alphabet"]
+        alphabet = self._arguments["alphabet-sorted"]
 
         kwargs = {}
         kwargs["font"] = None
