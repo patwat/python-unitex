@@ -58,9 +58,11 @@ from unitex.resources import load_persistent_alphabet, free_persistent_alphabet
 
 grammar = "grammar.grf"
 
-options = None
-with open(config, "r") as f:
-    options = yaml.load(f)
+config = None
+with open("unitex.yaml", "r") as f:
+    config = yaml.load(f)
+
+options = UnitexConfig(config)
 
 alphabet = options["resources"]["alphabet"]
 if options["persistence"] is True:
