@@ -87,6 +87,12 @@ from unitex.processor import UnitexProcessor
 grammar = load_persistent_fst2("grammar.fst2")
 
 processor = UnitexProcessor("unitex.yaml")
+
+# mode: 's': segment (== apply Sentence.fst2)
+#		'r': replace (== apply Replace.fst2)
+#		't': tokenize
+#		'l': lexicalize
+#		'f': force (preprocess even if the snt file and directory exist)
 processor.open("corpus.txt", mode="srtlf", tagged=False)
 
 kwargs = {}
