@@ -10,7 +10,7 @@ This package provides access to the Unitex C++ Library.
 
 ## Installation
 
-The library has been tested on MacOSX (with `python` from the [MacPorts](https://www.macports.org/) projet) and Linux for the versions 2 and 3 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution. If you plan to use the Processor high-level class, you will also need the `yaml` python module.
+The library has been tested on MacOSX (with `python` from the [MacPorts](https://www.macports.org/) projet) and Linux for the versions 2 and 3 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution. If you plan to use the configuration system, you will also need the `yaml` python module.
 
 Once you have filled the requirements and downloaded the package, you just have to run (as root):
 
@@ -33,40 +33,50 @@ The following sections gives some sample codes to illustrate each of them.
 ### The `_unitex` C++ extension.
 
 ```python
-from _unitex import *
+from _unitex import unitex_load_persistent_alphabet,\
+					unitex_free_persistent_alphabet,\
+					unitex_tool
 
 alphabet = unitex_load_persistent_alphabet("Alphabet.txt")
 
 command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=%s grammar.grf -qutf8-no-bom" % alphabet
 
 ret = unitex_tool(command)
+
+unitex_free_persistent_alphabet(alphabet)
 ```
 ### The Unitex basic commands and features.
 
-The main difference with the `_unitex` extension is the argument checking, the config file support and some kind of logging.
+This part of the binding is just an abstraction layer in front of the the C++ API. It provides some kind of logging and a bunch of checking (mostly arguments). There's also the possibility to store the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex.yaml) which offers more flexibility. 
 
 ```python
-from unitex.tools import *
-from unitex.resources import *
+import yaml
+
+from unitex.tools import grf2fst2
+from unitex.config import UnitexConfig
+from unitex.resources import load_persistent_alphabet, free_persistent_alphabet
 
 grammar = "grammar.grf"
-alphabet = load_persistent_alphabet("Alphabet.txt")
 
-kwargs = {}
-kwargs["loop_check"] = False
-kwargs["char_by_char"] = False
-kwargs["pkgdir"] = None
-kwargs["no_empty_graph_warning"] = False
-kwargs["tfst_check"] = False
-kwargs["silent_grf_name"] = False
-kwargs["named_repositories"] = None
-kwargs["debug"] = False
-kwargs["check_variables"] = False
+options = None
+with open(config, "r") as f:
+    options = yaml.load(f)
+
+alphabet = options["resources"]["alphabet"]
+if options["persistence"] is True:
+	alphabet = load_persistent_alphabet(alphabet)
+
+kwargs = options["tools"]["grf2fst2"]
 
 ret = grf2fst2(grammar, alphabet, **kwargs)
+
+if options["persistence"] is True:
+	free_persistent_alphabet(alphabet)
 ```
 
 ### The `Processor` high-level class.
+
+This class hides most of the Unitex (pre-)processing procedures in order to facilitate his usage.
 
 ```python
 from unitex.resources import load_persistent_fst2, free_persistent_fst2
