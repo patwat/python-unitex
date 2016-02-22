@@ -81,24 +81,33 @@ if options["persistence"] is True:
 This class hides most of the Unitex (pre-)processing procedures in order to facilitate its usage.
 
 ```python
+import os
+
 from unitex.resources import load_persistent_fst2, free_persistent_fst2
 from unitex.processor import UnitexProcessor
 
+files = [ ... ]
 grammar = load_persistent_fst2("grammar.fst2")
 
+# Persistence is achieved during object initialization
 processor = UnitexProcessor("unitex.yaml")
 
-# mode: 's': segment (apply Sentence.fst2)
-#		'r': replace (apply Replace.fst2)
-#		't': tokenize
-#		'l': lexicalize (apply dictionaries)
-processor.open("corpus.txt", mode="srtl", tagged=False)
-
 kwargs = {}
-kwarg["xml"] = True
+kwargs["xml"] = True
 
-processor.tag(grammar, "corpus.tag", **kwargs)
+for f in files:
+    path, _ = os.path.splitext(f)
+    output = "%s.xml" % path
 
+    # mode: 's': segment (apply Sentence.fst2)
+    #       'r': replace (apply Replace.fst2)
+    #       't': tokenize
+    #       'l': lexicalize (apply dictionaries)
+    processor.open(f, mode="srtl", tagged=False)
+    processor.tag(grammar, output, **kwargs)
+
+# 'clean': suppress the files produced by Unitex
+# 'free': unload all the persisted resources
 processor.close(clean=True, free=True)
 
 free_persistent_fst2(grammar)
