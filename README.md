@@ -10,7 +10,7 @@ This package provides access to the Unitex C++ Library.
 
 ## Installation
 
-The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux for the versions 2 and 3 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution. If you plan to use the configuration system, you will also need the [`YAML`](http://pyyaml.org/wiki/PyYAML) Python module.
+The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux for the versions 2 and 3 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution. If you plan to use the configuration system, you will also need the [`YAML`](http://pyyaml.org/wiki/PyYAML) module.
 
 Once you have filled the requirements and downloaded the package, you just have to run (as root):
 
