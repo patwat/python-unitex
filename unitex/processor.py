@@ -291,7 +291,7 @@ class UnitexProcessor(object):
             raise UnitexException("Concord failed! No concordances produced.")
         return result
 
-    def open(self, path, mode="srtlf", tagged=False):
+    def open(self, path, mode="srtl", tagged=False):
         directory, filename = os.path.split(path)
         name, extension = os.path.splitext(filename)
 
@@ -308,9 +308,6 @@ class UnitexProcessor(object):
 
         else:
             if os.path.exists(self.__dir) is False:
-                mkdir(self.__dir)
-            elif "f" in mode:
-                rmdir(self.__dir)
                 mkdir(self.__dir)
 
         self._normalize()
