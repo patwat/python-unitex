@@ -10,7 +10,7 @@ This package provides access to the Unitex C++ Library.
 
 ## Installation
 
-The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux for the versions 2.7 and 3.5 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution and the `setuptools` module. If you plan to use the configuration system, you will also need the [`yaml`](http://pyyaml.org/wiki/PyYAML) module.
+The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux (Debian stable) for the versions 2.7 and 3.5 of Python. The installation requires the Python header files and the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution and the `setuptools` module. If you plan to use the configuration system, you will also need the [`yaml`](http://pyyaml.org/wiki/PyYAML) module.
 
 ```bash
 # Run as root
@@ -31,10 +31,9 @@ apt-get install python-setuptools
 apt-get install python-yaml
 ```
 
-Once you have filled the requirements and downloaded the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution, you just have to run:
+Once you have filled the requirements and downloaded the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution, run (as root):
 
 ```bash
-# Run as root
 UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 ```
 
@@ -48,7 +47,7 @@ There are three ways to use the Unitex Python library:
 2. The Unitex basic commands and features.
 3. The `Processor` high-level class.
 
-The following sections give some sample codes to illustrate each of them.
+The following sections give some sample codes for each of these ways.
 
 ### The `_unitex` C++ extension.
 
@@ -67,7 +66,7 @@ unitex_free_persistent_alphabet(alphabet)
 ```
 ### The Unitex basic commands and features.
 
-This part of the binding is just an abstraction layer in front of the C++ API. It provides some kind of logging and a number of checks (mostly arguments). There is also the possibility to store the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex.yaml) which offers more flexibility. 
+This part of the binding is just an abstraction layer in front of the C++ API. It provides a basic logging system and a number of checks (on arguments). There is also the possibility to store the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex.yaml) which offers more flexibility. 
 
 ```python
 import yaml
