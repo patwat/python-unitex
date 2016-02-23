@@ -44,10 +44,10 @@ UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 
 In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use as... examples obviously but also to achieve two simple tasks.
 
-* `build-config-file.py`: this script builds, for a given language, a default YAML config file adapted to your Unitex installation. The resulting file contains all the options you can tune in the binding (see the following sections).
-* `do-concord.py`: this script builds a concordance file for a corpus and an grammar.
+* `build-config-file.py`: this scripts builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the binding.
+* `do-concord.py`: this script can be used to perform a real Unitex process (namely, to extract concordances from a corpus on the basis of a grammar). It also illustrates how to use the package for other tasks.
 
-To visualize the different options and arguments of these scripts, just run the script with the `--help` option.
+To visualize the different options and arguments of these scripts, just run the each script with the `--help` option as shown below:
 
 ```bash
 pat@lucy /home/dev/projects/python-unitex/examples [1]$ python build-config-file.py
