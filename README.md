@@ -10,7 +10,7 @@ This package provides access to the Unitex C++ Library.
 
 ## Installation
 
-The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux (Debian stable) for the versions 2.7 and 3.5 of Python. The installation requires the Python header files and the `setuptools` module. If you plan to use the configuration system, you will also need the [`yaml`](http://pyyaml.org/wiki/PyYAML) module.
+The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux ([Debian](https://www.debian.org/) stable) for the versions 2.7 and 3.5 of Python. The installation requires the Python header files and the `setuptools` module. If you plan to use the configuration system, you will also need the [`yaml`](http://pyyaml.org/wiki/PyYAML) module.
 
 ```bash
 # Run as root
