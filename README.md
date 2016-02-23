@@ -42,46 +42,7 @@ UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**
 
-In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use to achieve two simple tasks.
-
-* `build-config-file.py`: this scripts builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the binding.
-* `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates how to use the package for other tasks.
-
-To visualize the different options and arguments of these scripts, just run each script with the `--help` option as shown below:
-
-```bash
-pat@lucy /home/dev/projects/python-unitex/examples [1]$ python build-config-file.py --help
-Build Config File -- build the (default) config file for a given language
-
-  $ build-config-file [OPTIONS] <Unitex YAML config template>
-
-Options:
-  [ -h, --help      = this help message                                      ]
-    -o, --output    = the resulting config filename
-    -l, --language  = the language name
-    -d, --directory = the original resources directory for the language
-                      (i.e. the language directory from Unitex distribution)
-
-Example:
-  $ build-config-file -l fr -d /path/to/French -o unitex-fr.yaml unitex.yaml --help
-```
-
-```bash
-pat@lucy /home/dev/projects/python-unitex/examples [2]$ python do-concord.py
-Do Concord -- A simple script to illustrate the Unitex Python binding
-
-  $ do-concord [OPTIONS] <file1(, file2, ...)>
-
-Options:
-  [ -h, --help    = this help message       ]
-    -c, --config  = the Unitex config file
-    -g, --grammar = the fst2 grammar to use
-
-Example:
-  $ do-concord -c unitex.yaml *.txt
-```
-
-For the binding itself, there are three ways to use it (from low to high-level):
+There are three ways to use the binding (from low to high-level):
 
 1. The `_unitex` C++ extension.
 2. The Unitex basic commands and features.
@@ -171,6 +132,45 @@ for f in files:
 processor.close(clean=True, free=True)
 
 free_persistent_fst2(grammar)
+```
+
+In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use to achieve two simple tasks.
+
+* `build-config-file.py`: this scripts builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the binding.
+* `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates how to use the package for other tasks.
+
+To visualize the different options and arguments of these scripts, just run each script with the `--help` option as shown below:
+
+```bash
+pat@lucy /home/dev/projects/python-unitex/examples [1]$ python build-config-file.py --help
+Build Config File -- build the (default) config file for a given language
+
+  $ build-config-file [OPTIONS] <Unitex YAML config template>
+
+Options:
+  [ -h, --help      = this help message                                      ]
+    -o, --output    = the resulting config filename
+    -l, --language  = the language name
+    -d, --directory = the original resources directory for the language
+                      (i.e. the language directory from Unitex distribution)
+
+Example:
+  $ build-config-file -l fr -d /path/to/French -o unitex-fr.yaml unitex.yaml --help
+```
+
+```bash
+pat@lucy /home/dev/projects/python-unitex/examples [2]$ python do-concord.py
+Do Concord -- A simple script to illustrate the Unitex Python binding
+
+  $ do-concord [OPTIONS] <file1(, file2, ...)>
+
+Options:
+  [ -h, --help    = this help message       ]
+    -c, --config  = the Unitex config file
+    -g, --grammar = the fst2 grammar to use
+
+Example:
+  $ do-concord -c unitex.yaml *.txt
 ```
 
 ## Useful links
