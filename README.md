@@ -140,4 +140,4 @@ free_persistent_fst2(grammar)
 
 ## Future work
 
-* Microsoft Windows &copy; integration and testing (no... [Don't panic!](https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#Don.27t_Panic) I'm just kidding!)
+* Microsoft Windows &copy; integration and testing ([Don't panic!](https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#Don.27t_Panic) I'm just kidding!)
