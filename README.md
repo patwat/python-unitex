@@ -42,10 +42,10 @@ UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**
 
-In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use as... examples obviously but also to achieve two simple tasks.
+In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use to achieve two simple tasks.
 
 * `build-config-file.py`: this scripts builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the binding.
-* `do-concord.py`: this script can be used to perform a real Unitex process (namely, to extract concordances from a corpus on the basis of a grammar). It also illustrates how to use the package for other tasks.
+* `do-concord.py`: this script can be used to perform a real Unitex process: to extract concordances from a corpus on the basis of a grammar. It also illustrates how to use the package for other tasks.
 
 To visualize the different options and arguments of these scripts, just run the each script with the `--help` option as shown below:
 
