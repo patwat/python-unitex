@@ -140,4 +140,4 @@ free_persistent_fst2(grammar)
 
 ## Future work
 
-* Microsoft Windows &reg; &trade; &copy; integration and testing (no... i'm just kidding!)
+* Microsoft Windows (&reg; &copy; &trade;) integration and testing (no... i'm just kidding!)
