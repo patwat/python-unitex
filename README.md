@@ -134,10 +134,10 @@ processor.close(clean=True, free=True)
 free_persistent_fst2(grammar)
 ```
 
-In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use to achieve two simple tasks.
+In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, you will find two scripts you can use to achieve two simple tasks.
 
 * `build-config-file.py`: this scripts builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the binding.
-* `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates how to use the package for other tasks.
+* `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates in a more detailed way how to use the package for other tasks.
 
 To visualize the different options and arguments of these scripts, just run each script with the `--help` option as shown below:
 
