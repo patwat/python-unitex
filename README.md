@@ -15,8 +15,8 @@ The library has been tested on MacOSX (with Python from the [MacPorts](https://w
 ```bash
 # Run as root
 # On MacOSX (MacPorts)
-#   -> the Python header files are installed by default
-#      (cf. https://trac.macports.org/wiki/Python)
+# NOTE: the Python header files are installed by default
+#       (cf. https://trac.macports.org/wiki/Python)
 # For Python 2.7
 port install py27-setuptools
 port install py27-yaml
