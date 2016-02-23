@@ -57,9 +57,9 @@ from _unitex import unitex_load_persistent_alphabet,\
 					unitex_free_persistent_alphabet,\
 					unitex_tool
 
-alphabet = unitex_load_persistent_alphabet("Alphabet.txt")
+alphabet = unitex_load_persistent_alphabet("/path/to/Alphabet.txt")
 
-command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=%s grammar.grf -qutf8-no-bom" % alphabet
+command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=%s /path/to/grammar.grf -qutf8-no-bom" % alphabet
 
 ret = unitex_tool(command)
 
@@ -76,10 +76,10 @@ from unitex.tools import grf2fst2
 from unitex.config import UnitexConfig
 from unitex.resources import load_persistent_alphabet, free_persistent_alphabet
 
-grammar = "grammar.grf"
+grammar = "/path/to/grammar.grf"
 
 config = None
-with open("unitex.yaml", "r") as f:
+with open("/path/to/unitex.yaml", "r") as f:
     config = yaml.load(f)
 
 options = UnitexConfig(config)
@@ -107,10 +107,10 @@ from unitex.resources import load_persistent_fst2, free_persistent_fst2
 from unitex.processor import UnitexProcessor
 
 files = [ ... ]
-grammar = load_persistent_fst2("grammar.fst2")
+grammar = load_persistent_fst2("/path/to/grammar.fst2")
 
 # Persistence is achieved during object initialization
-processor = UnitexProcessor("unitex.yaml")
+processor = UnitexProcessor("/path/to/unitex.yaml")
 
 kwargs = {}
 kwargs["xml"] = True
