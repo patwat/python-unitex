@@ -17,16 +17,16 @@ The library has been tested on MacOSX (with Python from the [MacPorts](https://w
 # On MacOSX (MacPorts)
 # NOTE: the Python header files are installed by default
 #       (cf. https://trac.macports.org/wiki/Python)
-# For Python 2.7
+# Python 2.7
 port install py27-setuptools
 port install py27-yaml
 
-# For Python 3.5
+# Python 3.5
 port install py35-setuptools
 port install py35-yaml
 
-# On Linux (Debian)
-# For Python 2.7
+# On Linux (distributions based on Debian)
+# Python 2.7
 apt-get install python-dev
 apt-get install python-setuptools
 apt-get install python-yaml
