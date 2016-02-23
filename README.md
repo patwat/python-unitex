@@ -50,7 +50,7 @@ In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples
 To visualize the different options and arguments of these scripts, just run the each script with the `--help` option as shown below:
 
 ```bash
-pat@lucy /home/dev/projects/python-unitex/examples [1]$ python build-config-file.py
+pat@lucy /home/dev/projects/python-unitex/examples [1]$ python build-config-file.py --help
 Build Config File -- build the (default) config file for a given language
 
   $ build-config-file [OPTIONS] <Unitex YAML config template>
@@ -63,7 +63,7 @@ Options:
                       (i.e. the language directory from Unitex distribution)
 
 Example:
-  $ build-config-file -l fr -d /path/to/French -o unitex-fr.yaml unitex.yaml
+  $ build-config-file -l fr -d /path/to/French -o unitex-fr.yaml unitex.yaml --help
 ```
 
 ```bash
