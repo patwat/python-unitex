@@ -58,8 +58,9 @@ from _unitex import unitex_load_persistent_alphabet,\
 					unitex_tool
 
 alphabet = unitex_load_persistent_alphabet("/path/to/Alphabet.txt")
+grammar = "/path/to/grammar.grf"
 
-command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=%s /path/to/grammar.grf -qutf8-no-bom" % alphabet
+command = "UnitexTool Grf2Fst2 --no_loop_check --alphabet=%s %s -qutf8-no-bom" % (alphabet, grammar)
 
 ret = unitex_tool(command)
 
