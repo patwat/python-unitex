@@ -1,6 +1,6 @@
 global:
-    debug: 1
-    verbose: 2
+    debug: 0
+    verbose: 0
     log: null
 
     persistence: True

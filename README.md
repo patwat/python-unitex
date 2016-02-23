@@ -42,7 +42,12 @@ UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**
 
-There are three ways to use the Unitex Python library:
+In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, there are two scripts you can use as... examples obviously but also to achieve two simple tasks.
+
+* `build-config-file.py`: this script builds, for a given language, a default YAML config file adapated to your Unitex installation.
+* `do-concord.py`: this script builds a concordance file for a corpus and an grammar.
+
+For the binding itself, there are three ways to use it (from low to high-level):
 
 1. The `_unitex` C++ extension.
 2. The Unitex basic commands and features.
@@ -50,7 +55,7 @@ There are three ways to use the Unitex Python library:
 
 The following sections give some sample codes for each of these ways.
 
-### The `_unitex` C++ extension.
+### The `_unitex` C++ extension
 
 ```python
 from _unitex import unitex_load_persistent_alphabet,\

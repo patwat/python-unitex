@@ -185,6 +185,8 @@ class UnitexProcessor(object):
         kwargs = self.__options["tools"]["tokenize"]
 
         ret = tokenize(self.__snt, alphabet, **kwargs)
+        if ret is False:
+            raise UnitexException("Text tokenization failed!")
 
     def _lexicalize(self):
         dictionaries = self.__options["resources"]["dictionaries"]
@@ -281,7 +283,7 @@ class UnitexProcessor(object):
 
             result = os.path.join(self.__dir, "concord.txt")
             if self.__options["virtualization"] is True:
-                index = "%s%s" % (UnitexConstants.VFS_PREFIX, result)
+                result = "%s%s" % (UnitexConstants.VFS_PREFIX, result)
 
         ret = concord(index, alphabet, **kwargs)
         if ret is False:
