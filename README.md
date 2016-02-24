@@ -1,16 +1,16 @@
-# Unitex binding for Python
+# Unitex bindings for Python
 
 This package provides access to the Unitex C++ Library.
 
 ## Main features
 
 * Unitex as a library
-* Linguistic resources persistence
+* Persistence of linguistic resources
 * File virtualization
 
 ## Installation
 
-The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux ([Debian](https://www.debian.org/)) for the versions 2.7 and 3.5 of Python. The installation requires the Python header files and the `setuptools` module. If you plan to use the configuration system, you will also need the `yaml` module.
+The library has been tested on MacOSX (with Python from the [MacPorts](https://www.macports.org/) project) and Linux ([Debian](https://www.debian.org/)) for versions 2.7 and 3.5 of Python. The installation requires the Python header files and the `setuptools` module. If you plan to use the configuration system, you will also need the `yaml` module.
 
 ```bash
 # Run as root
@@ -32,7 +32,7 @@ apt-get install python-setuptools
 apt-get install python-yaml
 ```
 
-Once you have filled the requirements and downloaded the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution, run (as root):
+Once you have met these requirements and downloaded the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution, run (as root):
 
 ```bash
 UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
@@ -42,17 +42,17 @@ UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**
 
-There are three ways to use the binding (from low to high-level):
+There are three ways to use the bindings (from low to high-level):
 
 1. The `_unitex` C++ extension.
 2. The Unitex basic commands and features.
-3. The `Processor` high-level class.
+3. The high-level `Processor` class.
 
-The following sections give some sample codes for each of these ways.
+The following sections give some sample code for each of these methods.
 
 ### The `_unitex` C++ extension
 
-It works like the JNI interface which is part of the Unitex distribution and provides arguments conversion to access C++ functions.
+This works like the JNI interface which is part of the Unitex distribution and provides conversion of arguments (into C++ types) and returned values (into Python objects).
 
 ```python
 from _unitex import unitex_load_persistent_alphabet,\
@@ -68,9 +68,9 @@ ret = unitex_tool(command)
 
 unitex_free_persistent_alphabet(alphabet)
 ```
-### The Unitex basic commands and features.
+### The Unitex basic commands and features
 
-This part of the binding is just an abstraction layer in front of the C++ extension. It provides a basic logging system and a number of checks (on arguments). There is also the possibility to store the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex.yaml) which offers more flexibility. 
+This part of the bindings is just an abstraction layer in front of the C++ extension. It provides a basic logging system and a number of checks (on arguments). There is also the possibility of storing the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex.yaml) which offers more flexibility. 
 
 ```python
 import yaml
@@ -99,7 +99,7 @@ if options["persistence"] is True:
 	free_persistent_alphabet(alphabet)
 ```
 
-### The `Processor` high-level class.
+### The high-level `Processor` class
 
 This class hides most of the Unitex (pre-)processing procedures in order to facilitate its usage.
 
@@ -138,8 +138,8 @@ free_persistent_fst2(grammar)
 
 In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples/) directory, you will find two scripts you can use to achieve two simple tasks.
 
-* `build-config-file.py`: this scripts builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the binding.
-* `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates in a more detailed way how to use the package for other tasks.
+1. `build-config-file.py`: this script builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the bindings.
+2. `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates in a more detailed way of using the package for other tasks.
 
 To visualize the different options and arguments of these scripts, just run each script with the `--help` option as shown below:
 
@@ -162,7 +162,7 @@ Example:
 
 ```bash
 pat@lucy /home/dev/projects/python-unitex/examples [2]$ python do-concord.py --help
-Do Concord -- A simple script to illustrate the Unitex Python binding
+Do Concord -- A simple script to illustrate the Unitex Python bindings
 
   $ do-concord [OPTIONS] <file1(, file2, ...)>
 
