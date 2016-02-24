@@ -52,6 +52,8 @@ The following sections give some sample codes for each of these ways.
 
 ### The `_unitex` C++ extension
 
+It works like the JNI interface which is part of the Unitex distribution and provides arguments conversion to access C++ functions.
+
 ```python
 from _unitex import unitex_load_persistent_alphabet,\
 					unitex_free_persistent_alphabet,\
