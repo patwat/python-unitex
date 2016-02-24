@@ -180,6 +180,6 @@ Example:
 * The **Unitex/GramLab** corpus processor: [homepage](http://www-igm.univ-mlv.fr/~unitex/) and [documentation](http://igm.univ-mlv.fr/~unitex/UnitexManual3.1.pdf)
 * The **Unitex C++/Java library**: [documentation](http://unitex-library-fr.readthedocs.org/)
 
-## Future work
-
-* Microsoft Windows &copy; integration and testing... ([Don't panic!](https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#Don.27t_Panic) I'm just kidding).
+[//]: # ## Future work
+[//]: # 
+[//]: # * Microsoft Windows &copy; integration and testing... ([Don't panic!](https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#Don.27t_Panic) I'm just kidding).
