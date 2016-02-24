@@ -181,7 +181,7 @@ In the [`examples`](https://github.com/patwat/python-unitex/blob/master/examples
 1. `build-config-file.py`: this script builds, for a given language, a default YAML configuration file adapted to your local Unitex installation. This configuration file allows you to define the different parameters required by Unitex and by the bindings.
 2. `do-concord.py`: this script can be used to perform a real Unitex process: the extraction of concordances from a corpus on the basis of a grammar. It also illustrates in a more detailed way of using the package for other tasks.
 
-To visualize the different options and arguments of these scripts, just run each script with the `--help` option as shown below:
+To visualize the different options and arguments of these scripts, just run (as user) each script with the `--help` option as shown below:
 
 ```bash
 pat@lucy /home/dev/projects/python-unitex/examples [1]$ python build-config-file.py --help
