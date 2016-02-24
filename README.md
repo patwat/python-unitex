@@ -155,11 +155,11 @@ Options:
                       (i.e. the language directory from Unitex distribution)
 
 Example:
-  $ build-config-file -l fr -d /path/to/French -o unitex-fr.yaml unitex.yaml --help
+  $ build-config-file -l fr -d /path/to/French -o unitex-fr.yaml unitex.yaml
 ```
 
 ```bash
-pat@lucy /home/dev/projects/python-unitex/examples [2]$ python do-concord.py
+pat@lucy /home/dev/projects/python-unitex/examples [2]$ python do-concord.py --help
 Do Concord -- A simple script to illustrate the Unitex Python binding
 
   $ do-concord [OPTIONS] <file1(, file2, ...)>
