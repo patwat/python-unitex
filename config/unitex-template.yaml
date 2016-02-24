@@ -1,11 +1,60 @@
+# Do not modify this file. Use the 'build-config-file.py' script to generate a
+# working version adapted to you local Unitex installation or copy this file
+# before editing.
+
+# The 'global' section contains the global configuration parameters.
 global:
+    # There is 3 'debug' level:
+    # 0: the error output is disabled;
+    # 1: the error output is limited to the logging system implemented in the
+    #    bindings;
+    # 2: the error output is activated for both the bindings and the Unitex
+    #    processor.
+    # NOTE: if you activate the debug for level >= 1, the verbose level is
+    #       automatically activated at level 2.
     debug: 0
+
+    # There is 4 'verbose' level:
+    # 0: the standard output is disabled;
+    # 1: the standard output shows 'warnings' emitted by the bindings logging
+    #    system;
+    # 2: the standard output shows 'warnings' and various other informations
+    #    emitted by the bindings logging system;
+    # 3: the standard output is activated for both the bindings and the Unitex
+    #    processor.
     verbose: 0
+
+    # If not 'null', the error and standard outputs are redirected to the file
+    # specified by this parameters.
+    #log: /var/log/unitex.log
     log: null
 
+    # If you are using the high-level 'Processor' class from, this parameter
+    # activate or deactivate the resource persistence. If persistency is
+    # activated, dictionaries, grammar and alphabet are loaded during the
+    # object initialization and kept in memory in order to improve
+    # performances.
     persistence: True
+
+    # The Unitex library implements a virtual filesystem which avoids a lot
+    # of I/O and improves the performance. If this parameter is set to 'True',
+    # The high-level 'Processor' class will activate automatically this virtual
+    # filesystem.
     virtualization: True
 
+# The 'resources' section is automatically filled by the 'build-config-file.py'
+# script. If you want to do it manually, be sure to give the absolute path of
+# each resource as shown below:
+# resources:
+#   language: fr
+#   alphabet: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Alphabet.txt
+#   alphabet-sorted: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Alphabet_sort.txt
+#   sentence: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Graphs/Preprocessing/Sentence/Sentence.fst2
+#   replace: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Graphs/Preprocessing/Replace/Replace.fst2
+#   dictionaries:
+#       - /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Dela/dela-fr-public.bin
+#       - /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Dela/ajouts80jours.bin
+#       - /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Dela/motsGramf-.bin
 resources:
     language: null
 
@@ -16,35 +65,126 @@ resources:
 
     dictionaries: null
 
-# The 'tools' section can contain any of the argument used by the unitex tools
-# functions. Note that, if you use the 'Processor' high-level class some argument
-# could be overriden to fit the 'tag', 'extract' and 'search' functions
-# behaviour. For intance, there is no point to define a font or a context for
-# 'concord'.
+# The 'tools' section can contain any of the argument used by the unitex tools.
+# Note that, if you use the 'Processor' high-level class some parameters will
+# be overriden to fit the 'tag' functions behaviour. For intance, there is no
+# point to define a font or a context for 'concord'.
 tools:
+    # CheckDic command (Unitex manual, p.266)
     check_dic:
+        # If set to True, Unitex will use a strict syntax checking against
+        # unprotected dot and comma
         strict: False
+        # If set to 'True', 'no_space_warning' tells Unitex to tolerate spaces
+        # in grammatical, semantic and inflectional codes.
         no_space_warning: False
 
+    # Compress command (Unitex manual, p.266)
     compress:
+        # 'output' sets the output file. By default, a file xxx.dic will
+        # produce a file xxx.bin.
         output: null
+        # If set to 'True', 'flip' indicates that the inflected and canonical
+        # forms should be swapped in the compressed dictionary. This option is
+        # used to construct an inverse dictionary.
         flip: False
+        # If set to 'True', 'semitic' indicates that the semitic compression
+        # algorithm should be used. Setting this option with semitic languages
+        # like Arabic significantly reduces the size of the output dictionary.
         semitic: False
+        # 'version: v1' produces an old style .bin file
+        # 'version: v2' produces a new style .bin file, with no file size
+        #               limitation to 16 Mb and a smaller resulting size
         version: "v2"
 
+    # Concord command (Unitex manual, p.267)
     concord:
+        # 'font' specifies the name of the font to use if the output is an
+        # HTML file.
+        #font: "Courier new"
         font: null
+        # 'fontsize' specifies the font size to use if the output is an HTML
+        # file.
+        #fontsize: 12
         fontsize: null
+        # If 'only_ambiguous' is set to 'True', Unitex will only displays
+        # identical occurrences with ambiguous outputs, in text order
         only_ambiguous: False
+        # If 'only_matches' is set to 'True', Unitex will force empty right
+        # and left contexts. Moreover, if used with -t/–text, Concord will
+        # not surround matches with tabulations
         only_matches: False
+        # 'left' specifies the number of characters on the left of the
+        # occurrences. In Thai mode, this means the number of non-diacritic
+        # characters. For both 'left' and 'right' parameters, you can add the
+        # 's' character to stop at the first {S} tag. For instance, if you set
+        # 40s for the left value, the left context will end at 40 characters at
+        # most, less if the {S} tag is found before.
         left: "0"
+        # 'right' specifies the number of characters (non-diacritic ones in
+        # Thai mode) on the right of the occurrences (default=0). If the
+        # occurrence is shorter than this value, the concordance line is
+        # completed up to right. If the occurrence is longer than the length
+        # defined by right, it is nevertheless saved as whole.
         right: "0"
+        # 'sort' specifies the sort order. Possible values are:
+        #   - TO: text order
+        #   - LC: first left context then center
+        #   - LC: first left context then right
+        #   - CL: first center then left context
+        #   - CR: first center then right context
+        #   - RL: first right context then left context
+        #   - RC: first right context then center
         sort: "TO"
+        # 'format' specifies the output format. Possible values are:
+        #   - html: produces a concordance in HTML format
+        #   - text: produces a concordance in text format
+        #   - glossanet: produces a concordance for GlossaNet in HTML format
+        #                where occurrences are links described by the 'script'
+        #                parameter
+        #   - script: produces a HTML concordance file where occurrences are
+        #             links described by the 'script' parameter
+        #   - index: produces an index of the concordance, made of the content
+        #            of the occurrences (with the grammar outputs, if any),
+        #            preceded by the positions of the occurrences in the text
+        #            file given in characters
+        #   - uima: produces an index of the concordance relative to the
+        #           original text file, before any Unitex operation. The
+        #           'offsets' parameter must be provided
+        #   - prlg: produces a concordance for PRLG corpora where each line is
+        #           prefixed by information extracted with Unxmlize’s 'prlg'
+        #           option. You must provide both the 'offsets' and the
+        #           'unxmlize' parameter
+        #   - xml: produces xml index of the concordance
+        #   - xml-with-header: produces an xml index of the concordance with
+        #                      full xml header
+        #   - axis: quite the same as 'index', but the numbers represent the
+        #           median character of each occurrence
+        #   - xalign: another index file, used by the text alignment module.
+        #             Each line is made of 3 integers X Y Z followed by the
+        #             content of the occurrence. X is the sentence number,
+        #             starting from 1. Y and Z are the starting and ending
+        #             positions of the occurrence in the sentence, given in
+        #             characters
+        #   - merge: indicates to the function that it is supposed to produce
+        #            a modified version of the text and save it in a file. The
+        #            filename must be provided with the 'output' parameter
         format: "text"
+        # 'script' describes the links format for 'glossanet' and 'script'
+        # output. For instance, if you use 'http://www.google.com/search?q=',
+        # you will obtain a HTML concordance file where occurrences are
+        # hyperlinks to Google queries.
         script: null
+        # 'offsets' provides the file produced by Tokenize’s output_offsets
+        # option (needed by the 'uima' and the 'prlg' format).
         offsets: null
+        # 'unxmlize' provides the file produced by Unxmlize’s 'prlg' option
+        # (needed by the 'prlg' format).
         unxmlize: null
+        # 'directory' indicates to the function that it must not work in the
+        # same directory than <index> but in 'directory'
         directory: null
+        # 'thai' indicates that the input text is in Thai language
         thai: False
 
     dico:

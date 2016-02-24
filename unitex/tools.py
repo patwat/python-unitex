@@ -164,9 +164,8 @@ def concord(index, alphabet, **kwargs):
 
       - Generic options:
             font [str]            -- the name of the font to use if the output is an HTML
-                                     file
-            fontsize [int]        -- the font size to use if the output is an HTML file. The
-                                     font parameters are required if the output is an HTML file;
+                                     file.
+            fontsize [int]        -- the font size to use if the output is an HTML file.
             only_ambiguous [bool] -- Only displays identical occurrences with ambiguous
                                      outputs, in text order (default: False)
             only_matches [bool]   -- this option will force empty right and left contexts. Moreover,
@@ -210,8 +209,8 @@ def concord(index, alphabet, **kwargs):
                               UnitexConstants.FORMAT_PRLG: produces a concordance for PRLG corpora where each line is prefixed
                                                            by information extracted with Unxmlize’s 'prlg' option. You must
                                                            provide both the 'offsets' and the 'unxmlize' argument
-                              UnitexConstants.FORMAT_XML: produces xml index of the concordance
-                              UnitexConstants.FORMAT_XML_WITH_HEADER: produces xml index of the concordance with full xml header
+                              UnitexConstants.FORMAT_XML: produces an xml index of the concordance
+                              UnitexConstants.FORMAT_XML_WITH_HEADER: produces an xml index of the concordance with full xml header
                               UnitexConstants.FORMAT_AXIS: quite the same as 'index', but the numbers represent the median
                                                            character of each occurrence
                               UnitexConstants.FORMAT_XALIGN: another index file, used by the text alignment module. Each line is

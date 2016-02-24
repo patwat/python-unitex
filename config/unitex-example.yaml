@@ -11,7 +11,7 @@ resources:
   - /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Dela/dela-fr-public.bin
   - /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Dela/ajouts80jours.bin
   - /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Dela/motsGramf-.bin
-  language: null
+  language: fr
   replace: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Graphs/Preprocessing/Replace/Replace.fst2
   sentence: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Graphs/Preprocessing/Sentence/Sentence.fst2
 tools:

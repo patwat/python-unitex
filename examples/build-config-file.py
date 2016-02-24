@@ -161,6 +161,7 @@ if __name__ == "__main__":
     sentence, replace = load_preprocessing_fsts(directory)
     alphabet, alphabet_sorted = load_alphabets(directory)
 
+    options["resources"]["language"] = language
     options["resources"]["dictionaries"] = dictionaries
     options["resources"]["sentence"] = sentence
     options["resources"]["replace"] = replace
