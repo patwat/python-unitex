@@ -172,10 +172,10 @@ class UnitexFile(object):
         self.__mode = None
 
     def write(self, data):
-        if self.__mode not in ("w", "a"):
-            raise UnitexException("File '%s' is opened in read mode..." % self.__file)
         if self.__file is None: 
             raise UnitexException("You must open a file before writing...")
+        if self.__mode not in ("w", "a"):
+            raise UnitexException("File '%s' is opened in read mode..." % self.__file)
 
         if self.__mode == "w":
             bom = 1 if self.__use_bom is True else 0
@@ -184,6 +184,8 @@ class UnitexFile(object):
             unitex_append_to_file(self.__file, data)
 
     def read(self):
+        if self.__file is None: 
+            raise UnitexException("You must open a file before reading...")
         if self.__mode != "r":
             raise UnitexException("File '%s' is opened in write/append mode..." % self.__file)
         return unitex_read_file(self.__file)
