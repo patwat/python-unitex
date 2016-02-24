@@ -1,4 +1,4 @@
-# Python bindings for th Unitex/GramLab corpus processor
+# Python bindings for Unitex/GramLab
 
 This package provides access to the Unitex C++ Library.
 
