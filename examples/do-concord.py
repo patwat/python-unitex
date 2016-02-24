@@ -214,7 +214,7 @@ def execute(path, grammar, options):
 
 if __name__ == "__main__":
     def usage():
-        sys.stderr.write("Do Concord -- A simple script to illustrate the Unitex Python binding\n\n")
+        sys.stderr.write("Do Concord -- A simple script to illustrate the Unitex Python bindings\n\n")
         sys.stderr.write("  $ do-concord [OPTIONS] <file1(, file2, ...)>\n\n")
         sys.stderr.write("Options:\n")
         sys.stderr.write("  [ -h, --help    = this help message       ]\n")
