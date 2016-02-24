@@ -116,7 +116,7 @@ grammar = load_persistent_fst2("/path/to/grammar.fst2")
 processor = UnitexProcessor("/path/to/unitex.yaml")
 
 kwargs = {}
-kwargs["xml"] = True
+kwargs["xml"] = False
 
 for f in files:
     path, _ = os.path.splitext(f)
