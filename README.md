@@ -70,7 +70,7 @@ unitex_free_persistent_alphabet(alphabet)
 ```
 ### The Unitex basic commands and features
 
-This part of the bindings is just an abstraction layer in front of the C++ extension. It provides a basic logging system and a number of checks (on arguments). There is also the possibility of storing the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex.yaml) which offers more flexibility. 
+This part of the bindings is just an abstraction layer in front of the C++ extension. It provides a basic logging system and a number of checks (on arguments). There is also the possibility of storing the different resources and (tools) options in a [configuration file](https://github.com/patwat/python-unitex/blob/master/config/unitex-template.yaml) which offers more flexibility. 
 
 ```python
 import yaml
