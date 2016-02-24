@@ -38,6 +38,46 @@ Once you have met these requirements and downloaded the [Unitex](http://igm.univ
 UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
 ```
 
+## Installation testing
+
+If you want to test your installation, open a terminal, move in the `tests` directory and run (as user):
+
+```bash
+pat@lucy /home/dev/projects/python-unitex/tests [2]$ python 01_test_tools.py
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.023s
+
+OK
+```
+
+```bash
+pat@lucy /home/dev/projects/python-unitex/tests [3]$ python 02_test_resources.py
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.003s
+
+OK
+```
+
+```bash
+pat@lucy /home/dev/projects/python-unitex/tests [4]$ python 03_test_io.py
+....................
+----------------------------------------------------------------------
+Ran 20 tests in 0.004s
+
+OK
+```
+
+```bash
+pat@lucy /home/dev/projects/python-unitex/tests [5]$ python 04_test_processor.py
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.045s
+
+OK
+```
+
 ## Getting started
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**
