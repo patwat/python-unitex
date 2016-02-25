@@ -111,11 +111,12 @@ _LOGGER = logging.getLogger(__name__)
 
 def enable_stdout():
     """
-    This function enables Unitex standard output. This is the default but
-    should be used for debug purposes only.
+    This function enables Unitex standard output. This is the default
+    but should be used for debug purposes only.
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Enabling standard output...")
     ret = unitex_enable_stdout()
@@ -131,7 +132,8 @@ def disable_stdout():
     improve performances.
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Disabling standard output...")
     ret = unitex_disable_stdout()
@@ -146,7 +148,8 @@ def enable_stderr():
     should be used for debug purposes only.
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Enabling error output...")
     ret = unitex_enable_stderr()
@@ -162,7 +165,8 @@ def disable_stderr():
     improve performances.
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Disabling error output...")
     ret = unitex_disable_stderr()

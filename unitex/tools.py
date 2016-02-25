@@ -31,17 +31,23 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
     stored in the <dela> directory.
 
     Arguments:
-        dictionary [str] -- the dictionary file path
-        dtype [str]      -- the dictionary type: UnitexConstants.DELAF (inflected)
-                                                 UnitexConstants.DELAS (non inflected)
-        alphabet [str]   -- the alphabet file path
+        dictionary [str] -- the dictionary file path.
+
+        dtype [str] -- the dictionary type:
+            - UnitexConstants.DELAF (inflected);
+            - UnitexConstants.DELAS (non inflected).
+
+        alphabet [str]   -- the alphabet file path.
 
     Keyword arguments:
-        strict [bool]           -- strict syntax checking against unprotected dot and comma (default: False) 
-        no_space_warning [bool] -- tolerates spaces in grammatical/semantic/inflectional codes (default: True) 
+        strict [bool] -- strict syntax checking against unprotected dot
+            and comma (default: False).
+
+        no_space_warning [bool] -- tolerates spaces in grammatical,
+            semantic and inflectional codes (default: True).
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        True if it succeeds and False otherwise.
     """
     options = CheckDicOptions()
     options.load(kwargs)
@@ -78,30 +84,37 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
 
 def compress(dictionary, **kwargs):
     """
-    This function takes a DELAF dictionary as a parameter and compresses it. The
-    compression of a dictionary dico.dic produces two files:
+    This function takes a DELAF dictionary as a parameter and compresses
+    it. The compression of a dictionary dico.dic produces two files:
 
-        - dico.bin: a binary file containing the minimum automaton of the inflected
-                    forms of the dictionary;
-        - dico.inf: a text file containing the compressed forms required for the reconstruction
-                    of the dictionary lines from the inflected forms contained in the
-                    automaton.
+        - dico.bin: a binary file containing the minimum automaton of
+            the inflected forms of the dictionary;
+
+        - dico.inf: a text file containing the compressed forms required
+            for the reconstruction of the dictionary lines from the
+            inflected forms contained in the automaton.
 
     Arguments:
-        dictionary [str] -- the dictionary file path
+        dictionary [str] -- the dictionary file path.
 
     Keyword arguments:
-        output [str]   -- sets the output file. By default, a file xxx.dic will
-                          produce a file xxx.bin
-        flip [bool]    -- indicates that the inflected and canonical forms should be swapped in the
-                          compressed dictionary. This option is used to construct an inverse dictionary
-                          which is necessary for the program 'Reconstrucao' (default: False)
-        semitic [bool] -- indicates that the semitic compression algorithm should be used. Setting this
-                          option with semitic languages like Arabic significantly reduces the size of
-                          the output dictionary (default: False)
-        version [str]  -- 'v1': produces an old style .bin file
-                          'v2': produces a new style .bin file, with no file size limitation to 16 Mb
-                                and a smaller size (default)
+        output [str] -- sets the output file. By default, a file xxx.dic
+            will produce a file xxx.bin.
+
+        flip [bool] -- indicates that the inflected and canonical forms
+            should be swapped in the compressed dictionary. This option
+            is used to construct an inverse dictionary which is
+            necessary for the program 'Reconstrucao' (default: False).
+
+        semitic [bool] -- indicates that the semitic compression
+            algorithm should be used. Setting this option with semitic
+            languages like Arabic significantly reduces the size of the
+            output dictionary (default: False).
+
+        version [str] -- 'v1': produces an old style .bin file;
+                         'v2': produces a new style .bin file, with no
+                               file size limitation to 16 Mb and a
+                               smaller size (default).
 
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.

@@ -22,16 +22,17 @@ _LOGGER = logging.getLogger(__name__)
 
 def cp(source_path, target_path):
     """
-    This function copies a file. Both pathes can be on the virtual filesystem
-    or the disk filesystem. Therefor, this function can be used to virtualize a
-    file or to dump a virtual file.
+    This function copies a file. Both pathes can be on the virtual
+    filesystem or the disk filesystem. Therefor, this function can be
+    used to virtualize a file or to dump a virtual file.
 
     Arguments:
         source_path [str] -- source file path
         target_path [str] -- target file path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Copying file '%s' to '%s'..." % (source_path, target_path))
     ret = unitex_cp(source_path, target_path)
@@ -42,14 +43,15 @@ def cp(source_path, target_path):
 
 def rm(path):
     """
-    This function removes a file. The path can be on the virtual filesystem
-    or the disk filesystem.
+    This function removes a file. The path can be on the virtual
+    filesystem or the disk filesystem.
 
     Argument:
         path [str] -- file path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Removing file '%s'..." % path)
     ret = unitex_rm(path)
@@ -60,15 +62,16 @@ def rm(path):
 
 def mv(old_path, new_path):
     """
-    This function moves/renames a file. Both pathes can be on the virtual
-    filesystem or the disk filesystem.
+    This function moves/renames a file. Both pathes can be on the
+    virtual filesystem or the disk filesystem.
 
     Arguments:
         old_path [str] -- old file path
         new_path [str] -- new file path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Moving file '%s' to '%s'..." % (old_path, new_path))
     ret = unitex_mv(old_path, new_path)
@@ -85,7 +88,8 @@ def mkdir(path):
         path [str] -- directory path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Creating directory '%s'..." % path)
     ret = unitex_mkdir(path)
@@ -102,7 +106,8 @@ def rmdir(path):
         path [str] -- directory path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     _LOGGER.info("Removing directory '%s'..." % path)
     ret = unitex_rmdir(path)
@@ -119,21 +124,23 @@ def ls(path):
         path [str] -- directory path
 
     Return [list(str)]:
-        The function returns a list of files (not directories) if the directory
-        is not empty and an empty list otherwise.
+        The function returns a list of files (not directories) if the
+        directory is not empty and an empty list otherwise.
     """
     _LOGGER.info("Listing directory '%s'..." % path)
     return unitex_ls(path)
 
 def exists(path):
     """
-    This function verify if a file exists (on disk or virtual filesystem).
+    This function verify if a file exists (on disk or virtual
+    filesystem).
 
     Argument:
         path [str] -- directory path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False' otherwise.
+        The function returns 'True' if it succeeds and 'False'
+        otherwise.
     """
     if path.startswith(UnitexConstants.VFS_PREFIX) is False:
         return os.path.exists(path)
@@ -144,11 +151,11 @@ def exists(path):
 class UnitexFile(object):
     """
     The UnitexFile class provides the minimum functionality necessary to
-    manipulate files on the disk and the virtual filesystems. It's mainly
-    useful to read files from virtual filesystem whithout having to copy them
-    to the disk.
+    manipulate files on the disk and the virtual filesystems. It's
+    mainly useful to read files from virtual filesystem whithout having
+    to copy them to the disk.
     
-    **WARNING: the encoding must be UTF-8 and the data Unicode strings.**
+    *WARNING: the encoding must be UTF-8 and the data Unicode strings.*
     """
 
     def __init__(self):
