@@ -801,8 +801,8 @@ def normalize(text, **kwargs):
                                              to be used. See section 14.13.6 for details about the
                                              format of this file. By default, the function only
                                              replaces { and } by [ and ]
-        no_separator_normalization [bool] -- only applies replacement rules specified with -r
-                                             (default: False)
+        no_separator_normalization [bool] -- only applies replacement rules specified with the 'replacement_rules'
+                                             option (default: False)
 
     Return [bool]:
         The function return 'True' if it succeeds and 'False' otherwise.

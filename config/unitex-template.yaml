@@ -18,33 +18,39 @@ global:
     # 0: the standard output is disabled;
     # 1: the standard output shows 'warnings' emitted by the bindings logging
     #    system;
-    # 2: the standard output shows 'warnings' and various other informations
-    #    emitted by the bindings logging system;
-    # 3: the standard output is activated for both the bindings and the Unitex
-    #    processor.
+    # 2: the standard output shows 'warnings' and various processing
+    #    informations emitted by the bindings logging system;
+    # 3: the full standard output is activated for both the bindings and the
+    #    Unitex processor.
     verbose: 0
 
     # If not 'null', the error and standard outputs are redirected to the file
-    # specified by this parameters.
+    # specified by this parameters. Be sure to have write access to this file.
     #log: /var/log/unitex.log
     log: null
 
-    # If you are using the high-level 'Processor' class from, this parameter
+    # If you are using the high-level 'Processor' class, this parameter
     # activate or deactivate the resource persistence. If persistency is
     # activated, dictionaries, grammar and alphabet are loaded during the
     # object initialization and kept in memory in order to improve
     # performances.
+    # NOTE: you can manually activate the persistence by using the
+    #       'load_persistent_X' functions from 'unitex.resources'.
     persistence: True
 
     # The Unitex library implements a virtual filesystem which avoids a lot
-    # of I/O and improves the performance. If this parameter is set to 'True',
+    # of I/O and improves the performance. If this parameter is set to True,
     # The high-level 'Processor' class will activate automatically this virtual
     # filesystem.
+    # NOTE: as for the persistence, you can activate manually the VFS by using
+    #       the functions from 'unitex.io'.
     virtualization: True
 
 # The 'resources' section is automatically filled by the 'build-config-file.py'
 # script. If you want to do it manually, be sure to give the absolute path of
-# each resource as shown below:
+# each resource as shown below.
+# NOTE: the 'dictionaries' parameter is a list of path. As required by the YAML
+#       format, each item must be prefixed by the '-' character (cf. example).
 # resources:
 #   language: fr
 #   alphabet: /home/dev/projects/python-unitex/dependencies/Unitex-GramLab-3.1rc/French/Alphabet.txt
@@ -65,18 +71,25 @@ resources:
 
     dictionaries: null
 
-# The 'tools' section can contain any of the argument used by the unitex tools.
-# Note that, if you use the 'Processor' high-level class some parameters will
-# be overriden to fit the 'tag' functions behaviour. For intance, there is no
-# point to define a font or a context for 'concord'.
+# The 'tools' section can contain any of the arguments used by the unitex
+# tools.
+# Most of the times, these parameters are the same than the one used by the
+# original Unitex tools (as described in the Unitex manual). Changes are
+# explained in the comments of this file.
+# NOTE: if you use the 'Processor' high-level class some parameters will be
+#       overriden to fit the 'tag' functions behaviour. For instance, there is
+#       no point to define a font or a context for 'concord'.
+# NOTE: ALL FILE PATH MUST BE ABSOLUTE!!!
 tools:
+
     # CheckDic command (Unitex manual, p.266)
     check_dic:
-        # If set to True, Unitex will use a strict syntax checking against
-        # unprotected dot and comma
+        # If set to True, the function will use a strict syntax checking 
+        # against unprotected dot and comma.
         strict: False
-        # If set to 'True', 'no_space_warning' tells Unitex to tolerate spaces
-        # in grammatical, semantic and inflectional codes.
+
+        # If set to True, the function will tolerate spaces in grammatical,
+        # semantic and inflectional codes.
         no_space_warning: False
 
     # Compress command (Unitex manual, p.266)
@@ -84,18 +97,20 @@ tools:
         # 'output' sets the output file. By default, a file xxx.dic will
         # produce a file xxx.bin.
         output: null
-        # If set to 'True', 'flip' indicates that the inflected and canonical
+
+        # If set to True, 'flip' indicates that the inflected and canonical
         # forms should be swapped in the compressed dictionary. This option is
         # used to construct an inverse dictionary.
         flip: False
-        # If set to 'True', 'semitic' indicates that the semitic compression
-        # algorithm should be used. Setting this option with semitic languages
-        # like Arabic significantly reduces the size of the output dictionary.
+
+        # If set to True, the function will use the semitic compression
+        # alogorithm which reduces the size of the output dictionary.
         semitic: False
-        # 'version: v1' produces an old style .bin file
+
+        # 'version: v1' produces an old style .bin file.
         # 'version: v2' produces a new style .bin file, with no file size
-        #               limitation to 16 Mb and a smaller resulting size
-        version: "v2"
+        #               limitation to 16 Mb and a smaller resulting size.
+        version: v2
 
     # Concord command (Unitex manual, p.267)
     concord:
@@ -103,156 +118,333 @@ tools:
         # HTML file.
         #font: "Courier new"
         font: null
+
         # 'fontsize' specifies the font size to use if the output is an HTML
         # file.
         #fontsize: 12
         fontsize: null
-        # If 'only_ambiguous' is set to 'True', Unitex will only displays
-        # identical occurrences with ambiguous outputs, in text order
+
+        # If 'only_ambiguous' is set to True, the function will only displays
+        # identical occurrences with ambiguous outputs, in text order.
         only_ambiguous: False
-        # If 'only_matches' is set to 'True', Unitex will force empty right
-        # and left contexts. Moreover, if used with -t/–text, Concord will
-        # not surround matches with tabulations
+
+        # If 'only_matches' is set to True, the function will force empty right
+        # and left contexts. Moreover, if used with -t/–text, the function will
+        # not surround matches with tabulations.
         only_matches: False
+
         # 'left' specifies the number of characters on the left of the
         # occurrences. In Thai mode, this means the number of non-diacritic
         # characters. For both 'left' and 'right' parameters, you can add the
         # 's' character to stop at the first {S} tag. For instance, if you set
-        # 40s for the left value, the left context will end at 40 characters at
-        # most, less if the {S} tag is found before.
+        # '40s' for the left value, the left context will end at 40 characters
+        # at most, less if the {S} tag is found before.
+        # NOTE: the number must be quoted to avoid integer conversion.
         left: "0"
+
         # 'right' specifies the number of characters (non-diacritic ones in
-        # Thai mode) on the right of the occurrences (default=0). If the
-        # occurrence is shorter than this value, the concordance line is
-        # completed up to right. If the occurrence is longer than the length
-        # defined by right, it is nevertheless saved as whole.
+        # Thai mode) on the right of the occurrences. If the occurrence is
+        # shorter than this value, the concordance line is completed up to
+        # right. If the occurrence is longer than the length defined by right,
+        # it is nevertheless saved as whole.
+        # NOTE: the number must be quoted to avoid integer conversion.
         right: "0"
+
         # 'sort' specifies the sort order. Possible values are:
-        #   - TO: text order
-        #   - LC: first left context then center
-        #   - LC: first left context then right
-        #   - CL: first center then left context
-        #   - CR: first center then right context
-        #   - RL: first right context then left context
-        #   - RC: first right context then center
-        sort: "TO"
+        #   - TO: text order;
+        #   - LC: first left context then center;
+        #   - LC: first left context then right;
+        #   - CL: first center then left context;
+        #   - CR: first center then right context;
+        #   - RL: first right context then left context;
+        #   - RC: first right context then center.
+        #
+        sort: TO
+
         # 'format' specifies the output format. Possible values are:
-        #   - html: produces a concordance in HTML format
-        #   - text: produces a concordance in text format
+        #   - html: produces a concordance in HTML format;
+        #   - text: produces a concordance in text format;
         #   - glossanet: produces a concordance for GlossaNet in HTML format
         #                where occurrences are links described by the 'script'
-        #                parameter
+        #                parameter;
         #   - script: produces a HTML concordance file where occurrences are
-        #             links described by the 'script' parameter
+        #             links described by the 'script' parameter;
         #   - index: produces an index of the concordance, made of the content
         #            of the occurrences (with the grammar outputs, if any),
         #            preceded by the positions of the occurrences in the text
-        #            file given in characters
+        #            file given in characters;
         #   - uima: produces an index of the concordance relative to the
         #           original text file, before any Unitex operation. The
-        #           'offsets' parameter must be provided
+        #           'offsets' parameter must be provided;
         #   - prlg: produces a concordance for PRLG corpora where each line is
         #           prefixed by information extracted with Unxmlize’s 'prlg'
         #           option. You must provide both the 'offsets' and the
-        #           'unxmlize' parameter
-        #   - xml: produces xml index of the concordance
+        #           'unxmlize' parameter;
+        #   - xml: produces xml index of the concordance;
         #   - xml-with-header: produces an xml index of the concordance with
-        #                      full xml header
+        #                      full xml header;
         #   - axis: quite the same as 'index', but the numbers represent the
-        #           median character of each occurrence
+        #           median character of each occurrence;
         #   - xalign: another index file, used by the text alignment module.
         #             Each line is made of 3 integers X Y Z followed by the
         #             content of the occurrence. X is the sentence number,
         #             starting from 1. Y and Z are the starting and ending
         #             positions of the occurrence in the sentence, given in
-        #             characters
+        #             characters;
         #   - merge: indicates to the function that it is supposed to produce
         #            a modified version of the text and save it in a file. The
-        #            filename must be provided with the 'output' parameter
+        #            filename must be provided with the 'output' parameter.
         format: "text"
+
         # 'script' describes the links format for 'glossanet' and 'script'
         # output. For instance, if you use 'http://www.google.com/search?q=',
         # you will obtain a HTML concordance file where occurrences are
         # hyperlinks to Google queries.
         script: null
-        # 'offsets' provides the file produced by Tokenize’s output_offsets
+
+        # 'offsets' provides the file produced by tokenize’s output_offsets
         # option (needed by the 'uima' and the 'prlg' format).
         offsets: null
+
         # 'unxmlize' provides the file produced by Unxmlize’s 'prlg' option
         # (needed by the 'prlg' format).
         unxmlize: null
+
         # 'directory' indicates to the function that it must not work in the
         # same directory than <index> but in 'directory'
         directory: null
-        # 'thai' indicates that the input text is in Thai language
+
+        # If set to True, 'thai' indicates that the input text is in Thai
+        # language
         thai: False
 
+    # Dico command (Unitex manual, p.272)
     dico:
+        # 'morpho' lists dictionaries to load in morphological mode, if needed
+        # by some .fst2 dictionaries.
         morpho: null
+
+        # If set to True, 'korean' indicates that the input text is in korean
+        # language.
         korean: False
+
+        # If set to True, 'semitic' indicates that the input text is in a
+        # semitic language.
         semitic: False
+
+        # 'arabic_rules' specifies the Arabic typographic rule configuration
+        # file path.
         arabic_rules: null
+
+        # 'raw' specifies and alternative output file path containing both
+        # simple and compound words, without requiring a text directory.
         raw: null
 
+    # Extract command (Unitex manual, p.277)
     extract:
+        # If set to True, 'non_matching_sentences' indicates to the function
+        # to extract all sentences that don’t contain matching units.
         non_matching_sentences: False
 
+    # Fst2Txt command (Unitex manual, p.280)
     fst2txt:
+        # If set to True, the search will start at any position in the text,
+        # even before a space. This parameter should only be used to carry out
+        # morphological searches.
         start_on_space: False
+
+        # If set to True, the function will work in character by character
+        # tokenization mode. This is useful for languages like Thai.
         word_by_word: False
+
+        # If set to True, the function merge (instead of replace) transducer
+        # outputs with text inputs.
         merge: True
 
+    # Grf2Fst2 command (Unitex manual, p.280)
     grf2fst2:
+        # If set to True, 'loop_check' enables error (loop) checking.
         loop_check: False
+
+        # If set to True, tokenization will be done character by character.
         char_by_char: False
+
+        # 'pkgdir' specifies the repository directory to use (see section
+        # 5.2.2, p.99).
         pkgdir: null
+
+        # If set to True, no warning will be emitted when a graph matches the
+        # empty word.
         no_empty_graph_warning: False
+
+        # If set to True, the function checks wether the given graph can be
+        # considered as a valid sentence automaton or not.
         tfst_check: False
+
+        # If set to True, the function does not print the graph names.
         silent_grf_name: True
+
+        # 'named_repository' must be a list of X=Y sequences, separated by ‘;’,
+        # where X is the name of the repository denoted by pathname Y.
         named_repository: null
+
+        # If set to True, the graph is compiled in debug mode.
         debug: False
+
+        # If set to True, the function checks output validity to avoid
+        # malformed variable expressions.
         check_variables: True
 
+    # Locate command (Unitex manual, p.283)
     locate:
+        # If set to True, the search will start at any position in the text,
+        # even before a space. This parameter should only be used to carry out
+        # morphological searches.
         start_on_space: False
+
+        # If set to True, tokenization will be done character by character.
         char_by_char: False
+
+        # 'morpho' lists dictionaries to load in morphological mode, if needed
+        # by some .fst2 dictionaries.
         morpho: null
+
+        # If set to True, 'korean' indicates that the input text is in korean
+        # language.
         korean: False
+
+        # 'arabic_rules' specifies the Arabic typographic rule configuration
+        # file path.
         arabic_rules: null
+
+        # If not null, the function puts produced files in 'sntdir' instead
+        # of the text directory. Note that 'sntdir' must end with a file
+        # separator (\ or /).
         sntdir: null
+
+        # This parameter specifies the negation operator to be used in Locate
+        # patterns. The two legal values for X are 'minus' and 'tilde'.
         negation_operator: "tilde"
+
+        # If not null, the function stops after the first N matches. By
+        # default, the function searches for all matches.
         number_of_matches: null
+
+        # 'stop_token_count' is a list of two integers. If specified, the
+        # function will emit a warning after 'int_1' iterations on a token and
+        # stops after 'int_2' iterations.
+        #stop_token_count=[3,5]
         stop_token_count: null
+
+        # Possible values for 'match_mode' are: 'longest', 'shortest' and 'all'
         match_mode: "longest"
+
+        # Possible values for 'output_mode' are:
+        #   - 'ignore': the transducer outputs will be ignored;
+        #   - 'merge': the transducer outputs will be merged with the input 
+        #              text;
+        #   - 'replace': the transducer outputs replaces the matching text.
         output_mode: "merge"
+
+        # If set to True, this parameter enables special characters protection
+        # when 'merge' or 'replace' mode is used. This is useful when Locate is
+        # called by Dico in order to avoid producing bad lines like:
+        #    3,14,.PI.NUM
         protect_dic_chars: True
+
+        # If not null, this parameter must be a list of two strings, where:
+        # 'str_1' is a variable name whith content 'str_2'.
+        # NOTE: 'str_2' must be ASCII.
         variable: null
+
+        # If set to True, the function allows the production of several
+        # matches with same input but different outputs. If False, in case of
+        # ambiguous outputs, one will be arbitrarily chosen and kept,
+        # depending on the internal state of the function.
         ambiguous_outputs: True
+
+        # Possible values are:
+        #   - 'exit': kills the function if variable has an empty content;
+        #   - 'ignore': ignore the errors;
+        #   - 'backtrack': stop the current path exploration.
         variable_error: "ignore"
 
+    # Normalize command (Unitex manual, p.287)
     normalize:
+        # If set to True, every separator sequence will be turned into a single
+        # space.
         no_carriage_return: False
+
+        # 'input_offsets' specifies the base offset file path to be used.
         input_offsets: null
+
+        # 'output_offsets' specifies the offset file path to be produced.
         output_offsets: null
-        no_separator_normalization: False
+
+        # 'replacement_rules' specifies the normalization rule file to be used.
         replacement_rules: null
 
+        # If set to True, the function only applies replacement rules specified
+        # with the 'replacement_rules' parameter.
+        no_separator_normalization: False
+
+    # SortTxt command (Unitex manual, p.291)
     sort_txt:
+        # If set to True, the function keeps duplicate lines.
         duplicates: False
-        revers: False
+
+        # If set to True, the function sorts lines in descending order.
+        reverse: False
+
+        # The 'sort_order' parameter specifies the file path of the
+        # 'Alphabet_sort.txt' file or any other file defining the alphabet
+        # order.
         sort_order: null
+
+        # If not null, the function backups the number of lines of the result
+        # file in the file specified by this parameter.
         line_info: null
+
+        # If set to True, 'thai' indicates that the input text is in Thai
+        # language
         thai: False
+
+        # If set to True, the function makes two entries XXX,YYY.ZZZ:A and
+        # XXX,YYY.ZZZ:B become a single entry: XXX,YYY.ZZZ:A:B
         factorize_inflectional_codes: False
 
+    # Tokenize command (Unitex manual, p.294)
     tokenize:
+        # If set to True, the function is applied character by character, with
+        # the exceptions of the sentence delimiter {S}, the stop marker {STOP}
+        # and lexical tags like {today,.ADV} which are considered to be single
+        # units.
         char_by_char: False
+
+        # 'tokens' specifies the path of the 'tokens.txt' file to loa and
+        # modify, instead of creating a new one from scratch.
         tokens: null
+
+        # 'input_offsets' specifies the base offset file path to be used.
         input_offsets: null
+
+        # 'output_offsets' specifies the offset file path to be produced.
         output_offsets: null
 
-    txt2fst:
+    # Txt2Tfst command (Unitex manual, p.296)
+    txt2tfst:
+        # If set to True, 'clean' indicates whether the rule of conservation of
+        # the best paths (see section 7.2.4) should be applied.
         clean: False
+
+        # This parameter specifies the file path of a normalization grammar
+        # that is to be applied to the text automaton.
         normalization_grammar: null
+
+        # This parameter specifies the Elag tagset file to use to normalize
+        # dictionary entries.
         tagset: null
+
+        # If set to True, 'korean' indicates that the input text is in korean
+        # language.
         korean: False
