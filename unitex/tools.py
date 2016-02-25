@@ -39,7 +39,7 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
             - UnitexConstants.DELAF (inflected);
             - UnitexConstants.DELAS (non inflected).
 
-        alphabet [str]   -- the alphabet file path.
+        alphabet [str] -- the alphabet file path.
 
     Keyword arguments:
         strict [bool] -- strict syntax checking against unprotected dot
@@ -309,7 +309,7 @@ def concord(index, alphabet, **kwargs):
             unxmlize [str] -- file produced by Unxmlize’s 'prlg' option
                 (needed by the 'prlg' format).
 
-            output [str]   -- the output filename (needed by the 'merge'
+            output [str] -- the output filename (needed by the 'merge'
                 format).
 
       - Other options:
@@ -1098,7 +1098,7 @@ def tokenize(text, alphabet, **kwargs):
     All produced files are saved in the text directory
 
     Arguments:
-        text [str]     -- the text file to tokenize (.snt format).
+        text [str] -- the text file to tokenize (.snt format).
 
         alphabet [str] -- the alphabet file.
 
@@ -1172,7 +1172,7 @@ def txt2tfst(text, alphabet, **kwargs):
     directory of the text. Another file named text.tind is also produced.
 
     Arguments:
-        text [str]  -- the path to the text file in .snt format.
+        text [str] -- the path to the text file in .snt format.
 
         alphabet [str] -- the alphabet file.
 
