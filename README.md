@@ -1,4 +1,4 @@
-# Python bindings for Unitex/GramLab
+# Python bindings for [Unitex/GramLab](http://www-igm.univ-mlv.fr/~unitex/)
 
 This package provides access to the Unitex C++ Library.
 
@@ -217,5 +217,5 @@ Example:
 
 ## Useful links
 
-* The **Unitex/GramLab** corpus processor: [homepage](http://www-igm.univ-mlv.fr/~unitex/) and [documentation](http://igm.univ-mlv.fr/~unitex/index.php?page=4)
+* The **Unitex/GramLab** corpus processor: [documentation](http://igm.univ-mlv.fr/~unitex/index.php?page=4)
 * The **Unitex C++/Java library**: [documentation](http://unitex-library-fr.readthedocs.org/)
