@@ -34,6 +34,10 @@ def escape(sequence):
 
 
 class UnitexProcessor(object):
+    """
+    This class hides mots of the Unitex (pre-)processing in order to
+    facilitate his usage.
+    """
 
     def __init__(self, config):
         self.__options = None
@@ -294,6 +298,28 @@ class UnitexProcessor(object):
         return result
 
     def open(self, path, mode="srtl", tagged=False):
+        """
+        This function opens the text in a Unitex way. It means that it
+        applies all the preprocessing operations: normalization of
+        separators, splitting into sentences, normalization of
+        non-ambiguous forms, tokenization and application of
+        dictionaries.
+
+        Arguments:
+            path [str] -- the input corpus file path.
+
+            mode [str] -- this parameter (de)activates all the
+                pre-processing operations. Possible values are: 's' for
+                sentence segmentation, 'r' to apply Replace.fst2, 't'
+                to tokenize and 'l' to lexicalize (apply the
+                dictionaries). For instance, if you want to segment,
+                tokenize and lexicalize, the mode will be 'stl'.
+
+            tagged [bool] -- this parameter specifies if the input text
+                is tagged or not. Tf True, this parameter deactivate two
+                preprocessing options: sentence segmentation and
+                Replace.fst2 application.
+        """
         directory, filename = os.path.split(path)
         name, extension = os.path.splitext(filename)
 
@@ -326,6 +352,23 @@ class UnitexProcessor(object):
             self._lexicalize()
 
     def close(self, clean=True, free=False):
+        """
+        This function resets all the internal parameters used by the
+        Unitex processor such as the working directory (*_snt) and the
+        normalized text file (*.snt).
+
+        Arguments:
+            clean [bool] -- if set to False, all the files created by
+                the Unitex processor will be kept on the disk or the
+                virtual filesystem if the virtualization is activated.
+                This option must be activated for debugging purposes
+                only (default: True).
+
+            free [bool] -- if persistence is activated, by setting this
+                option to True, all the persisted resources will be
+                freed from memory. You should use this option when all
+                your corpus are processed (default: False).
+        """
         if clean is True:
             self.clean()
 
@@ -337,8 +380,26 @@ class UnitexProcessor(object):
         self.__dir = None
 
     def tag(self, grammar, output, **kwargs):
+        """
+        This function tags the current opened corpus.
+
+        Arguments:
+            grammar [str] -- fst2 transducer used to tag the corpus.
+
+            output [str] -- the output file path.
+
+        Keyword arguments:
+            xml [bool] -- if set to True, the resulting file will
+                contain the XML headers.
+
+            match_mode [str] -- Possible values are:
+                - UnitexConstants.MATCH_MODE_SHORTEST
+                - UnitexConstants.MATCH_MODE_LONGEST (default)
+        """
         xml = kwargs.get("xml", False)
         match_mode = kwargs.get("match_mode", UnitexConstants.MATCH_MODE_LONGEST)
+        if match_mode not in (UnitexConstants.MATCH_MODE_LONGEST, UnitexConstants.MATCH_MODE_SHORTEST):
+            raise UnitexException("Invalid match mode '%s'...")
         output_mode = UnitexConstants.OUTPUT_MODE_MERGE
 
         index = self._locate(grammar, match_mode, output_mode)
