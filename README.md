@@ -217,5 +217,5 @@ Example:
 
 ## Useful links
 
-* The **Unitex/GramLab** corpus processor: [homepage](http://www-igm.univ-mlv.fr/~unitex/) and [documentation](http://igm.univ-mlv.fr/~unitex/UnitexManual3.1.pdf)
+* The **Unitex/GramLab** corpus processor: [homepage](http://www-igm.univ-mlv.fr/~unitex/) and [documentation](http://igm.univ-mlv.fr/~unitex/index.php?page=4)
 * The **Unitex C++/Java library**: [documentation](http://unitex-library-fr.readthedocs.org/)
