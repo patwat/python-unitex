@@ -82,7 +82,7 @@ OK
 
 The documentation is accessible from any Python interactive shell using the command `help()`.
 
-```python
+```
 In [1]: import _unitex
 
 In [2]: help(_unitex.unitex_tool)
