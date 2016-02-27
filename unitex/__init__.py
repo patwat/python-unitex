@@ -5,10 +5,7 @@ import logging
 import os
 import sys
 
-from _unitex import unitex_enable_stdout,\
-                    unitex_disable_stdout,\
-                    unitex_enable_stderr,\
-                    unitex_disable_stderr
+import _unitex
 
 
 
@@ -114,12 +111,13 @@ def enable_stdout():
     This function enables Unitex standard output. This is the default
     but should be used for debug purposes only.
 
+    No argument.
+
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Enabling standard output...")
-    ret = unitex_enable_stdout()
+    ret = _unitex.unitex_enable_stdout()
     if ret is False:
         _LOGGER.error("Enabling standard output failed!")
 
@@ -131,12 +129,13 @@ def disable_stdout():
     output consistency (i.e. avoid output mixing between threads) and to
     improve performances.
 
+    No argument.
+
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Disabling standard output...")
-    ret = unitex_disable_stdout()
+    ret = _unitex.unitex_disable_stdout()
     if ret is False:
         _LOGGER.error("Disabling standard output failed!")
 
@@ -147,12 +146,13 @@ def enable_stderr():
     This function enables Unitex error output. This is the default but
     should be used for debug purposes only.
 
+    No argument.
+
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Enabling error output...")
-    ret = unitex_enable_stderr()
+    ret = _unitex.unitex_enable_stderr()
     if ret is False:
         _LOGGER.error("Enabling error output failed!")
 
@@ -164,12 +164,13 @@ def disable_stderr():
     output consistency (i.e. avoid output mixing between threads) and to
     improve performances.
 
+    No argument.
+
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Disabling error output...")
-    ret = unitex_disable_stderr()
+    ret = _unitex.unitex_disable_stderr()
     if ret is False:
         _LOGGER.error("Disabling error output failed!")
 

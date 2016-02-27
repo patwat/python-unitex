@@ -78,6 +78,26 @@ Ran 2 tests in 0.045s
 OK
 ```
 
+## Documentation
+
+The documentation is accessible from any Python interactive shell using the command `help()`.
+
+```python
+In [1]: import _unitex
+
+In [2]: help(_unitex.unitex_tool)
+Help on built-in function unitex_tool in module _unitex:
+
+unitex_tool(...)
+    This function launches an Unitex command.
+
+    Positional arguments (length: 1):
+        0 [str] -- the Unitex command.
+
+    Return [bool]:
+        True if the command succeeds, False otherwise.
+```
+
 ## Getting started
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**

@@ -64,9 +64,9 @@ class UnitexProcessor(object):
 
         init_log_system(verbose, debug, log)
 
-        self.load()
+        self._load()
 
-    def load(self):
+    def _load(self):
         if self.__options["persistence"] is False:
             return
         self.__persisted_objects = []
@@ -111,7 +111,7 @@ class UnitexProcessor(object):
 
             self.__options["resources"]["dictionaries"] = _objects
 
-    def free(self):
+    def _free(self):
         if self.__persisted_objects is None:
             return
 
@@ -123,7 +123,7 @@ class UnitexProcessor(object):
             elif _type == UnitexConstants.ALPHABET:
                 free_persistent_alphabet(_object)
 
-    def clean(self):
+    def _clean(self):
         if self.__txt is None:
             _LOGGER.error("Unable to clean processor. No file opened!")
             return
@@ -370,10 +370,10 @@ class UnitexProcessor(object):
                 your corpus are processed (default: False).
         """
         if clean is True:
-            self.clean()
+            self._clean()
 
         if free is True:
-            self.free()
+            self._free()
 
         self.__txt = None
         self.__snt = None

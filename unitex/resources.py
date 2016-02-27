@@ -3,15 +3,7 @@
 
 import logging
 
-from _unitex import unitex_load_persistent_dictionary,\
-                    unitex_is_persistent_dictionary,\
-                    unitex_free_persistent_dictionary,\
-                    unitex_load_persistent_fst2,\
-                    unitex_is_persistent_fst2,\
-                    unitex_free_persistent_fst2,\
-                    unitex_load_persistent_alphabet,\
-                    unitex_is_persistent_alphabet,\
-                    unitex_free_persistent_alphabet
+import _unitex
 
 from unitex import *
 
@@ -34,7 +26,7 @@ def load_persistent_dictionary(path):
         function.
     """
     _LOGGER.info("Load persistent dictionary '%s'..." % path)
-    return unitex_load_persistent_dictionary(path)
+    return _unitex.unitex_load_persistent_dictionary(path)
 
 def is_persistent_dictionary(path):
     """
@@ -45,9 +37,9 @@ def is_persistent_dictionary(path):
         path [str] -- the file path to check.
 
     Return [bool]:
-        True if the dictionary is persitent otherwise False.
+        True if the dictionary is persistent, False otherwise.
     """
-    return unitex_is_persistent_dictionary(path)
+    return _unitex.unitex_is_persistent_dictionary(path)
 
 def free_persistent_dictionary(path):
     """
@@ -58,7 +50,7 @@ def free_persistent_dictionary(path):
                       'load_persistent_dictionary' function.
     """
     _LOGGER.info("Free persistent dictionary '%s'..." % path)
-    unitex_free_persistent_dictionary(path)
+    _unitex.unitex_free_persistent_dictionary(path)
 
 
 
@@ -77,7 +69,7 @@ def load_persistent_fst2(path):
         function.
     """
     _LOGGER.info("Load persistent fst2 '%s'..." % path)
-    return unitex_load_persistent_fst2(path)
+    return _unitex.unitex_load_persistent_fst2(path)
 
 def is_persistent_fst2(path):
     """
@@ -87,9 +79,9 @@ def is_persistent_fst2(path):
         path [str] -- the file path to check.
 
     Return [bool]:
-        True if the fst2 is persitent otherwise False.
+        True if the fst2 is persistent, False otherwise.
     """
-    return unitex_is_persistent_fst2(path)
+    return _unitex.unitex_is_persistent_fst2(path)
 
 def free_persistent_fst2(path):
     """
@@ -100,7 +92,7 @@ def free_persistent_fst2(path):
                       'load_persistent_fst2' function.
     """
     _LOGGER.info("Free persistent fst2 '%s'..." % path)
-    unitex_free_persistent_fst2(path)
+    _unitex.unitex_free_persistent_fst2(path)
 
 
 
@@ -119,7 +111,7 @@ def load_persistent_alphabet(path):
         function.
     """
     _LOGGER.info("Load persistent alphabet '%s'..." % path)
-    return unitex_load_persistent_alphabet(path)
+    return _unitex.unitex_load_persistent_alphabet(path)
 
 def is_persistent_alphabet(path):
     """
@@ -130,9 +122,9 @@ def is_persistent_alphabet(path):
         path [str] -- the file path to check.
 
     Return [bool]:
-        True if the alphabet is persitent otherwise False.
+        True if the alphabet is persistent, False otherwise.
     """
-    return unitex_is_persistent_alphabet(path)
+    return _unitex.unitex_is_persistent_alphabet(path)
 
 def free_persistent_alphabet(path):
     """
@@ -143,4 +135,4 @@ def free_persistent_alphabet(path):
                       'load_persistent_alphabet' function.
     """
     _LOGGER.info("Free persistent alphabet '%s'..." % path)
-    unitex_free_persistent_alphabet(path)
+    _unitex.unitex_free_persistent_alphabet(path)

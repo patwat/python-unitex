@@ -4,15 +4,7 @@
 import logging
 import os
 
-from _unitex import unitex_cp,\
-                    unitex_rm,\
-                    unitex_mv,\
-                    unitex_mkdir,\
-                    unitex_rmdir,\
-                    unitex_ls,\
-                    unitex_write_file,\
-                    unitex_append_to_file,\
-                    unitex_read_file
+import _unitex
 
 from unitex import *
 
@@ -23,7 +15,7 @@ _LOGGER = logging.getLogger(__name__)
 def cp(source_path, target_path):
     """
     This function copies a file. Both pathes can be on the virtual
-    filesystem or the disk filesystem. Therefor, this function can be
+    filesystem or the disk filesystem. Therefore, this function can be
     used to virtualize a file or to dump a virtual file.
 
     Arguments:
@@ -31,11 +23,10 @@ def cp(source_path, target_path):
         target_path [str] -- target file path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Copying file '%s' to '%s'..." % (source_path, target_path))
-    ret = unitex_cp(source_path, target_path)
+    ret = _unitex.unitex_cp(source_path, target_path)
     if ret is False:
         _LOGGER.info("[FAILED!]")
 
@@ -50,11 +41,10 @@ def rm(path):
         path [str] -- file path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Removing file '%s'..." % path)
-    ret = unitex_rm(path)
+    ret = _unitex.unitex_rm(path)
     if ret is False:
         _LOGGER.info("[FAILED!]")
 
@@ -70,11 +60,10 @@ def mv(old_path, new_path):
         new_path [str] -- new file path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Moving file '%s' to '%s'..." % (old_path, new_path))
-    ret = unitex_mv(old_path, new_path)
+    ret = _unitex.unitex_mv(old_path, new_path)
     if ret is False:
         _LOGGER.info("[FAILED!]")
 
@@ -88,11 +77,10 @@ def mkdir(path):
         path [str] -- directory path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Creating directory '%s'..." % path)
-    ret = unitex_mkdir(path)
+    ret = _unitex.unitex_mkdir(path)
     if ret is False:
         _LOGGER.info("[FAILED!]")
 
@@ -100,17 +88,16 @@ def mkdir(path):
 
 def rmdir(path):
     """
-    This function removes a directory on the disk.
+    This function removes a directory from the disk.
 
     Argument:
         path [str] -- directory path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if it succeeds, False otherwise.
     """
     _LOGGER.info("Removing directory '%s'..." % path)
-    ret = unitex_rmdir(path)
+    ret = _unitex.unitex_rmdir(path)
     if ret is False:
         _LOGGER.info("[FAILED!]")
 
@@ -128,7 +115,7 @@ def ls(path):
         directory is not empty and an empty list otherwise.
     """
     _LOGGER.info("Listing directory '%s'..." % path)
-    return unitex_ls(path)
+    return _unitex.unitex_ls(path)
 
 def exists(path):
     """
@@ -139,8 +126,7 @@ def exists(path):
         path [str] -- directory path
 
     Return [bool]:
-        The function returns 'True' if it succeeds and 'False'
-        otherwise.
+        True if the path exists, False otherwise.
     """
     if path.startswith(UnitexConstants.VFS_PREFIX) is False:
         return os.path.exists(path)
@@ -186,13 +172,13 @@ class UnitexFile(object):
 
         if self.__mode == "w":
             bom = 1 if self.__use_bom is True else 0
-            unitex_write_file(self.__file, data, bom)
+            _unitex.unitex_write_file(self.__file, data, bom)
         else:
-            unitex_append_to_file(self.__file, data)
+            _unitex.unitex_append_to_file(self.__file, data)
 
     def read(self):
         if self.__file is None: 
             raise UnitexException("You must open a file before reading...")
         if self.__mode != "r":
             raise UnitexException("File '%s' is opened in write/append mode..." % self.__file)
-        return unitex_read_file(self.__file)
+        return _unitex.unitex_read_file(self.__file)

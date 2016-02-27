@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# NOTE: The documentation adapted for each function is extracted from
-#       the Unitex manual.
+# NOTE: The documentation is somehow a copy/paste from the Unitex
+#       manual.
 
 import logging
 
-from _unitex import unitex_tool
+import _unitex
 
 from unitex import *
 from unitex.config import CheckDicOptions,\
@@ -78,7 +78,7 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
 
     _LOGGER.info("Checking dic '%s'" % dictionary)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -148,7 +148,7 @@ def compress(dictionary, **kwargs):
 
     _LOGGER.info("Compressing dic '%s'" % dictionary)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -168,7 +168,7 @@ def concord(index, alphabet, **kwargs):
     and a text file with the name defined by the user of the function if
     the function has constructed a modified version of the text.
 
-    In --html mode, the occurrence is coded as a hypertext link. The
+    In html mode, the occurrence is coded as a hypertext link. The
     reference associated to this link is of the form <a href="X Y Z">.
     X et Y represent the beginning and ending positions of the
     occurrence in characters in the file text_name.snt. Z represents the
@@ -400,7 +400,7 @@ def concord(index, alphabet, **kwargs):
 
     _LOGGER.info("Create concordance for '%s'" % index)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -491,7 +491,7 @@ def dico(dictionaries, text, alphabet, **kwargs):
 
     _LOGGER.info("Applying dictionaries")
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -544,7 +544,7 @@ def extract(text, output, index, **kwargs):
 
     _LOGGER.info("Extracting sentences")
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -618,7 +618,7 @@ def fst2txt(grammar, text, alphabet, **kwargs):
 
     _LOGGER.info("Applying grammar '%s'..." % grammar)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -720,7 +720,7 @@ def grf2fst2(grammar, alphabet, **kwargs):
 
     _LOGGER.info("Compiling grammar '%s'..." % grammar)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -908,7 +908,7 @@ def locate(grammar, text, alphabet, **kwargs):
 
     _LOGGER.info("Locating pattern '%s'..." % grammar)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -985,7 +985,7 @@ def normalize(text, **kwargs):
 
     _LOGGER.info("Normalizing text '%s'..." % text)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -1056,7 +1056,7 @@ def sort_txt(text, **kwargs):
 
     _LOGGER.info("Sorting file '%s'..." % text)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -1153,7 +1153,7 @@ def tokenize(text, alphabet, **kwargs):
 
     _LOGGER.info("Tokenizing file '%s'..." % text)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
 
@@ -1221,6 +1221,6 @@ def txt2tfst(text, alphabet, **kwargs):
 
     _LOGGER.info("Building text automaton for '%s'..." % text)
     _LOGGER.debug("Command: %s", command)
-    ret = unitex_tool(command)
+    ret = _unitex.unitex_tool(command)
 
     return ret
