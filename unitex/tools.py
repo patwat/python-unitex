@@ -753,86 +753,88 @@ def locate(grammar, text, alphabet, **kwargs):
     recognized units within the text are saved in a file called
     concord.n. These two files are stored in the directory of the text.
 
-    Arguments:
-        grammar [str] -- the fst2 to apply on the text.
+    *Arguments:*
 
-        text [str] -- the text file, with extension .snt.
+    - **grammar [str]** -- the fst2 to apply on the text.
 
-        alphabet [str] -- the alphabet file of the language of the text.
+    - **text [str]** -- the text file, with extension .snt.
 
-    Keyword arguments:
-      - Generic options:
-            start_on_space [bool] -- this parameter indicates that the
-                search will start at any position in the text, even
-                before a space. This parameter should only be used to
-                carry out morphological searches (default: False).
+    - **alphabet [str]** -- the alphabet file of the language of the
+      text.
 
-            char_by_char [bool] -- works in character by character
-                tokenization mode. This is useful for languages like
-                Thai (default: False).
+    *Keyword arguments:*
 
-            morpho [list(str)] -- this optional argument indicates which
-                morphological mode dictionaries are to be used, if
-                needed by some .fst2 dictionaries. The argument is a
-                list of dictionary path (bin format).
-
-            korean [bool] -- specify the dictionary is in korean
-                (default: False).
-
-            arabic_rules [str] -- specifies the Arabic typographic rule
-                configuration file path.
-
-            sntdir [str] -- puts produced files in 'sntdir' instead of
-                the text directory. Note that 'sntdir' must end with a
-                file separator (\ or /).
-
-            negation_operator [str] -- specifies the negation operator
-                to be used in Locate patterns. The two legal values for
-                X are minus and tilde (default). Using minus provides
-                backward compatibility with previous versions of Unitex.
-
-      - Search limit options:
-            number_of_matches [int] -- stops after the first N matches
-                (default: all matches).
-
-      - Maximum iterations per token options:
-            stop_token_count [list(int_1, int_2)] -- emits a warning
-                after 'int_1' iterations on a token and stops after
-                'int_2' iterations.
-
-      - Matching mode options:
-            match_mode [str] -- Possible values are:
-                - UnitexConstants.MATCH_MODE_SHORTEST
-                - UnitexConstants.MATCH_MODE_LONGEST (default)
-                - UnitexConstants.MATCH_MODE_ALL
-
-      - Output options:
-            output_mode [str] -- Possible values are:
-                - UnitexConstants.OUTPUT_MODE_IGNORE (default)
-                - UnitexConstants.OUTPUT_MODE_MERGE
-                - UnitexConstants.OUTPUT_MODE_REPLACE
-
-            protect_dic_chars [bool] -- when 'merge' or 'replace' mode
-                is used, this option protects some input characters with
-                a backslash. This is useful when Locate is called by
-                'dico' in order to avoid producing bad lines like:
-                3,14,.PI.NUM (default: True).
-
-            variable [list(str_1, str_2)] -- sets an output variable
-                named str_1 with content str_2. Note that str_2 must be
-                ASCII.
-
-      - Ambiguous output options:
-            ambiguous_outputs [bool] -- allows the production of several
-                matches with same input but different outputs. If False,
-                in case of ambiguous outputs, one will be arbitrarily
-                chosen and kept, depending on the internal state of the
-                function (default: True).
-
-            variable_error [str] -- Possible values are:
-                - UnitexConstants.ON_ERROR_EXIT
-                - UnitexConstants.ON_ERROR_IGNORE (default)
-                - UnitexConstants.ON_ERROR_BACKTRACK
+    - *Generic options*:
+    
+      - **start_on_space [bool]** -- this parameter indicates that the
+        search will start at any position in the text, even before a
+        space. This parameter should only be used to carry out
+        morphological searches (default: False).
+    
+      - **char_by_char [bool]** -- works in character by character
+        tokenization mode. This is useful for languages like Thai
+        (default: False).
+    
+      - **morpho [list(str)]** -- this optional argument indicates which
+        morphological mode dictionaries are to be used, if needed by
+        some .fst2 dictionaries. The argument is a list of dictionary
+        path (bin format).
+    
+      - **korean [bool]** -- specify the dictionary is in korean
+        (default: False).
+    
+      - **arabic_rules [str]** -- specifies the Arabic typographic rule
+        configuration file path.
+    
+      - **sntdir [str]** -- puts produced files in 'sntdir' instead of
+        the text directory. Note that 'sntdir' must end with a file
+        separator (\ or /).
+    
+      - **negation_operator [str]** -- specifies the negation operator
+        to be used in Locate patterns. The two legal values for X are
+        minus and tilde (default). Using minus provides backward
+        compatibility with previous versions of Unitex.
+    
+    - *Search limit options:*
+      - **number_of_matches [int]** -- stops after the first N matches
+        (default: all matches).
+    
+    - *Maximum iterations per token options:*
+      - **stop_token_count [list(int_1, int_2)]** -- emits a warning
+        after 'int_1' iterations on a token and stops after 'int_2'
+        iterations.
+    
+    - *Matching mode options:*
+      - **match_mode [str]** -- Possible values are:
+        - UnitexConstants.MATCH_MODE_SHORTEST
+        - UnitexConstants.MATCH_MODE_LONGEST (default)
+        - UnitexConstants.MATCH_MODE_ALL
+    
+    - Output options:
+      - **output_mode [str]** -- Possible values are:
+        - UnitexConstants.OUTPUT_MODE_IGNORE (default)
+        - UnitexConstants.OUTPUT_MODE_MERGE
+        - UnitexConstants.OUTPUT_MODE_REPLACE
+    
+      - **protect_dic_chars [bool]** -- when 'merge' or 'replace' mode
+        is used, this option protects some input characters with a
+        backslash. This is useful when Locate is called by 'dico' in
+        order to avoid producing bad lines like: 3,14,.PI.NUM
+        (default: True).
+    
+      - **variable [list(str_1, str_2)]** -- sets an output variable
+        named str_1 with content str_2. Note that str_2 must be ASCII.
+    
+    - *Ambiguous output options:*
+      - **ambiguous_outputs [bool]** -- allows the production of several
+        matches with same input but different outputs. If False, in case
+        of ambiguous outputs, one will be arbitrarily chosen and kept,
+        depending on the internal state of the function (default: True).
+      
+      - **variable_error [str]** -- Possible values are:
+        - UnitexConstants.ON_ERROR_EXIT
+        - UnitexConstants.ON_ERROR_IGNORE (default)
+        - UnitexConstants.ON_ERROR_BACKTRACK
 
     *Return [bool]:*
 
@@ -943,32 +945,34 @@ def normalize(text, **kwargs):
     delimiter {S}, the stop marker {STOP}, or valid entries in the DELAF
     format ({aujourd’hui,.ADV}).
 
-    NOTE: the function creates a modified version of the text that is
-          saved in a file with extension .snt.
+    **NOTE:** the function creates a modified version of the text that is
+    saved in a file with extension .snt.
 
-    WARNING: if you specify a normalization rule file, its rules will be
-             applied prior to anything else. So, you have to be very
-             careful if you manipulate separators in such rules.
+    **WARNING:** if you specify a normalization rule file, its rules
+    will be applied prior to anything else. So, you have to be very
+    careful if you manipulate separators in such rules.
 
-    Arguments:
-        text [str] -- the text file to normalize.
+    *Arguments:*
 
-    Keyword arguments:
-        no_carriage_return [bool] -- every separator sequence will be
-            turned into a single space (default: False).
+    - **text [str]** -- the text file to normalize.
 
-        input_offsets [str] -- base offset file to be used.
+    *Keyword arguments:*
 
-        output_offsets [str] -- offset file to be produced.
-
-        replacement_rules [str] -- specifies the normalization rule file
-            to be used. See section 14.13.6 for details about the format
-            of this file. By default, the function only replaces { and }
-            by [ and ].
-
-        no_separator_normalization [bool] -- only applies replacement
-            rules specified with the 'replacement_rules' option
-            (default: False).
+    - ** no_carriage_return [bool]** -- every separator sequence will be
+      turned into a single space (default: False).
+    
+    - **input_offsets [str]** -- base offset file to be used.
+    
+    - **output_offsets [str]** -- offset file to be produced.
+    
+    - **replacement_rules [str]** -- specifies the normalization rule
+      file to be used. See section 14.13.6 for details about the format
+      of this file. By default, the function only replaces { and } by
+      [ and ].
+    
+    - **no_separator_normalization [bool]** -- only applies replacement
+      rules specified with the 'replacement_rules' option
+      (default: False).
 
     *Return [bool]:*
 
@@ -1019,26 +1023,28 @@ def sort_txt(text, **kwargs):
     performed in the order of Unicode characters, removing duplicate
     lines.
 
-    Arguments:
-        text [str] -- the text file to sort.
+    *Arguments:*
 
-    Keyword arguments:
-        duplicates [bool] -- keep duplicate lines (default: False).
+    - **text [str]** -- the text file to sort.
 
-        reverse [bool] -- sort in descending order (default: False).
+    *Keyword arguments:*
 
-        sort_order [str] -- sorts using the alphabet order defined in
-            this file. If this parameter is missing, the sorting is done
-            according to the order of Unicode characters.
-
-        line_info [str] -- backup the number of lines of the result file
-            in this file.
-
-        thai [bool] -- option for sorting Thai text (default: False).
-
-        factorize_inflectional_codes [bool] -- makes two entries X,Y.Z:A
-            and X,Y.Z:B become a single entry X,Y.Z:A:B
-            (default: False).
+    - **duplicates [bool]** -- keep duplicate lines (default: False).
+    
+    - **reverse [bool]** -- sort in descending order (default: False).
+    
+    - **sort_order [str]** -- sorts using the alphabet order defined in
+      this file. If this parameter is missing, the sorting is done
+      according to the order of Unicode characters.
+    
+    - **line_info [str]** -- backup the number of lines of the result
+      file in this file.
+    
+    - **thai [bool]** -- option for sorting Thai text (default: False).
+    
+    - **factorize_inflectional_codes [bool]** -- makes two entries
+      X,Y.Z:A and X,Y.Z:B become a single entry X,Y.Z:A:B
+      (default: False).
 
     *Return [bool]:*
 
@@ -1092,50 +1098,50 @@ def tokenize(text, alphabet, **kwargs):
     in a binary file named text.cod. The function also produces the
     following four files:
 
-        - tok_by_freq.txt: text file containing the units sorted by
-                           frequency.
-        - tok_by_alph.txt: text file containing the units sorted
-                           alphabetically.
-        - stats.n: text file containing information on the number of
-                   sentence separators, the number of units, the number
-                   of simple words and the number of numbers.
-        - enter.pos: binary file containing the list of newline
-                     positions in the text. The coded representation of
-                     the text does not contain newlines, but spaces.
-                     Since a newline counts as two characters and a
-                     space as a single one, it is necessary to know
-                     where newlines occur in the text when the positions
-                     of occurrences located by the 'locate' function are
-                     to be synchronized with the text file. File
-                     enter.pos is used for this by the 'concord'
-                     function. Thanks to this, when clicking on an
-                     occurrence in a concordance, it is correctly
-                     selected in the text. File enter.pos is a binary
-                     file containing the list of the positions of
-                     newlines in the text.
+    - tok_by_freq.txt: text file containing the units sorted by
+      frequency.
+    - tok_by_alph.txt: text file containing the units sorted
+      alphabetically.
+    - stats.n: text file containing information on the number of
+      sentence separators, the number of units, the number of simple
+      words and the number of numbers.
+    - enter.pos: binary file containing the list of newline positions in
+      the text. The coded representation of the text does not contain
+      newlines, but spaces. Since a newline counts as two characters and
+      a space as a single one, it is necessary to know where newlines
+      occur in the text when the positions of occurrences located by the
+      'locate' function are to be synchronized with the text file. File
+      enter.pos is used for this by the 'concord' function. Thanks to
+      this, when clicking on an occurrence in a concordance, it is
+      correctly selected in the text. File enter.pos is a binary file
+      containing the list of the positions of newlines in the text.
 
     All produced files are saved in the text directory
 
-    Arguments:
-        text [str] -- the text file to tokenize (.snt format).
+    *Arguments:*
 
-        alphabet [str] -- the alphabet file.
+    - **text [str]** -- the text file to tokenize (.snt format).
 
-    Keyword arguments:
-      - Generic options:
-            char_by_char [bool] -- indicates whether the function is
-                applied character by character, with the exceptions of
-                the sentence delimiter {S}, the stop marker {STOP} and
-                lexical tags like {today,.ADV} which are considered to
-                be single units (default: False).
+    - **alphabet [str]** -- the alphabet file.
 
-            tokens [str] -- specifies a tokens.txt file to load and
-                modify, instead of creating a new one from scratch.
+    *Keyword arguments:*
 
-      - Offsets options:
-            input_offsets [str] -- base offset file to be used.
+    - *Generic options:*
 
-            output_offsets [str] -- offset file to be produced.
+      - **char_by_char [bool]** -- indicates whether the function is
+        applied character by character, with the exceptions of the
+        sentence delimiter {S}, the stop marker {STOP} and lexical
+        tags like {today,.ADV} which are considered to be single units
+        (default: False).
+      
+      - **tokens [str]** -- specifies a tokens.txt file to load and
+        modify, instead of creating a new one from scratch.
+    
+    - *Offsets options:*
+
+      - **input_offsets [str]** -- base offset file to be used.
+    
+      - **output_offsets [str]** -- offset file to be produced.
 
     *Return [bool]:*
 
@@ -1191,24 +1197,26 @@ def txt2tfst(text, alphabet, **kwargs):
     The result is a file called text.tfst which is saved in the
     directory of the text. Another file named text.tind is also produced.
 
-    Arguments:
-        text [str] -- the path to the text file in .snt format.
+    *Arguments:*
 
-        alphabet [str] -- the alphabet file.
+    - **text [str]** -- the path to the text file in .snt format.
 
-    Keyword arguments:
-        clean [bool] -- indicates whether the rule of conservation of
-            the best paths (see section 7.2.4) should be applied
-            (default: False).
+    - alphabet [str]** -- the alphabet file.
 
-        normalization_grammar [str] -- name of a normalization grammar
-            that is to be applied to the text automaton.
+    *Keyword arguments:*
 
-        tagset [str] -- Elag tagset file to use to normalize dictionary
-            entries.
-
-        korean [bool] -- tells the function that it works on Korean
-            (default: False).
+    - **clean [bool]** -- indicates whether the rule of conservation of
+      the best paths (see section 7.2.4) should be applied
+      (default: False).
+    
+    - **normalization_grammar [str]** -- name of a normalization grammar
+      that is to be applied to the text automaton.
+    
+    - **tagset [str]** -- Elag tagset file to use to normalize
+      dictionary entries.
+    
+    - **korean [bool]** -- tells the function that it works on Korean
+      (default: False).
 
     *Return [bool]:*
 
