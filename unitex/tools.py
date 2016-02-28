@@ -32,24 +32,27 @@ def check_dic(dictionary, dtype, alphabet, **kwargs):
     CHECK_DIC.TXT that contains check result informations. This file is
     stored in the <dela> directory.
 
-    Arguments:
-        dictionary [str] -- the dictionary file path.
+    *Arguments:*
 
-        dtype [str] -- the dictionary type:
-            - UnitexConstants.DELAF (inflected);
-            - UnitexConstants.DELAS (non inflected).
+    - **dictionary [str]** -- the dictionary file path.
 
-        alphabet [str] -- the alphabet file path.
+    - **dtype [str]** -- the dictionary type:
+      - UnitexConstants.DELAF (inflected);
+      - UnitexConstants.DELAS (non inflected).
 
-    Keyword arguments:
-        strict [bool] -- strict syntax checking against unprotected dot
-            and comma (default: False).
+    - **alphabet [str]** -- the alphabet file path.
 
-        no_space_warning [bool] -- tolerates spaces in grammatical,
-            semantic and inflectional codes (default: True).
+    *Keyword arguments:*
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    - **strict [bool]** -- strict syntax checking against unprotected
+      dot and comma (default: False).
+
+    - **no_space_warning [bool]** -- tolerates spaces in grammatical,
+      semantic and inflectional codes (default: True).
+
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = CheckDicOptions()
     options.load(kwargs)
@@ -89,37 +92,42 @@ def compress(dictionary, **kwargs):
     This function takes a DELAF dictionary as a parameter and compresses
     it. The compression of a dictionary dico.dic produces two files:
 
-        - dico.bin: a binary file containing the minimum automaton of
-            the inflected forms of the dictionary;
+    - dico.bin: a binary file containing the minimum automaton of
+      the inflected forms of the dictionary;
 
-        - dico.inf: a text file containing the compressed forms required
-            for the reconstruction of the dictionary lines from the
-            inflected forms contained in the automaton.
+    - dico.inf: a text file containing the compressed forms required
+      for the reconstruction of the dictionary lines from the inflected
+      forms contained in the automaton.
 
-    Arguments:
-        dictionary [str] -- the dictionary file path.
+    *Arguments:*
 
-    Keyword arguments:
-        output [str] -- sets the output file. By default, a file xxx.dic
-            will produce a file xxx.bin.
+    - **dictionary [str]** -- the dictionary file path.
 
-        flip [bool] -- indicates that the inflected and canonical forms
-            should be swapped in the compressed dictionary. This option
-            is used to construct an inverse dictionary which is
-            necessary for the program 'Reconstrucao' (default: False).
+    *Keyword arguments:*
 
-        semitic [bool] -- indicates that the semitic compression
-            algorithm should be used. Setting this option with semitic
-            languages like Arabic significantly reduces the size of the
-            output dictionary (default: False).
+    - **output [str]** -- sets the output file. By default, a file
+      xxx.dic will produce a file xxx.bin.
 
-        version [str] -- 'v1': produces an old style .bin file;
-                         'v2': produces a new style .bin file, with no
-                               file size limitation to 16 Mb and a
-                               smaller size (default).
+    - **flip [bool]** -- indicates that the inflected and canonical
+      forms should be swapped in the compressed dictionary. This option
+      is used to construct an inverse dictionary which is necessary for
+      the program 'Reconstrucao' (default: False).
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    - **semitic [bool]** -- indicates that the semitic compression
+      algorithm should be used. Setting this option with semitic
+      languages like Arabic significantly reduces the size of the output
+      dictionary (default: False).
+
+    - **version [str]** -- Possible values are:
+      - UnitexConstants.DICTIONARY_VERSION_1: produces an old style .bin
+        UnitexConstants.DICTIONARY_VERfile;
+      - UnitexConstants.DICTIONARY_VERSION_2: produces a new style .bin
+        file, with no file size limitation to 16 Mb and a smaller size
+        (default).
+
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = CompressOptions()
     options.load(kwargs)
@@ -174,154 +182,153 @@ def concord(index, alphabet, **kwargs):
     occurrence in characters in the file text_name.snt. Z represents the
     number of the sentence in which the occurrence was found.
 
-    Arguments:
-        index [str] -- the index file path (produced by the 'locate'
-            function).
+    *Arguments:*
 
-        alphabet [str] -- alphabet file used for sorting.
+    - **index [str]** -- the index file path (produced by the 'locate'
+      function).
 
-    Keyword arguments:
+    - **alphabet [str]** -- alphabet file used for sorting.
 
-      - Generic options:
-            font [str] -- the name of the font to use if the output is
-                an HTML file.
+    *Keyword arguments:*
 
-            fontsize [int] -- the font size to use if the output is an
-                HTML file.
+    - *Generic options:*
 
-            only_ambiguous [bool] -- Only displays identical occurrences
-                with ambiguous outputs, in text order (default: False).
+      - **font [str]** -- the name of the font to use if the output is
+        an HTML file.
 
-            only_matches [bool] -- this option will force empty right
-                and left contexts. Moreover, if used with
-                UnitexConstants.FORMAT_TEXT, the function will not
-                surround matches with tabulations (default: False).
+      - **fontsize [int]** -- the font size to use if the output is an
+        HTML file.
 
-            left [str] -- number of characters on the left of the
-                occurrences (default=0). In Thai mode, this means the
-                number of non-diacritic characters.
+      - **only_ambiguous [bool]** -- Only displays identical occurrences
+        with ambiguous outputs, in text order (default: False).
 
-            right [str] -- number of characters (non-diacritic ones in
-                Thai mode) on the right of the occurrences (default=0).
-                If the occurrence is shorter than this value, the
-                concordance line is completed up to right. If the
-                occurrence is longer than the length defined by right,
-                it is nevertheless saved as whole.
+      - **only_matches [bool]** -- this option will force empty right
+        and left contexts. Moreover, if used with
+        UnitexConstants.FORMAT_TEXT, the function will not surround
+        matches with tabulations (default: False).
 
-            NOTE: For both --left and --right, you can add the 's'
-            character to stop at the first {S} tag. For instance, if you
-            set '40s' for the left value, the left context will end at
-            40 characters at most, less if the {S} tag is found before.
+      - **left [str]** -- number of characters on the left of the
+        occurrences (default=0). In Thai mode, this means the number of
+        non-diacritic characters.
 
-      - Sort options:
-            sort [str] -- specifies the sort order. Possible values:
+      - **right [str]** -- number of characters (non-diacritic ones in
+        Thai mode) on the right of the occurrences (default=0). If the
+        occurrence is shorter than this value, the concordance line is
+        completed up to right. If the occurrence is longer than the
+        length defined by right, it is nevertheless saved as whole.
 
-                - 'UnitexConstants.SORT_TEXT_ORDER': order in which the
-                    occurrences appear in the text (default);
+      **NOTE:** For both 'left' and 'right', you can add the 's'
+      character to stop at the first {S} tag. For instance, if you set
+      '40s' for the left value, the left context will end at 40
+      characters at most, less if the {S} tag is found before.
 
-                - 'UnitexConstants.SORT_LEFT_CENTER': left context for
-                    primary sort, then occurrence for secondary sort;
+    - *Sort options:*
 
-                - 'UnitexConstants.SORT_LEFT_RIGHT': left context, then
-                    right context;
+      - **sort [str]** -- specifies the sort order. Possible values:
 
-                - 'UnitexConstants.SORT_CENTER_LEFT': occurrence, then
-                    left context;
+        - UnitexConstants.SORT_TEXT_ORDER: order in which the
+          occurrences appear in the text (default);
+        
+        - UnitexConstants.SORT_LEFT_CENTER: left context for primary
+          sort, then occurrence for secondary sort;
+        
+        - UnitexConstants.SORT_LEFT_RIGHT: left context, then right
+          context;
+        
+        - UnitexConstants.SORT_CENTER_LEFT: occurrence, then left
+          context;
+        
+        - UnitexConstants.SORT_CENTER_RIGHT: occurrence, then right
+          context;
+        
+        - UnitexConstants.SORT_RIGHT_LEFT: right context, then left
+          context;
+        
+        - UnitexConstants.SORT_RIGHT_CENTER: left context, then
+          occurrence.
 
-                - 'UnitexConstants.SORT_CENTER_RIGHT': occurrence, then
-                    right context;
+    - *Output options:*
 
-                - 'UnitexConstants.SORT_RIGHT_LEFT': right context, then
-                    left context;
+      - **format [str]** -- specifies the output fomat. Possible values:
+      
+        - UnitexConstants.FORMAT_HTML: produces a concordance in HTML
+          format encoded in UTF-8 (default);
+        
+        - UnitexConstants.FORMAT_TEXT: produces a concordance in Unicode
+          text format;
+        
+        - UnitexConstants.FORMAT_GLOSSANET: produces a concordance for
+          GlossaNet in HTML format where occurrences are links described
+          by the 'script' argument (cf. Unitex manual p. 268). The HTML
+          file is encoded in UTF-8;
+        
+        - UnitexConstants.FORMAT_SCRIPT: produces a HTML concordance
+          file where occurrences are links described by the 'script'
+          argument;
+        
+        - UnitexConstants.FORMAT_INDEX: produces an index of the
+          concordance, made of the content of the occurrences (with the
+          grammar outputs, if any), preceded by the positions of the
+          occurrences in the text file given in characters;
+        
+        - UnitexConstants.FORMAT_UIMA: produces an index of the
+          concordance relative to the original text file, before any
+          Unitex operation. The 'offsets' argument must be provided;
+        
+        - UnitexConstants.FORMAT_PRLG: produces a concordance for PRLG
+          corpora where each line is prefixed by information extracted
+          with Unxmlize’s 'prlg' option. You must provide both the
+          'offsets' and the 'unxmlize' argument;
+        
+        - UnitexConstants.FORMAT_XML: produces an xml index of the
+          concordance;
+        
+        - UnitexConstants.FORMAT_XML_WITH_HEADER: produces an xml index
+          of the concordance with full xml header;
+        
+        - UnitexConstants.FORMAT_AXIS: quite the same as 'index', but
+          the numbers represent the median character of each occurrence;
+        
+        - UnitexConstants.FORMAT_XALIGN: another index file, used by the
+          text alignment module. Each line is made of 3 integers X Y Z
+          followed by the content of the occurrence. X is the sentence
+          number, starting from 1. Y and Z are the starting and ending
+          positions of the occurrence in the sentence, given in
+          characters;
+        
+        - UnitexConstants.FORMAT_MERGE: indicates to the function that
+          it is supposed to produce a modified version of the text and
+          save it in a file. The filename must be provided with the
+          'output' argument.
+      
+      - **script [str]** -- string describing the links format for
+        'glossanet' and 'script' output. For instance, if you use
+        'http://www.google.com/search?q=', you will obtain a HTML
+        concordance file where occurrences are hyperlinks to Google
+        queries.
+      
+      - **offsets [str]** -- the file produced by Tokenize’s
+        output_offsets option (needed by the 'uima' and the 'prlg'
+        format).
+      
+      - **unxmlize [str]** -- file produced by Unxmlize’s 'prlg' option
+        (needed by the 'prlg' format).
+      
+      - **output [str]** -- the output filename (needed by the 'merge'
+        format).
 
-                - 'UnitexConstants.SORT_RIGHT_CENTER': left context,
-                    then occurrence.
+    - *Other options:*
 
-      - Output options:
-            format [str] -- specifies the output fomat. Possible values:
+      - **directory [str]** -- indicates to the function that it must
+        not work in the same directory than <index> but in
+        'directory'.
+      
+      - **thai [bool]** -- option to use for Thai concordances
+        (default: False).
 
-                - UnitexConstants.FORMAT_HTML: produces a concordance in
-                    HTML format encoded in UTF-8 (default);
+    *Return [bool]:*
 
-                - UnitexConstants.FORMAT_TEXT: produces a concordance in
-                    Unicode text format;
-
-                - UnitexConstants.FORMAT_GLOSSANET: produces a
-                    concordance for GlossaNet in HTML format where
-                    occurrences are links described by the 'script'
-                    argument (cf. Unitex manual p. 268). The HTML file
-                    is encoded in UTF-8;
-
-                - UnitexConstants.FORMAT_SCRIPT: produces a HTML
-                    concordance file where occurrences are links
-                    described by the 'script' argument;
-
-                - UnitexConstants.FORMAT_INDEX: produces an index of the
-                    concordance, made of the content of the occurrences
-                    (with the grammar outputs, if any), preceded by the
-                    positions of the occurrences in the text file given
-                    in characters;
-
-                - UnitexConstants.FORMAT_UIMA: produces an index of the
-                    concordance relative to the original text file,
-                    before any Unitex operation. The 'offsets' argument
-                    must be provided;
-
-                - UnitexConstants.FORMAT_PRLG: produces a concordance
-                    for PRLG corpora where each line is prefixed by
-                    information extracted with Unxmlize’s 'prlg' option.
-                    You must provide both the 'offsets' and the
-                    'unxmlize' argument;
-
-                - UnitexConstants.FORMAT_XML: produces an xml index of
-                    the concordance;
-
-                - UnitexConstants.FORMAT_XML_WITH_HEADER: produces an
-                    xml index of the concordance with full xml header;
-
-                - UnitexConstants.FORMAT_AXIS: quite the same as
-                    'index', but the numbers represent the median
-                    character of each occurrence;
-
-                - UnitexConstants.FORMAT_XALIGN: another index file,
-                    used by the text alignment module. Each line is made
-                    of 3 integers X Y Z followed by the content of the
-                    occurrence. X is the sentence number, starting from
-                    1. Y and Z are the starting and ending positions of
-                    the occurrence in the sentence, given in characters;
-
-                - UnitexConstants.FORMAT_MERGE: indicates to the
-                    function that it is supposed to produce a modified
-                    version of the text and save it in a file.
-                    The filename must be provided with the 'output'
-                    argument.
-
-            script [str] -- string describing the links format for
-                'glossanet' and 'script' output. For instance, if you
-                use 'http://www.google.com/search?q=', you will obtain a
-                HTML concordance file where occurrences are hyperlinks
-                to Google queries.
-
-            offsets [str] -- the file produced by Tokenize’s
-                output_offsets option (needed by the 'uima' and the
-                'prlg' format).
-
-            unxmlize [str] -- file produced by Unxmlize’s 'prlg' option
-                (needed by the 'prlg' format).
-
-            output [str] -- the output filename (needed by the 'merge'
-                format).
-
-      - Other options:
-            directory [str] -- indicates to the function that it must
-                not work in the same directory than <index> but in
-                'directory'.
-
-            thai [bool] -- option to use for Thai concordances
-                (default: False).
-
-    Return [bool]:
-        True if it succeeds and False otherwise.
+      **True** if it succeeds, **False** otherwise.
     """
     options = ConcordOptions()
     options.load(kwargs)
@@ -414,48 +421,50 @@ def dico(dictionaries, text, alphabet, **kwargs):
     The function 'dico' produces the following files, and saves them in
     the directory of the text:
 
-        - dlf: dictionary of simple words in the text;
-        - dlc: dictionary of compound words in the text;
-        - err: list of unknown words in the text;
-        - tags_err: unrecognized simple words that are not matched by
-                    the tags.ind file;
-        - tags.ind: sequences to be inserted in the text automaton (see
-                    section 3.8.3, page 69);
-        - stat_dic.n: file containing the number of simple words, the
-                      number of compound words, and the number of
-                      unknown words in the text.
+    - dlf: dictionary of simple words in the text;
+    - dlc: dictionary of compound words in the text;
+    - err: list of unknown words in the text;
+    - tags_err: unrecognized simple words that are not matched by the
+      tags.ind file;
+    - tags.ind: sequences to be inserted in the text automaton (see
+      section 3.8.3, page 69);
+    - stat_dic.n: file containing the number of simple words, the number
+      of compound words, and the number of unknown words in the text.
 
-    NOTE: Files dlf, dlc, err and tags_err are not sorted. Use the
+    **NOTE:** Files dlf, dlc, err and tags_err are not sorted. Use the
     function 'sort_txt' to sort them.
 
-    Arguments:
-        dictionaries [list(str)] -- list of dictionary pathes ('bin' or
-            'fst2' formats).
+    *Arguments:*
 
-        text [str] -- text (snt format) file path.
+    - **dictionaries [list(str)]** -- list of dictionary pathes ('bin'
+      or 'fst2' formats).
+    
+    - **text [str]** -- text (snt format) file path.
+    
+    - **alphabet [str]** -- alphabet file path.
 
-        alphabet [str] -- alphabet file path.
+    *Keyword arguments:*
 
-    Keyword arguments:
-        morpho [list(str)] -- this optional argument indicates which
-            morphological mode dictionaries are to be used, if needed by
-            some .fst2 dictionaries. The argument is a list of
-            dictionary path (bin format).
+    - **morpho [list(str)]** -- this optional argument indicates which
+      morphological mode dictionaries are to be used, if needed by some
+      .fst2 dictionaries. The argument is a list of dictionary path (bin
+      format).
+    
+    - **korean [bool]** -- specify the dictionary is in korean
+      (default: False).
+    
+    - **semitic [bool]** -- specify the dictionary is in a semitic
+      language (default: False).
+    
+    - **arabic_rules [str]** -- specifies the Arabic typographic rule
+      configuration file path.
+    
+    - **raw [str]** -- alternative output file path containing both
+      simple and compound words, without requiring a text directory.
 
-        korean [bool] -- specify the dictionary is in korean
-            (default: False).
+    *Return [bool]:*
 
-        semitic [bool] -- specify the dictionary is in a semitic
-            language (default: False).
-
-        arabic_rules [str] -- specifies the Arabic typographic rule
-            configuration file path.
-
-        raw [str] -- alternative output file path containing both simple
-            and compound words, without requiring a text directory.
-
-    Return [bool]:
-        True if it succeeds and False otherwise.
+      **True** if it succeeds, **False** otherwise.
     """
     options = DicoOptions()
     options.load(kwargs)
@@ -504,20 +513,23 @@ def extract(text, output, index, **kwargs):
     <text> represents the complete path of the text file, without
     omitting the extension .snt.
 
-    Arguments:
-        text [str] -- the text file (.snt format).
+    *Arguments:*
 
-        output [str] -- the output text file.
+    - **text [str]** -- the text file (.snt format).
+    
+    - **output [str]** -- the output text file.
+    
+    - **index [str]** -- the index file path (produced by the 'locate'
+      function).
 
-        index [str] -- the index file path (produced by the 'locate'
-            function).
+    *Keyword arguments:*
 
-    Keyword arguments:
-        non_matching_sentences [bool] -- extracts all sentences that
-            don’t contain matching units (default: False).
+    - **non_matching_sentences [bool]** -- extracts all sentences that
+      don’t contain matching units (default: False).
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = ExtractOptions()
     options.load(kwargs)
@@ -556,30 +568,34 @@ def fst2txt(grammar, text, alphabet, **kwargs):
     at the preprocessing stage, when the text has not been cut into
     lexical units yet. This function modifies the input text file.
 
-    NOTE: This function modifies the input text file.
+    **NOTE:** This function modifies the input text file.
 
-    Arguments:
-        grammar [str] -- the fst2 to apply on the text.
+    *Arguments:*
 
-        text [str] -- the (.snt) text file to be modified.
+    - **grammar [str]** -- the fst2 to apply on the text.
+    
+    - **text [str]** -- the (.snt) text file to be modified.
+    
+    - **alphabet [str]** -- the alphabet file of the language of the
+      text.
 
-        alphabet [str] -- the alphabet file of the language of the text.
+    *Keyword arguments:*
 
-    Keyword arguments:
-        start_on_space [bool] -- this parameter indicates that the
-            search will start at any position in the text, even before a
-            space. This parameter should only be used to carry out
-            morphological searches (default: False).
+    - **start_on_space [bool]** -- this parameter indicates that the
+      search will start at any position in the text, even before a
+      space. This parameter should only be used to carry out
+      morphological searches (default: False).
+    
+    - **char_by_char [bool]** -- works in character by character
+      tokenization mode. This is useful for languages like Thai
+      (default: False).
+    
+    - **merge [bool]** -- merge (instead of replace) transducer outputs
+      with text inputs (default: True).
 
-        char_by_char [bool] -- works in character by character
-            tokenization mode. This is useful for languages like Thai
-            (default: False).
+    *Return [bool]:*
 
-        merge [bool] -- merge (instead of replace) transducer outputs
-            with text inputs (default: True).
-
-    Return [bool]:
-        True if it succeeds and False otherwise.
+      **True** if it succeeds, **False** otherwise.
     """
     options = Fst2TxtOptions()
     options.load(kwargs)
@@ -634,50 +650,50 @@ def grf2fst2(grammar, alphabet, **kwargs):
     function as a parameter, but with extension .fst2. This file is
     saved in the same directory as <grf>.
 
-    Arguments:
-        grammar [str] -- the grf to compile.
+    *Arguments:*
 
-        alphabet [str] -- specifies the alphabet file to be used for
-            tokenizing the content of the grammar boxes into lexical
-            units.
+    - **grammar [str]** -- the grf to compile.
+    
+    - **alphabet [str]** -- specifies the alphabet file to be used for
+      tokenizing the content of the grammar boxes into lexical units.
 
-    Keyword arguments:
-        loop_check [bool] -- enables error (loop) checking
-            (default: False).
+    *Keyword arguments:*
 
-        char_by_char [bool] -- tokenization will be done character by
-            character. If neither -c nor -a option is used, lexical
-            units will be sequences of any Unicode letters
-            (default: False).
+    - **loop_check [bool]** -- enables error (loop) checking
+      (default: False).
+    
+    - **char_by_char [bool]** -- tokenization will be done character by
+      character. If neither -c nor -a option is used, lexical units will
+      be sequences of any Unicode letters (default: False).
+    
+    - **pkgdir [str]** -- specifies the repository directory to use (see
+      section 5.2.2, page 99).
+    
+    - **no_empty_graph_warning [bool]** -- no warning will be emitted
+      when a graph matches the empty word. This option is used by
+      MultiFlex in order not to scare users with meaningless error
+      messages when they design an inflection grammar that matches the
+      empty word (default: False).
+    
+    - **tfst_check [bool]** -- checks wether the given graph can be
+      considered as a valid sentence automaton or not (default: False).
+    
+    - **silent_grf_name [bool]** -- does not print the graph names
+      (default: True).
+    
+    - **named_repositories [list(str)]** -- declaration of named
+      repositories. This argument is made of one or more X=Y sequences,
+      separated by ‘;’, where X is the name of the repository denoted by
+      pathname Y.
+    
+    - **debug [bool]** -- compile graphs in debug mode (default: False).
+    
+    - **check_variables [bool]** -- check output validity to avoid
+      malformed variable expressions (default: True).
 
-        pkgdir [str] -- specifies the repository directory to use (see
-            section 5.2.2, page 99).
+    *Return [bool]:*
 
-        no_empty_graph_warning [bool] -- no warning will be emitted when
-            a graph matches the empty word. This option is used by
-            MultiFlex in order not to scare users with meaningless error
-            messages when they design an inflection grammar that matches
-            the empty word (default: False).
-
-        tfst_check [bool] -- checks wether the given graph can be
-            considered as a valid sentence automaton or not
-            (default: False).
-
-        silent_grf_name [bool] -- does not print the graph names
-            (default: True).
-
-        named_repositories [list(str)] -- declaration of named
-            repositories. This argument is made of one or more X=Y
-            sequences, separated by ‘;’, where X is the name of the
-            repository denoted by pathname Y.
-
-        debug [bool] -- compile graphs in debug mode (default: False).
-
-        check_variables [bool] -- check output validity to avoid
-            malformed variable expressions (default: True).
-
-    Return [bool]:
-        True if it succeeds and False otherwise.
+      **True** if it succeeds, **False** otherwise.
     """
     options = Grf2Fst2Options()
     options.load(kwargs)
@@ -818,8 +834,9 @@ def locate(grammar, text, alphabet, **kwargs):
                 - UnitexConstants.ON_ERROR_IGNORE (default)
                 - UnitexConstants.ON_ERROR_BACKTRACK
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = LocateOptions()
     options.load(kwargs)
@@ -953,8 +970,9 @@ def normalize(text, **kwargs):
             rules specified with the 'replacement_rules' option
             (default: False).
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = NormalizeOptions()
     options.load(kwargs)
@@ -1022,8 +1040,9 @@ def sort_txt(text, **kwargs):
             and X,Y.Z:B become a single entry X,Y.Z:A:B
             (default: False).
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = SortTxtOptions()
     options.load(kwargs)
@@ -1118,8 +1137,9 @@ def tokenize(text, alphabet, **kwargs):
 
             output_offsets [str] -- offset file to be produced.
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = TokenizeOptions()
     options.load(kwargs)
@@ -1190,8 +1210,9 @@ def txt2tfst(text, alphabet, **kwargs):
         korean [bool] -- tells the function that it works on Korean
             (default: False).
 
-    Return [bool]:
-        True if it succeeds and False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     options = Txt2TFstOptions()
     options.load(kwargs)

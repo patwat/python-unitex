@@ -17,8 +17,10 @@
 using namespace unitex;
 #endif
 
-static char unitex_docstring[] =
-	"This module provides some usefull C function to work with the Unitex library.";
+static char unitex_docstring[] = "\
+This module provides some usefull C++ functions to work with the Unitex\n\
+library.\
+";
 
 
 
@@ -29,10 +31,10 @@ static char unitex_docstring[] =
 /* 'unitex_tool' function */
 static char unitex_tool_docstring[] = "\
 This function launches an Unitex command.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the Unitex command.\n\n\
-Return [bool]:\n\
-    True if the command succeeds, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the Unitex command.\n\n\
+*Return [bool]:*\n\n\
+  **True** if the command succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_tool(PyObject *self, PyObject *args);
 
@@ -56,13 +58,12 @@ PyObject *unitex_tool(PyObject *self, PyObject *args) {
 /* 'unitex_load_persistent_dictionary' function */
 static char unitex_load_persistent_dictionary_docstring[] = "\
 This function loads a dictionary in the persistent space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the dictionary path.\n\n\
-Return [str]:\n\
-	The persistent file path [str] (derived from filename but not\n\
-	strictly identical, depending of implementation). This path must\n\
-	be used by the unitex tools and the 'free_persistent_dictionary'\n\
-	function.\n\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the dictionary path.\n\n\
+*Return [str]:*\n\n\
+  The persistent file path (derived from filename but not strictly\n\
+  identical, depending of implementation). This path must be used by\n\
+  the unitex tools and the 'free_persistent_dictionary' function.\
 ";
 static PyObject *unitex_load_persistent_dictionary(PyObject *self, PyObject *args);
 
@@ -90,12 +91,12 @@ PyObject *unitex_load_persistent_dictionary(PyObject *self, PyObject *args) {
 /* 'unitex_load_persistent_fst2' function */
 static char unitex_load_persistent_fst2_docstring[] = "\
 This function loads a grammar in the persistent space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the fst2 path.\n\n\
-Return [str]:\n\
-	The persistent file path [str] (derived from filename but not\n\
-	strictly identical, depending of implementation). This path must\n\
-	be used by the unitex tools and the 'free_persistent_fst2' function.\n\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the fst2 path.\n\n\
+*Return [str]:*\n\n\
+  The persistent file path (derived from filename but not strictly\n\
+  identical, depending of implementation). This path must be used by\n\
+  the unitex tools and the 'free_persistent_fst2' function.\
 ";
 static PyObject *unitex_load_persistent_fst2(PyObject *self, PyObject *args);
 
@@ -123,13 +124,12 @@ PyObject *unitex_load_persistent_fst2(PyObject *self, PyObject *args) {
 /* 'unitex_load_persistent_alphabet' function */
 static char unitex_load_persistent_alphabet_docstring[] = "\
 This function loads an alphabet in the persistent space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the alphabet path.\n\n\
-Return [str]:\n\
-	The persistent file path [str] (derived from filename but not\n\
-	strictly identical, depending of implementation). This path must\n\
-	be used by the unitex tools and the 'free_persistent_alphabet'\n\
-	function.\n\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the alphabet path.\n\n\
+*Return [str]:*\n\n\
+  The persistent file path (derived from filename but not strictly\n\
+  identical, depending of implementation). This path must be used by\n\
+  the unitex tools and the 'free_persistent_alphabet' function.\
 ";
 static PyObject *unitex_load_persistent_alphabet(PyObject *self, PyObject *args);
 
@@ -159,10 +159,10 @@ PyObject *unitex_load_persistent_alphabet(PyObject *self, PyObject *args) {
 /* 'unitex_free_persistent_dictionary' function */
 static char unitex_free_persistent_dictionary_docstring[] = "\
 This function unloads a dictionary from persistent space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the persistent file path returned by the\n\
-               'load_persistent_dictionary' function.\n\n\
-Return [None].\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the persistent file path returned by the\n\
+  'load_persistent_dictionary' function.\n\n\
+*No return.*\
 ";
 static PyObject *unitex_free_persistent_dictionary(PyObject *self, PyObject *args);
 
@@ -179,10 +179,10 @@ PyObject *unitex_free_persistent_dictionary(PyObject *self, PyObject *args) {
 /* 'unitex_free_persistent_fst2' function */
 static char unitex_free_persistent_fst2_docstring[] = "\
 This function unloads a grammar from persistent space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the persistent file path returned by the\n\
-               'load_persistent_fst2' function.\n\n\
-Return [None].\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the persistent file path returned by the\n\
+  'load_persistent_fst2' function.\n\n\
+*No return.*\
 ";
 static PyObject *unitex_free_persistent_fst2(PyObject *self, PyObject *args);
 
@@ -199,10 +199,10 @@ PyObject *unitex_free_persistent_fst2(PyObject *self, PyObject *args) {
 /* 'unitex_free_persistent_alphabet' function */
 static char unitex_free_persistent_alphabet_docstring[] = "\
 This function unloads an alphabet from persistent space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the persistent file path returned by the\n\
-               'load_persistent_alphabet' function.\n\n\
-Return [None].\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the persistent file path returned by the\n\
+  'load_persistent_alphabet' function.\n\n\
+*No return.*\
 ";
 static PyObject *unitex_free_persistent_alphabet(PyObject *self, PyObject *args);
 
@@ -222,10 +222,10 @@ PyObject *unitex_free_persistent_alphabet(PyObject *self, PyObject *args) {
 static char unitex_is_persistent_dictionary_docstring[] = "\
 This function checks if a dictionary path points to the persistent\n\
 space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the file path to check.\n\n\
-Return [bool]:\n\
-    True if the dictionary is persistent, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the file path to check.\n\n\
+*Return [bool]:*\n\n\
+  **True** if the dictionary is persistent, **False** otherwise.\
 ";
 static PyObject *unitex_is_persistent_dictionary(PyObject *self, PyObject *args);
 
@@ -244,10 +244,10 @@ PyObject *unitex_is_persistent_dictionary(PyObject *self, PyObject *args) {
 static char unitex_is_persistent_fst2_docstring[] = "\
 This function checks if a grammar path points to the persistent\n\
 space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the file path to check.\n\n\
-Return [bool]:\n\
-    True if the grammar is persistent, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the file path to check.\n\n\
+*Return [bool]:*\n\n\
+  **True** if the dictionary is persistent, **False** otherwise.\
 ";
 static PyObject *unitex_is_persistent_fst2(PyObject *self, PyObject *args);
 
@@ -266,10 +266,10 @@ PyObject *unitex_is_persistent_fst2(PyObject *self, PyObject *args) {
 static char unitex_is_persistent_alphabet_docstring[] = "\
 This function checks if an alphabet path points to the persistent\n\
 space.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the file path to check.\n\n\
-Return [bool]:\n\
-    True if the alphabet is persistent, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the file path to check.\n\n\
+*Return [bool]:*\n\n\
+  **True** if the dictionary is persistent, **False** otherwise.\
 ";
 static PyObject *unitex_is_persistent_alphabet(PyObject *self, PyObject *args);
 
@@ -294,9 +294,9 @@ PyObject *unitex_is_persistent_alphabet(PyObject *self, PyObject *args) {
 static char unitex_enable_stdout_docstring[] = "\
 This function enables Unitex standard output. This is the default\n\
 but should be used for debug purposes only.\n\n\
-No argument.\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*No argument.*\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_enable_stdout(PyObject *self, PyObject *noarg);
 
@@ -313,9 +313,9 @@ PyObject *unitex_enable_stdout(PyObject *self, PyObject *noarg) {
 static char unitex_enable_stderr_docstring[] = "\
 This function enables Unitex error output. This is the default\n\
 but should be used for debug purposes only.\n\n\
-No argument.\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*No argument.*\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_enable_stderr(PyObject *self, PyObject *noarg);
 
@@ -333,9 +333,9 @@ static char unitex_disable_stdout_docstring[] = "\
 This function disables Unitex standard output to ensure multithread\n\
 output consistency (i.e. avoid output mixing between threads) and to\n\
 improve performances.\n\n\
-No argument.\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*No argument.*\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_disable_stdout(PyObject *self, PyObject *noarg);
 
@@ -353,9 +353,9 @@ static char unitex_disable_stderr_docstring[] = "\
 This function disables Unitex error output to ensure multithread\n\
 output consistency (i.e. avoid output mixing between threads) and to\n\
 improve performances.\n\n\
-No argument.\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*No argument.*\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_disable_stderr(PyObject *self, PyObject *noarg);
 
@@ -373,11 +373,11 @@ static char unitex_cp_docstring[] = "\
 This function copies a file. Both pathes can be on the virtual\n\
 filesystem or the disk filesystem. Therefore, this function can be\n\
 used to virtualize a file or to dump a virtual file.\n\n\
-Positional arguments (length: 2):\n\
-    0 [str] -- source file path\n\
-    1 [str] -- target file path\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*Positional arguments (length: 2):*\n\n\
+- **0 [str]** -- the source file path.\n\
+- **1 [str]** -- the target file path.\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_cp(PyObject *self, PyObject *args);
 
@@ -397,10 +397,10 @@ PyObject *unitex_cp(PyObject *self, PyObject *args) {
 static char unitex_rm_docstring[] = "\
 This function removes a file. The path can be on the virtual\n\
 filesystem or the disk filesystem.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- file path\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the file path.\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_rm(PyObject *self, PyObject *args);
 
@@ -419,11 +419,11 @@ PyObject *unitex_rm(PyObject *self, PyObject *args) {
 static char unitex_mv_docstring[] = "\
 This function moves/renames a file. Both pathes can be on the\n\
 virtual filesystem or the disk filesystem.\n\n\
-Positional arguments (length: 2):\n\
-    0 [str] -- old file path\n\
-    1 [str] -- new file path\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*Positional arguments (length: 2):*\n\n\
+- **0 [str]** -- the current file path.\n\
+- **1 [str]** -- the new file path.\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_mv(PyObject *self, PyObject *args);
 
@@ -442,10 +442,10 @@ PyObject *unitex_mv(PyObject *self, PyObject *args) {
 /* 'unitex_mkdir' function */
 static char unitex_mkdir_docstring[] = "\
 This function creates a directory on the disk.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- directory path\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the directory path.\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_mkdir(PyObject *self, PyObject *args);
 
@@ -463,10 +463,10 @@ PyObject *unitex_mkdir(PyObject *self, PyObject *args) {
 /* 'unitex_rmdir' function */
 static char unitex_rmdir_docstring[] = "\
 This function removes a directory from the disk.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- directory path\n\n\
-Return [bool]:\n\
-    True if it succeeds, False otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the directory path.\n\n\
+*Return [bool]:*\n\n\
+  **True** if it succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_rmdir(PyObject *self, PyObject *args);
 
@@ -484,11 +484,11 @@ PyObject *unitex_rmdir(PyObject *self, PyObject *args) {
 /* 'unitex_ls' function */
 static char unitex_ls_docstring[] = "\
 This function lists (disk or virtual) directory contents.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- directory path\n\n\
-Return [list(str)]:\n\
-    The function returns a list of files (not directories) if the\n\
-    directory is not empty and an empty list otherwise.\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the directory path.\n\n\
+*Return [list(str)]:*\n\n\
+  The function returns a list of files (not directories) if the\n\
+  directory is not empty and an empty list otherwise.\
 ";
 static PyObject *unitex_ls(PyObject *self, PyObject *args);
 
@@ -524,11 +524,11 @@ PyObject *unitex_ls(PyObject *self, PyObject *args) {
 /* 'unitex_read_file' function (UTF-8 encoding only)*/
 static char unitex_read_file_docstring[] = "\
 This function read a file from the disk or from the virtual filesystem.\n\
-The file **must** be encoded in UTF-8.\n\n\
-Positional arguments (length: 1):\n\
-    0 [str] -- the file path\n\n\
-Return [str]:\n\
-	The function returns an unicode string.\
+**WARNING: The file must be encoded in UTF-8.**\n\n\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the file path.\n\n\
+*Return [str]:*\n\n\
+  The function returns an unicode string.\
 ";
 static PyObject *unitex_read_file(PyObject *self, PyObject *args);
 
@@ -568,13 +568,13 @@ PyObject *unitex_read_file(PyObject *self, PyObject *args) {
 /* 'unitex_write_file' function (UTF-8 encoding only)*/
 static char unitex_write_file_docstring[] = "\
 This function writes a file on the disk or on the virtual filesystem.\n\
-The file will be encoded in UTF-8.\n\n\
-Positional arguments (length: 3):\n\
-    0 [str] -- the file path\n\
-    1 [unicode] -- the file content\n\
-    2 [int] -- 1 to writes the UTF-8 bom, 0 otherwise\n\n\
-Return [bool]:\n\
-    True if the function succeeds, False otherwise.\
+**WARNING: The file will be encoded in UTF-8.**\n\n\
+*Positional arguments (length: 3):*\n\n\
+- **0 [str]** -- the file path.\n\
+- **1 [unicode]** -- the file content.\n\
+- **2 [int]** -- 1 to writes the UTF-8 bom, 0 otherwise.\n\n\
+*Return [bool]:*\n\n\
+  **True** if the function succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_write_file(PyObject *self, PyObject *args);
 
@@ -603,12 +603,12 @@ PyObject *unitex_write_file(PyObject *self, PyObject *args) {
 /* 'unitex_append_to_file' function */
 static char unitex_append_to_file_docstring[] = "\
 This function writes at the end of an existing file (virtual or not).\n\
-The file **must** be encoded in UTF-8.\n\n\
-Positional arguments (length: 2):\n\
-    0 [str] -- the file path\n\
-    1 [unicode] -- the file content\n\n\
-Return [bool]:\n\
-    True if the function succeeds, False otherwise.\
+**WARNING: The file must be encoded in UTF-8.**\n\n\
+*Positional arguments (length: 2):*\n\n\
+- **0 [str]** -- the file path.\n\
+- **1 [unicode]** -- the file content.\n\n\
+*Return [bool]:*\n\n\
+  **True** if the function succeeds, **False** otherwise.\
 ";
 static PyObject *unitex_append_to_file(PyObject *self, PyObject *args);
 

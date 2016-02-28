@@ -35,7 +35,7 @@ def escape(sequence):
 
 class UnitexProcessor(object):
     """
-    This class hides mots of the Unitex (pre-)processing in order to
+    This class hides most of the Unitex (pre-)processing in order to
     facilitate his usage.
     """
 
@@ -72,28 +72,28 @@ class UnitexProcessor(object):
         self.__persisted_objects = []
 
         if self.__options["resources"]["alphabet"] is not None:
-            _type = UnitexConstants.ALPHABET
+            _type = UnitexConstants.RESOURCE_ALPHABET
             _object = load_persistent_alphabet(self.__options["resources"]["alphabet"])
 
             self.__persisted_objects.append((_type, _object))
             self.__options["resources"]["alphabet"] = _object
 
         if self.__options["resources"]["alphabet-sorted"] is not None:
-            _type = UnitexConstants.ALPHABET
+            _type = UnitexConstants.RESOURCE_ALPHABET
             _object = load_persistent_alphabet(self.__options["resources"]["alphabet-sorted"])
 
             self.__persisted_objects.append((_type, _object))
             self.__options["resources"]["alphabet-sorted"] = _object
 
         if self.__options["resources"]["sentence"] is not None:
-            _type = UnitexConstants.GRAMMAR
+            _type = UnitexConstants.RESOURCE_GRAMMAR
             _object = load_persistent_fst2(self.__options["resources"]["sentence"])
 
             self.__persisted_objects.append((_type, _object))
             self.__options["resources"]["sentence"] = _object
 
         if self.__options["resources"]["replace"] is not None:
-            _type = UnitexConstants.GRAMMAR
+            _type = UnitexConstants.RESOURCE_GRAMMAR
             _object = load_persistent_fst2(self.__options["resources"]["replace"])
 
             self.__persisted_objects.append((_type, _object))
@@ -102,7 +102,7 @@ class UnitexProcessor(object):
         if self.__options["resources"]["dictionaries"] is not None:
             _objects = []
 
-            _type = UnitexConstants.DICTIONARY
+            _type = UnitexConstants.RESOURCE_DICTIONARY
             for dictionary in self.__options["resources"]["dictionaries"]:
                 _object = load_persistent_dictionary(dictionary)
 
@@ -116,11 +116,11 @@ class UnitexProcessor(object):
             return
 
         for _type, _object in self.__persisted_objects:
-            if _type == UnitexConstants.GRAMMAR:
+            if _type == UnitexConstants.RESOURCE_GRAMMAR:
                 free_persistent_fst2(_object)
-            elif _type == UnitexConstants.DICTIONARY:
+            elif _type == UnitexConstants.RESOURCE_DICTIONARY:
                 free_persistent_dictionary(_object)
-            elif _type == UnitexConstants.ALPHABET:
+            elif _type == UnitexConstants.RESOURCE_ALPHABET:
                 free_persistent_alphabet(_object)
 
     def _clean(self):
@@ -305,20 +305,23 @@ class UnitexProcessor(object):
         non-ambiguous forms, tokenization and application of
         dictionaries.
 
-        Arguments:
-            path [str] -- the input corpus file path.
+        *Arguments:*
 
-            mode [str] -- this parameter (de)activates all the
-                pre-processing operations. Possible values are: 's' for
-                sentence segmentation, 'r' to apply Replace.fst2, 't'
-                to tokenize and 'l' to lexicalize (apply the
-                dictionaries). For instance, if you want to segment,
-                tokenize and lexicalize, the mode will be 'stl'.
+        - **path [str]** -- the input corpus file path.
 
-            tagged [bool] -- this parameter specifies if the input text
-                is tagged or not. Tf True, this parameter deactivate two
-                preprocessing options: sentence segmentation and
-                Replace.fst2 application.
+        - **mode [str]** -- this parameter (de)activates all the
+          pre-processing operations. Possible values are: **'s'** for
+          sentence segmentation, **'r'** to apply Replace.fst2, **'t'**
+          to tokenize and **'l'** to lexicalize (apply the
+          dictionaries). For instance, if you want to segment, tokenize
+          and lexicalize, the mode will be 'stl'.
+
+        - **tagged [bool]** -- this parameter specifies if the input text
+          is tagged or not. Tf True, this parameter deactivate two
+          preprocessing options: sentence segmentation and Replace.fst2
+          application.
+
+        *No return.*
         """
         directory, filename = os.path.split(path)
         name, extension = os.path.splitext(filename)
@@ -357,17 +360,20 @@ class UnitexProcessor(object):
         Unitex processor such as the working directory (*_snt) and the
         normalized text file (*.snt).
 
-        Arguments:
-            clean [bool] -- if set to False, all the files created by
-                the Unitex processor will be kept on the disk or the
-                virtual filesystem if the virtualization is activated.
-                This option must be activated for debugging purposes
-                only (default: True).
+        *Arguments:*
 
-            free [bool] -- if persistence is activated, by setting this
-                option to True, all the persisted resources will be
-                freed from memory. You should use this option when all
-                your corpus are processed (default: False).
+        - **clean [bool]** -- if set to False, all the files created by
+          the Unitex processor will be kept on the disk or the virtual
+          filesystem if the virtualization is activated. This option
+          must be activated for debugging purposes only.
+          (default: **True**)
+
+        - **free [bool]** -- if persistence is activated, by setting this
+          option to True, all the persisted resources will be freed
+          from memory. You should use this option when all your corpus
+          are processed. (default: **False**)
+
+        *No return.*
         """
         if clean is True:
             self._clean()
@@ -383,18 +389,22 @@ class UnitexProcessor(object):
         """
         This function tags the current opened corpus.
 
-        Arguments:
-            grammar [str] -- fst2 transducer used to tag the corpus.
+        *Arguments:*
 
-            output [str] -- the output file path.
+        - **grammar [str]** -- fst2 transducer used to tag the corpus.
 
-        Keyword arguments:
-            xml [bool] -- if set to True, the resulting file will
-                contain the XML headers.
+        - **output [str]** -- the output file path.
 
-            match_mode [str] -- Possible values are:
-                - UnitexConstants.MATCH_MODE_SHORTEST
-                - UnitexConstants.MATCH_MODE_LONGEST (default)
+        *Keyword arguments:*
+
+        - **xml [bool]** -- if set to True, the resulting file will
+          contain the XML headers.
+
+        - **match_mode [str]** -- Possible values are:
+          - UnitexConstants.MATCH_MODE_SHORTEST
+          - UnitexConstants.MATCH_MODE_LONGEST (default)
+
+        *No return.*
         """
         xml = kwargs.get("xml", False)
         match_mode = kwargs.get("match_mode", UnitexConstants.MATCH_MODE_LONGEST)

@@ -23,9 +23,9 @@ class UnitexConstants(object):
 
     VFS_PREFIX = "$:"
 
-    GRAMMAR = "grammar"
-    DICTIONARY = "dictionary"
-    ALPHABET = "alphabet"
+    RESOURCE_GRAMMAR = "grammar"
+    RESOURCE_DICTIONARY = "dictionary"
+    RESOURCE_ALPHABET = "alphabet"
 
     DELAF = "delaf"
     DELAS = "delas"
@@ -111,10 +111,11 @@ def enable_stdout():
     This function enables Unitex standard output. This is the default
     but should be used for debug purposes only.
 
-    No argument.
+    *No argument.*
 
-    Return [bool]:
-        True if it succeeds, False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     _LOGGER.info("Enabling standard output...")
     ret = _unitex.unitex_enable_stdout()
@@ -129,10 +130,11 @@ def disable_stdout():
     output consistency (i.e. avoid output mixing between threads) and to
     improve performances.
 
-    No argument.
+    *No argument.*
 
-    Return [bool]:
-        True if it succeeds, False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     _LOGGER.info("Disabling standard output...")
     ret = _unitex.unitex_disable_stdout()
@@ -146,10 +148,11 @@ def enable_stderr():
     This function enables Unitex error output. This is the default but
     should be used for debug purposes only.
 
-    No argument.
+    *No argument.*
 
-    Return [bool]:
-        True if it succeeds, False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     _LOGGER.info("Enabling error output...")
     ret = _unitex.unitex_enable_stderr()
@@ -164,10 +167,11 @@ def disable_stderr():
     output consistency (i.e. avoid output mixing between threads) and to
     improve performances.
 
-    No argument.
+    *No argument.*
 
-    Return [bool]:
-        True if it succeeds, False otherwise.
+    *Return [bool]:*
+
+      **True** if it succeeds, **False** otherwise.
     """
     _LOGGER.info("Disabling error output...")
     ret = _unitex.unitex_disable_stderr()
@@ -182,31 +186,33 @@ def init_log_system(verbose, debug, log=None):
     """
     This function enables/disables the logging system.
 
-    Arguments:
-        verbose [int] -- enables/disables the standard output. Possible
-            values are:
-            - 0: the standard output is disabled;
-            - 1: the standard output shows 'warnings' emitted by the
-                 bindings logging system.
-            - 2: the standard output shows 'warnings' and various
-                 processing informations emitted by the bindings logging
-                 system;
-            - 3: the full standard output is activated for both the
-                 bindings and the Unitex processor.
+    *Arguments:*
 
-        debug [int] --  enables/disables the error output. Possible
-            values are: 
-            - 0: the error output is disabled;
-            - 1: the error output is limited to the logging system
-                 implemented in the bindings;
-            - 2: the error output is activated for both the bindings
-                 and the Unitex processor.
+    - **verbose [int]** -- enables/disables the standard output.
+      Possible values are:
 
-        log [str] -- if not None, the error and standard outputs are
-            redirected to the file specified by this argument. Be sure
-            to have write access to this file.
+      - 0: the standard output is disabled;
+      - 1: the standard output shows 'warnings' emitted by the bindings
+        logging system;
+      - 2: the standard output shows 'warnings' and various
+        processing informations emitted by the bindings logging system;
+      - 3: the full standard output is activated for both the bindings
+        and the Unitex processor.
 
-    Return [None].
+    - **debug [int]** --  enables/disables the error output. Possible
+      values are: 
+
+      - 0: the error output is disabled;
+      - 1: the error output is limited to the logging system implemented
+        in the bindings;
+      - 2: the error output is activated for both the bindings and the
+        Unitex processor.
+
+    - **log [str]** -- if not None, the error and standard outputs are
+      redirected to the file specified by this argument. Be sure to have
+      write access to this file.
+
+    *No return.*
     """
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)

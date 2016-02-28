@@ -98,6 +98,28 @@ unitex_tool(...)
         True if the command succeeds, False otherwise.
 ```
 
+If you want to generate HTML documentation from the source files, you can also use the [Sphinx Documentation Generator](http://www.sphinx-doc.org/).
+
+```bash
+# Run as root
+# On MacOSX (MacPorts)
+# Python 2.7
+port install py27-sphinx
+
+# Python 3.5
+port install py35-sphinx
+
+# On Linux (distributions based on Debian)
+# Python 2.7
+apt-get install python-sphinx
+```
+
+Once the tool installed, just open a terminal, move in the [documentation]() directory and run (as user):
+
+```bash
+make
+```
+
 ## Getting started
 
 **NOTE: The texts must be encoded in UTF-8. There is so far no support for UTF-16-(LE|BE) or any other encoding.**
