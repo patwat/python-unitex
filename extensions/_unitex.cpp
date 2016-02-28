@@ -162,7 +162,7 @@ This function unloads a dictionary from persistent space.\n\n\
 Positional arguments (length: 1):\n\
     0 [str] -- the persistent file path returned by the\n\
                'load_persistent_dictionary' function.\n\n\
-Return [None]\
+Return [None].\
 ";
 static PyObject *unitex_free_persistent_dictionary(PyObject *self, PyObject *args);
 
@@ -182,7 +182,7 @@ This function unloads a grammar from persistent space.\n\n\
 Positional arguments (length: 1):\n\
     0 [str] -- the persistent file path returned by the\n\
                'load_persistent_fst2' function.\n\n\
-Return [None]\
+Return [None].\
 ";
 static PyObject *unitex_free_persistent_fst2(PyObject *self, PyObject *args);
 
@@ -202,7 +202,7 @@ This function unloads an alphabet from persistent space.\n\n\
 Positional arguments (length: 1):\n\
     0 [str] -- the persistent file path returned by the\n\
                'load_persistent_alphabet' function.\n\n\
-Return [None]\
+Return [None].\
 ";
 static PyObject *unitex_free_persistent_alphabet(PyObject *self, PyObject *args);
 

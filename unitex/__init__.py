@@ -179,6 +179,35 @@ def disable_stderr():
 
 
 def init_log_system(verbose, debug, log=None):
+    """
+    This function enables/disables the logging system.
+
+    Arguments:
+        verbose [int] -- enables/disables the standard output. Possible
+            values are:
+            - 0: the standard output is disabled;
+            - 1: the standard output shows 'warnings' emitted by the
+                 bindings logging system.
+            - 2: the standard output shows 'warnings' and various
+                 processing informations emitted by the bindings logging
+                 system;
+            - 3: the full standard output is activated for both the
+                 bindings and the Unitex processor.
+
+        debug [int] --  enables/disables the error output. Possible
+            values are: 
+            - 0: the error output is disabled;
+            - 1: the error output is limited to the logging system
+                 implemented in the bindings;
+            - 2: the error output is activated for both the bindings
+                 and the Unitex processor.
+
+        log [str] -- if not None, the error and standard outputs are
+            redirected to the file specified by this argument. Be sure
+            to have write access to this file.
+
+    Return [None].
+    """
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)
     kwargs = {}
