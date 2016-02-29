@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Python 2/3 compatibility
+from __future__ import import unicode_literals
+
 import getopt
 import os
 import sys
