@@ -91,11 +91,13 @@ Help on built-in function unitex_tool in module _unitex:
 unitex_tool(...)
     This function launches an Unitex command.
 
-    Positional arguments (length: 1):
-        0 [str] -- the Unitex command.
+    *Positional arguments (length: 1):*
 
-    Return [bool]:
-        True if the command succeeds, False otherwise.
+    - **0 [str]** -- the Unitex command.
+
+    *Return [bool]:*
+
+      **True** if the command succeeds, **False** otherwise.
 ```
 
 If you want to generate HTML documentation from the source files, you can also use the [Sphinx Documentation Generator](http://www.sphinx-doc.org/).
