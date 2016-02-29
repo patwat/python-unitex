@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Python 2/3 compatibility
-from __future__ import unicode_literals
-
 import getopt
 import os
 import sys
@@ -172,4 +169,4 @@ if __name__ == "__main__":
     options["resources"]["alphabet-sorted"] = alphabet_sorted
 
     with open(output, 'w') as f:
-        f.write(yaml.dump(options, default_flow_style=False))
+        f.write(yaml.dump(options, encoding="utf-8" default_flow_style=False))
