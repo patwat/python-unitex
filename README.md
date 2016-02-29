@@ -117,7 +117,7 @@ apt-get install python-sphinx
 Once the tool installed, just open a terminal, move in the [documentation]() directory and run (as user):
 
 ```bash
-make html
+make htm
 ```
 
 ## Getting started
