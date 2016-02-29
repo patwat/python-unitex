@@ -169,4 +169,4 @@ if __name__ == "__main__":
     options["resources"]["alphabet-sorted"] = alphabet_sorted
 
     with open(output, 'w') as f:
-        f.write(yaml.dump(options, encoding="utf-8" default_flow_style=False))
+        f.write(yaml.dump(options, encoding="utf-8", default_flow_style=False))
