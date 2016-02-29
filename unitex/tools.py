@@ -119,8 +119,8 @@ def compress(dictionary, **kwargs):
       dictionary (default: False).
 
     - **version [str]** -- Possible values are:
+
       - UnitexConstants.DICTIONARY_VERSION_1: produces an old style .bin
-        UnitexConstants.DICTIONARY_VERfile;
       - UnitexConstants.DICTIONARY_VERSION_2: produces a new style .bin
         file, with no file size limitation to 16 Mb and a smaller size
         (default).
@@ -796,21 +796,25 @@ def locate(grammar, text, alphabet, **kwargs):
         compatibility with previous versions of Unitex.
     
     - *Search limit options:*
+
       - **number_of_matches [int]** -- stops after the first N matches
         (default: all matches).
     
     - *Maximum iterations per token options:*
+
       - **stop_token_count [list(int_1, int_2)]** -- emits a warning
         after 'int_1' iterations on a token and stops after 'int_2'
         iterations.
     
     - *Matching mode options:*
+
       - **match_mode [str]** -- Possible values are:
         - UnitexConstants.MATCH_MODE_SHORTEST
         - UnitexConstants.MATCH_MODE_LONGEST (default)
         - UnitexConstants.MATCH_MODE_ALL
     
     - Output options:
+
       - **output_mode [str]** -- Possible values are:
         - UnitexConstants.OUTPUT_MODE_IGNORE (default)
         - UnitexConstants.OUTPUT_MODE_MERGE
@@ -826,6 +830,7 @@ def locate(grammar, text, alphabet, **kwargs):
         named str_1 with content str_2. Note that str_2 must be ASCII.
     
     - *Ambiguous output options:*
+
       - **ambiguous_outputs [bool]** -- allows the production of several
         matches with same input but different outputs. If False, in case
         of ambiguous outputs, one will be arbitrarily chosen and kept,

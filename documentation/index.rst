@@ -11,6 +11,7 @@ Contents:
 .. toctree::
     :maxdepth: 1
 
+    _unitex
     unitex
 
 Indices and tables

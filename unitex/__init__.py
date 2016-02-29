@@ -18,6 +18,9 @@ class UnitexException(Exception):
 
 
 class UnitexConstants(object):
+    """
+    This class lists all the constants used by the Unitex processor.
+    """
 
     DEFAULT_ENCODING="utf-8"
 
