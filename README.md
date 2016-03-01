@@ -260,7 +260,7 @@ Options:
     -g, --grammar = the fst2 grammar to use
 
 Example:
-  $ do-concord -c unitex-fr.yaml *.txt
+  $ do-concord -c unitex-fr.yaml -g grammar.fst2 *.txt
 ```
 
 ## Useful links

@@ -221,7 +221,7 @@ if __name__ == "__main__":
         sys.stderr.write("    -c, --config  = the Unitex config file\n")
         sys.stderr.write("    -g, --grammar = the fst2 grammar to use\n\n")
         sys.stderr.write("Example:\n")
-        sys.stderr.write("  $ do-concord -c unitex.yaml *.txt\n")
+        sys.stderr.write("  $ do-concord -c unitex.yaml -g grammar.fst2 *.txt\n")
         sys.exit(1)
 
     try:
