@@ -116,11 +116,15 @@ port install py35-sphinx
 apt-get install python-sphinx
 ```
 
-Once the tool installed, just open a terminal, move in the [documentation]() directory and run (as user):
+Once the tool is installed, open a terminal, move in the [documentation]() directory and run (as user):
 
 ```bash
+# If necessary, clean previous build
+make clean
 make html
 ```
+
+After the compilation process, the resulting files are located in `_build/html/`.
 
 ## Getting started
 
