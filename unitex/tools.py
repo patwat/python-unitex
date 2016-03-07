@@ -904,7 +904,7 @@ def locate(grammar, text, alphabet, **kwargs):
         command.append("--ignore")
     elif options["output_mode"] == UnitexConstants.OUTPUT_MODE_MERGE:
         command.append("--merge")
-    elif options["output_mode"] == UnitexConstants.OUTPUT_MODE_RELACE:
+    elif options["output_mode"] == UnitexConstants.OUTPUT_MODE_REPLACE:
         command.append("--replace")
 
     if options["protect_dic_chars"] is True:

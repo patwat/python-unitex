@@ -235,7 +235,7 @@ class UnitexProcessor(object):
 
         if output_mode not in (UnitexConstants.OUTPUT_MODE_IGNORE,
                                UnitexConstants.OUTPUT_MODE_MERGE,
-                               UnitexConstants.OUTPUT_MODE_RELACE):
+                               UnitexConstants.OUTPUT_MODE_REPLACE):
             raise UnitexException("Wrong value for the 'output_mode' option. UnitexConstants.OUTPUT_MODE_X required.")
         kwargs["output_mode"] = output_mode
 

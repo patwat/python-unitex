@@ -66,7 +66,7 @@ class UnitexConstants(object):
 
     OUTPUT_MODE_MERGE = "merge"
     OUTPUT_MODE_IGNORE = "ignore"
-    OUTPUT_MODE_RELACE = "replace"
+    OUTPUT_MODE_REPLACE = "replace"
 
     ON_ERROR_EXIT = "exit"
     ON_ERROR_IGNORE = "ignore"
