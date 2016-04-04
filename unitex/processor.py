@@ -66,6 +66,11 @@ class UnitexProcessor(object):
 
         self._load()
 
+    def get_option(self, name):
+        if not name in self.__options:
+            raise UnitexException("Unkown option '%s'" % name)
+        return self.__options[name]
+
     def _load(self):
         if self.__options["persistence"] is False:
             return
@@ -384,6 +389,60 @@ class UnitexProcessor(object):
         self.__txt = None
         self.__snt = None
         self.__dir = None
+
+    def iter(self, grammar, **kwargs):
+        """
+        This function iters over the grammar matches.
+
+        *Arguments:*
+
+        - **grammar [str]** -- fst2 transducer used to tag the corpus.
+
+        *Keyword arguments:*
+
+        - **match_mode [str]** -- Possible values are:
+          - UnitexConstants.MATCH_MODE_SHORTEST
+          - UnitexConstants.MATCH_MODE_LONGEST (default)
+
+        - **output_mode [str]** -- Possible values are:
+          - UnitexConstants.OUTPUT_MODE_MERGE (default)
+          - UnitexConstants.OUTPUT_MODE_IGNORE
+          - UnitexConstants.OUTPUT_MODE_REPLACE
+
+        *Return [iterator(str)]:*
+
+          The function returns an iterator over the grammar matches.
+        """
+        match_mode = kwargs.get("match_mode", UnitexConstants.MATCH_MODE_LONGEST)
+        if match_mode not in (UnitexConstants.MATCH_MODE_LONGEST, UnitexConstants.MATCH_MODE_SHORTEST):
+            raise UnitexException("Invalid match mode '%s'...")
+
+        output_mode = kwargs.get("output_mode", UnitexConstants.OUTPUT_MODE_MERGE)
+        if output_mode not in (UnitexConstants.OUTPUT_MODE_MERGE, UnitexConstants.OUTPUT_MODE_IGNORE, UnitexConstants.OUTPUT_MODE_REPLACE):
+            raise UnitexException("Invalid output mode '%s'...")
+
+        index = self._locate(grammar, match_mode, output_mode)
+
+        matches = UnitexFile()
+        matches.open(index, "r")
+        content = matches.read()
+        matches.close()
+
+        ind = re.compile(r"([^\s]+) ([^\s]+)(?: (.*))?")
+
+        lines = content.split("\n")
+        for line in lines[1:]:
+            line = line.rstrip()
+            if not line:
+                continue
+
+            match = ind.search(line)
+
+            groups = match.groups()
+            if output_mode == UnitexConstants.OUTPUT_MODE_IGNORE:
+                yield {"offsets": (groups[0], groups[1]), "match": ""}
+            else:
+                yield {"offsets": (groups[0], groups[1]), "match": groups[2]}
 
     def tag(self, grammar, output, **kwargs):
         """
