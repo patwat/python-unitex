@@ -50,7 +50,7 @@ class CustomBuild(build):
             sys.stderr.write("Plateform '%s' not supported...\n" % sys.platform)
             sys.exit(1)
 
-        command = "cd %s && cp %s /usr/local/lib" % (os.path.join(UNITEX_INC, "bin"), library)
+        command = "mkdir -p /usr/local/lib && cd %s && cp %s /usr/local/lib" % (os.path.join(UNITEX_INC, "bin"), library)
 
         try:
             process = subprocess.Popen(command, stderr=subprocess.PIPE, shell=True)
