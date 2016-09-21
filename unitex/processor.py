@@ -390,6 +390,9 @@ class UnitexProcessor(object):
         self.__snt = None
         self.__dir = None
 
+    def tofst(self):
+        pass
+
     def iter(self, grammar, **kwargs):
         """
         This function iters over the grammar matches.

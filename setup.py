@@ -107,8 +107,11 @@ setup(name = "unitex",
       license = "GPLv3",
       install_requires = [],
       
-      package_dir = {"unitex":"unitex"},
-      packages = ["unitex"],
+      package_dir = {"unitex": "unitex",
+					 "unitex.utils": "unitex/utils"},
+
+      packages = ["unitex",
+				  "unitex.utils"],
       
       data_files = [],
       

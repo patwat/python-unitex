@@ -1,0 +1,273 @@
+0000000002
+$1
+Dans son jardin de Norvège, Sébastien joue du biniou près de son verger. 
+0/4 1/1 2/3 1/1 3/6 1/1 4/2 1/1 5/7 6/1 1/1 7/9 1/1 8/4 1/1 9/2 1/1 10/6 1/1 11/4 1/1 4/2 1/1 2/3 1/1 12/6 13/1 1/1
+0_0
+: 1 1
+: 2 2 3 2 4 2
+: 5 5 6 3
+: 7 4 8 5 9 5
+: 11 5 12 5 13 5
+: 10 6
+: 14 7
+: 15 8
+: 16 9 17 9
+: 18 10 19 11
+: 21 11
+: 20 12
+: 22 15 23 13 24 13
+: 25 14 26 15 27 15
+: 31 15 32 15 33 15
+: 28 16 29 16 30 16
+: 34 17 35 17
+: 36 18
+t
+f
+@<E>
+.
+@STD
+@{Dans,dans.PREP+Dnom+z1}
+@0.0.0-0.3.0
+.
+@STD
+@{son,son.N+Conc+[Veg]+z1:ms}
+@2.0.0-2.2.0
+.
+@STD
+@{son,son.N+[Bruit]+z1:ms}
+@2.0.0-2.2.0
+.
+@STD
+@{son,son.DET+Dposs3s+z1:ms:fs}
+@2.0.0-2.2.0
+.
+@STD
+@{jardin de,jardin de.NDET+Dnom7}
+@4.0.0-6.1.0
+.
+@STD
+@{jardin,jardin.N+z1:ms}
+@4.0.0-4.5.0
+.
+@STD
+@{de,.PREP+z1}
+@6.0.0-6.1.0
+.
+@STD
+@{de,de.PREP+z1}
+@6.0.0-6.1.0
+.
+@STD
+@{de,de.DET+Dind+z1:ms:fs:mp:fp}
+@6.0.0-6.1.0
+.
+@STD
+@Norvège
+@8.0.0-8.6.0
+.
+@STD
+@{du,.DET+Dind+z1:ms}
+@6.0.0-6.1.0
+.
+@STD
+@{des,un.DET+Dind+z1:mp:fp}
+@6.0.0-6.1.0
+.
+@STD
+@{de la,du.DET+Dind+z1:fs}
+@6.0.0-6.1.0
+.
+@STD
+@,
+@9.0.0-9.0.0
+.
+@STD
+@Sébastien
+@11.0.0-11.8.0
+.
+@STD
+@{joue,jouer.V+z1:P1s:P3s:S1s:S3s:Y2s}
+@13.0.0-13.3.0
+.
+@STD
+@{joue,joue.N+z1:fs}
+@13.0.0-13.3.0
+.
+@STD
+@{de,.PREP+z1}
+@15.0.0-15.1.0
+.
+@STD
+@{du,du.DET+Dind+z1:ms}
+@15.0.0-15.1.0
+.
+@STD
+@{biniou,biniou.N+z2:ms}
+@17.0.0-17.5.0
+.
+@STD
+@{le,.DET+Ddef+z1:ms}
+@15.0.0-15.1.0
+.
+@STD
+@{près de,près de.PREP+EPCPQ+z1}
+@19.0.0-21.1.0
+.
+@STD
+@{près,près.PREP+Dnom+z1}
+@19.0.0-19.3.0
+.
+@STD
+@{près,près.ADV}
+@19.0.0-19.3.0
+.
+@STD
+@{de,.PREP+z1}
+@21.0.0-21.1.0
+.
+@STD
+@{de,de.PREP+z1}
+@21.0.0-21.1.0
+.
+@STD
+@{de,de.DET+Dind+z1:ms:fs:mp:fp}
+@21.0.0-21.1.0
+.
+@STD
+@{son,son.N+Conc+[Veg]+z1:ms}
+@23.0.0-23.2.0
+.
+@STD
+@{son,son.N+[Bruit]+z1:ms}
+@23.0.0-23.2.0
+.
+@STD
+@{son,son.DET+Dposs3s+z1:ms:fs}
+@23.0.0-23.2.0
+.
+@STD
+@{du,.DET+Dind+z1:ms}
+@21.0.0-21.1.0
+.
+@STD
+@{des,un.DET+Dind+z1:mp:fp}
+@21.0.0-21.1.0
+.
+@STD
+@{de la,du.DET+Dind+z1:fs}
+@21.0.0-21.1.0
+.
+@STD
+@{verger,verger.V+z1:W}
+@25.0.0-25.5.0
+.
+@STD
+@{verger,verger.N+z1:ms}
+@25.0.0-25.5.0
+.
+@STD
+@.
+@26.0.0-26.0.0
+.
+f
+$2
+Il est heureux Monsieur Paumier et ce n'est pas dommage. 
+15/2 1/1 16/3 1/1 17/7 1/1 18/8 1/1 19/7 1/1 20/2 1/1 21/2 1/1 22/1 23/1 16/3 1/1 24/3 1/1 25/7 13/1 1/1
+29_77
+: 1 1
+: 2 2 3 2 4 2
+: 5 3 6 3
+: 7 4
+: 8 5
+: 9 6
+: 10 7 11 7 12 7
+: 13 8
+: 14 9 15 9 16 9
+: 17 10 18 10
+: 19 11
+: 20 12
+t
+f
+@<E>
+.
+@STD
+@{Il,il.PRO+PpvIL+z1:3ms}
+@0.0.0-0.1.0
+.
+@STD
+@{est,être.V+z1:P3s}
+@2.0.0-2.2.0
+.
+@STD
+@{est,est.N+z1:ms}
+@2.0.0-2.2.0
+.
+@STD
+@{est,est.A+z1:ms:fs:mp:fp}
+@2.0.0-2.2.0
+.
+@STD
+@{heureux,heureux.N+z1:ms:mp}
+@4.0.0-4.6.0
+.
+@STD
+@{heureux,heureux.A+z1:ms:mp}
+@4.0.0-4.6.0
+.
+@STD
+@{Monsieur,monsieur.N+z1:ms}
+@6.0.0-6.7.0
+.
+@STD
+@{Paumier,paumier.N:ms}
+@8.0.0-8.6.0
+.
+@STD
+@{et,et.CONJC}
+@10.0.0-10.1.0
+.
+@STD
+@{ce,ce.PRO+PpvIL+z1:3ms:3mp}
+@12.0.0-12.1.0
+.
+@STD
+@{ce,ce.PRO+Pdem+z1:ms}
+@12.0.0-12.1.0
+.
+@STD
+@{ce,ce.DET+Ddem+z1:ms}
+@12.0.0-12.1.0
+.
+@STD
+@{ne,.XI+z1}
+@14.0.0-15.0.0
+.
+@STD
+@{est,être.V+z1:P3s}
+@16.0.0-16.2.0
+.
+@STD
+@{est,est.N+z1:ms}
+@16.0.0-16.2.0
+.
+@STD
+@{est,est.A+z1:ms:fs:mp:fp}
+@16.0.0-16.2.0
+.
+@STD
+@{pas,pas.N+z1:ms:mp}
+@18.0.0-18.2.0
+.
+@STD
+@{pas,pas.ADV+z1}
+@18.0.0-18.2.0
+.
+@STD
+@{dommage,dommage.N+z1:ms}
+@20.0.0-20.6.0
+.
+@STD
+@.
+@21.0.0-21.0.0
+.
+f
