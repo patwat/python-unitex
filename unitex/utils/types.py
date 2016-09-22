@@ -107,7 +107,7 @@ class Tag(object):
 class Entry(Tag):
 
     def __init__(self, entry=None):
-        super(Tag, self).__init__()
+        super(Entry, self).__init__()
 
         self.__form = ""
         self.__lemma = ""

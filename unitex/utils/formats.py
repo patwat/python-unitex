@@ -12,6 +12,8 @@ from unitex.utils.types import Tag, Entry
 
 _LOGGER = logging.getLogger(__name__)
 
+ENTRY = re.compile(r"{([^}]*)}")
+
 
 
 class CompressedEntry(Entry):
@@ -96,7 +98,7 @@ class CompressedEntry(Entry):
 
 
 
-class OldCompiledDictionary:
+class OldCompressedDictionary:
 
     INITIAL_STATE_OFFSET=4
     INF_SEPARATOR=re.compile(r"(?<![\\]),")
@@ -282,6 +284,14 @@ class OldCompiledDictionary:
 
 
 
+class CompressedDictionary(OldCompressedDictionary):
+
+    def __init__(self):
+        super(CompressedDictionary, self).__init__()
+        raise NotImplementedError
+
+
+
 class GRF(Automaton):
 
     def __init__(self, name="GRF"):
@@ -430,7 +440,7 @@ class SentenceFST(Automaton):
                 p1 = labels[lid][1][0][0]
                 p2 = labels[lid][1][1][0]
 
-                if not self.__labels.has_key(p1):
+                if p1 not in self.__labels:
                     self.__labels[p1] = []
                 self.__labels[p1].append((entry, p2))
 
@@ -450,7 +460,7 @@ class TextFST:
     def __len__(self):
         return self.__size
 
-    def next(self):
+    def __next(self):
         line = self.__file.readline()
 
         while line:
@@ -535,6 +545,7 @@ class TextFST:
                     entry = Entry()
 
                     if ENTRY.match(content):
+                        content = ENTRY.sub(r"\1", content)
                         entry.load(content)
                     else:
                         entry.set_form(content)
@@ -562,15 +573,15 @@ class TextFST:
                 line = line.rstrip()
 
             _LOGGER.debug("SENTENCE[%s]\n" % number)
-            _LOGGER.debug(" - offset: %s\n" % offset)
+            _LOGGER.debug(" - offset: (%s)\n" % ", ".join([str(i) for i in offset]))
             _LOGGER.debug(" - text: %s\n" % text)
-            _LOGGER.debug(" - tokens: %s\n" % tokens)
+            _LOGGER.debug(" - tokens: [%s]\n" % ", ".join([str(t) for t in tokens]))
             _LOGGER.debug(" - states:\n")
             for state in states:
                 _LOGGER.debug("   - s: %s\n" % state)
             _LOGGER.debug(" - tags:\n")
             for tag in tags:
-                _LOGGER.debug("   - t: %s\n" % tag)
+                _LOGGER.debug("   - t: (%s)\n" % ", ".join([str(t) for t in tag]))
 
             S = SentenceFST("SENTENCE[%d]" % number)
             S.load(text, tokens, states, tags)
@@ -578,11 +589,11 @@ class TextFST:
             return S
 
     def __iter__(self):
-        sentence = self.next()
+        sentence = self.__next()
         while sentence:
             yield sentence
 
-            sentence = self.next()
+            sentence = self.__next()
 
     def open(self, file, encoding=None):
         if encoding is None:

@@ -18,7 +18,15 @@ class Arguments:
         self.__arguments["inf-v1"] = "data/dictionary-v1.inf"
         self.__arguments["enc-v1"] = "utf-16-le"
 
+        self.__arguments["bin-v2"] = "data/dictionary-v2.bin"
+        self.__arguments["inf-v2"] = "data/dictionary-v2.inf"
+        self.__arguments["enc-v2"] = "utf-16-le"
+
         self.__arguments["grf"] = "data/automaton.grf"
+
+        self.__arguments["text-tfst"] = "data/text.tfst"
+        self.__arguments["text-tind"] = "data/text.tind"
+        self.__arguments["text-size"] = 2
 
     def __getitem__(self, key):
         if key not in self.__arguments:
@@ -61,6 +69,9 @@ class TestUnitexUtils(unittest.TestCase):
         grf.add_path(path8.split())
         grf.add_path(path9.split())
 
+        grf.determinize()
+        grf.minimize()
+
         grf.save(self._arguments["grf"])
         self.assertTrue(os.path.exists(self._arguments["grf"]), "GRF creation failed!")
 
@@ -72,7 +83,20 @@ class TestUnitexUtils(unittest.TestCase):
 
         ret = True if dictionary.find("Sébastien") else False
 
-        self.assertTrue(ret, "Dictionary lookup failed!")
+        self.assertTrue(ret, "Dictionary (old format) lookup failed!")
+
+    def test_03_new_dictionary(self):
+        self.assertTrue(True, "Dictionary (new format) lookup failed!")
+
+    def test_04_text_fst(self):
+        tfst = TextFST()
+        tfst.open(self._arguments["text-tfst"])
+
+        good = True if len(tfst) == self._arguments["text-size"] else False
+
+        tfst.close()
+
+        self.assertTrue(good, "Dictionary (new format) lookup failed!")
 
 if __name__ == '__main__':
     unittest.main()
