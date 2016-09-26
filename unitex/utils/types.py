@@ -8,18 +8,17 @@ from unitex import UnitexException
 
 _LOGGER = logging.getLogger(__name__)
 
+BRACKETED_ENTRY = re.compile(r"{([^}]*)}")
+
 
 
 class Tag(object):
 
-    def __init__(self, tag=None):
+    def __init__(self):
         self.__pos = ""
 
         self.__features = []
         self.__flexions = []
-
-        if tag is not None:
-            self.load(tag)
 
     def __str__(self):
         return self.get()
@@ -106,19 +105,18 @@ class Tag(object):
 
 class Entry(Tag):
 
-    def __init__(self, entry=None):
+    def __init__(self):
         super(Entry, self).__init__()
 
         self.__form = ""
         self.__lemma = ""
 
-        if entry is not None:
-            self.load(entry)
-
     def __str__(self):
         return self.get()
 
-    def load(self, entry):
+    def load(self, entry, bracketed=False):
+        if bracketed is True:
+            entry = BRACKETED_ENTRY.sub(r"\1", entry)
         i = 0
 
         escaped = False
@@ -177,15 +175,19 @@ class Entry(Tag):
 
         Tag.load(self, entry[i:])
 
-    def get(self):
+    def get(self, bracketed=False):
         form = self.get_form(escape=True)
+
         lemma = self.get_lemma(escape=True)
         if not lemma:
-            lemma = ""
+            lemma = form
 
         tag = Tag.get(self)
 
-        return "%s,%s.%s" % (form, lemma, tag)
+        if bracketed is True:
+            return "{%s,%s.%s}" % (form, lemma, tag)
+        else:
+            return "%s,%s.%s" % (form, lemma, tag)
 
     def set_form(self, form):
         self.__form = form

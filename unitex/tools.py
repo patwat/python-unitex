@@ -1213,13 +1213,13 @@ def txt2tfst(text, alphabet, **kwargs):
     - **clean [bool]** -- indicates whether the rule of conservation of
       the best paths (see section 7.2.4) should be applied
       (default: False).
-    
+
     - **normalization_grammar [str]** -- name of a normalization grammar
       that is to be applied to the text automaton.
-    
+
     - **tagset [str]** -- Elag tagset file to use to normalize
       dictionary entries.
-    
+
     - **korean [bool]** -- tells the function that it works on Korean
       (default: False).
 

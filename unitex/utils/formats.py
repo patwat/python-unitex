@@ -6,13 +6,14 @@ import logging
 import re
 import struct
 
+from builtins import chr
+from io import open
+
 from unitex import UnitexException, UnitexConstants
 from unitex.utils.fsa import FSAConstants, Automaton
-from unitex.utils.types import Tag, Entry
+from unitex.utils.types import BRACKETED_ENTRY, Tag, Entry
 
 _LOGGER = logging.getLogger(__name__)
-
-ENTRY = re.compile(r"{([^}]*)}")
 
 
 
@@ -454,31 +455,39 @@ class SentenceFST(Automaton):
 class TextFST:
 
     def __init__(self):
-        self.__file = None
+        self.__tfst = None
+        self.__tind = None
+
         self.__size = 0
 
+    def __del__(self):
+        self.__tfst.close()
+
     def __len__(self):
-        return self.__size
+        return len(self.__tind)
 
-    def __next(self):
-        line = self.__file.readline()
+    def __getitem__(self, i):
+        position = self.__tind[i]
 
+        self.__tfst.seek(position)
+
+        line = self.__tfst.readline()
         while line:
             line = line.rstrip()
 
             if line[0] != "$":
-                raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
             # The sentence number (format '$n')
             number = int(line[1:])
 
-            line = self.__file.readline()
+            line = self.__tfst.readline()
             line = line.rstrip()
 
             # The text of the sentence
             text = line
 
-            line = self.__file.readline()
+            line = self.__tfst.readline()
             line = line.rstrip()
 
             # The tokens of the text
@@ -488,7 +497,7 @@ class TextFST:
             #        - y: length of the token (in characters)
             tokens = [tuple(int(t) for t in token.split("/")) for token in line.split(" ")]
 
-            line = self.__file.readline()
+            line = self.__tfst.readline()
             line = line.rstrip()
 
             # The offset of the sentence (from the begining of the text)
@@ -498,13 +507,13 @@ class TextFST:
             #        - Y: the offset in characters
             offset = tuple(int(o) for o in line.split("_"))
 
-            line = self.__file.readline()
+            line = self.__tfst.readline()
             line = line.rstrip()
 
             states = []
             while line != "t":
                 if line[0] != ":":
-                    raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                    raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
                 line = line[1:].strip()
                 line = line.split()
@@ -514,21 +523,21 @@ class TextFST:
                     state.append((int(line[i]), int(line[i+1])))
                 states.append(state)
 
-                line = self.__file.readline()
+                line = self.__tfst.readline()
                 line = line.rstrip()
 
                 if not line:
-                    raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                    raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
             states.append(line)
 
-            line = self.__file.readline()
+            line = self.__tfst.readline()
             line = line.rstrip()
 
             if line[0] != "f":
-                raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
-            line = self.__file.readline()
+            line = self.__tfst.readline()
             line = line.rstrip()
 
             tags = []
@@ -537,39 +546,39 @@ class TextFST:
                     tags.append(("<E>", None))
 
                 elif line == "@STD":
-                    line = self.__file.readline()
+                    line = self.__tfst.readline()
                     line = line.rstrip()
 
                     content = line[1:]
 
                     entry = Entry()
 
-                    if ENTRY.match(content):
-                        content = ENTRY.sub(r"\1", content)
+                    if BRACKETED_ENTRY.match(content):
+                        content = BRACKETED_ENTRY.sub(r"\1", content)
                         entry.load(content)
                     else:
                         entry.set_form(content)
 
-                    line = self.__file.readline()
+                    line = self.__tfst.readline()
                     line = line.rstrip()
 
                     if line[0] != "@":
-                        raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                        raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
                     position = [tuple(int(i) for i in p.split(".")) for p in line[1:].split("-")]
 
                     tags.append((entry, position))
 
                 else:
-                    raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                    raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
-                line = self.__file.readline()
+                line = self.__tfst.readline()
                 line = line.rstrip()
 
                 if line[0] != ".":
-                    raise UnitexException("File '%s' is corrupted ..." % self.__file.name)
+                    raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
 
-                line = self.__file.readline()
+                line = self.__tfst.readline()
                 line = line.rstrip()
 
             _LOGGER.debug("SENTENCE[%s]\n" % number)
@@ -589,24 +598,27 @@ class TextFST:
             return S
 
     def __iter__(self):
-        sentence = self.__next()
-        while sentence:
-            yield sentence
+        for i in range(len(self)):
+            yield self[i]
 
-            sentence = self.__next()
-
-    def open(self, file, encoding=None):
+    def load(self, fst, index, encoding=None):
         if encoding is None:
             encoding = UnitexConstants.DEFAULT_ENCODING
 
-        self.__file = open(file, "r", encoding=encoding)
+        self.__tfst = open(fst, "r", encoding=encoding)
 
-        line = self.__file.readline()
+        line = self.__tfst.readline()
         line = line.rstrip()
 
         # The number of sentence in the text fst (format: '000000000N')
         self.__size = int(line)
 
-    def close(self):
-        self.__file.close()
-        self.__size = 0
+        self.__tind = []
+
+        with open(index, "rb") as fin:
+            i = fin.read(4)
+            while i:
+                position = struct.unpack("<L", i)
+                self.__tind.append(position[0])
+
+                i = fin.read(4)

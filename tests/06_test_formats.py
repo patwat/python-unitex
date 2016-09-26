@@ -26,6 +26,7 @@ class Arguments:
 
         self.__arguments["text-tfst"] = "data/text.tfst"
         self.__arguments["text-tind"] = "data/text.tind"
+        self.__arguments["text-encoding"] = "utf-8"
         self.__arguments["text-size"] = 2
 
     def __getitem__(self, key):
@@ -76,7 +77,7 @@ class TestUnitexUtils(unittest.TestCase):
         self.assertTrue(os.path.exists(self._arguments["grf"]), "GRF creation failed!")
 
     def test_02_old_dictionary(self):
-        dictionary = OldCompiledDictionary()
+        dictionary = OldCompressedDictionary()
         dictionary.load(self._arguments["bin-v1"],\
                         self._arguments["inf-v1"],\
                         self._arguments["enc-v1"])
@@ -90,11 +91,10 @@ class TestUnitexUtils(unittest.TestCase):
 
     def test_04_text_fst(self):
         tfst = TextFST()
-        tfst.open(self._arguments["text-tfst"])
+        tfst.load(self._arguments["text-tfst"], self._arguments["text-tind"],\
+                  self._arguments["text-encoding"])
 
         good = True if len(tfst) == self._arguments["text-size"] else False
-
-        tfst.close()
 
         self.assertTrue(good, "Dictionary (new format) lookup failed!")
 

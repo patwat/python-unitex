@@ -391,6 +391,13 @@ class UnitexProcessor(object):
         self.__dir = None
 
     def tofst(self):
+        """
+        This function build the text automaton.
+
+        *Return [TextFST]:*
+
+          The function returns a TextFST object.
+        """
         pass
 
     def iter(self, grammar, **kwargs):
