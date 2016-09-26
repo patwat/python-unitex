@@ -458,8 +458,6 @@ class TextFST:
         self.__tfst = None
         self.__tind = None
 
-        self.__size = 0
-
     def __del__(self):
         self.__tfst.close()
 
@@ -467,6 +465,8 @@ class TextFST:
         return len(self.__tind)
 
     def __getitem__(self, i):
+        if i >= len(self):
+            raise UnitexException("TextFST index out of range (size: %s)." % len(self))
         position = self.__tind[i]
 
         self.__tfst.seek(position)
@@ -606,13 +606,6 @@ class TextFST:
             encoding = UnitexConstants.DEFAULT_ENCODING
 
         self.__tfst = open(fst, "r", encoding=encoding)
-
-        line = self.__tfst.readline()
-        line = line.rstrip()
-
-        # The number of sentence in the text fst (format: '000000000N')
-        self.__size = int(line)
-
         self.__tind = []
 
         with open(index, "rb") as fin:
