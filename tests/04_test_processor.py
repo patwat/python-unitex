@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, shutil, unittest
+import os
+import shutil
+import unittest
+import yaml
 
 from unitex import UnitexConstants
+from unitex.config import UnitexConfig
 from unitex.tools import compress, grf2fst2
 from unitex.processor import UnitexProcessor
 
@@ -86,7 +90,14 @@ class TestUnitexIO(unittest.TestCase):
             os.remove(self._arguments["xml"])
 
     def test_01_processor_txt(self):
-        processor = UnitexProcessor(self._arguments["config"])
+        options = None
+        with open(self._arguments["config"], "r") as f:
+            options = yaml.load(f)
+
+        config = UnitexConfig()
+        config.load(options)
+
+        processor = UnitexProcessor(config)
         processor.open(self._arguments["txt"], mode="srtlf", tagged=False)
 
         kwargs = {}
@@ -98,7 +109,14 @@ class TestUnitexIO(unittest.TestCase):
         self.assertTrue(ret, "Tagging process failed (txt format)!")
 
     def test_02_processor_xml(self):
-        processor = UnitexProcessor(self._arguments["config"])
+        options = None
+        with open(self._arguments["config"], "r") as f:
+            options = yaml.load(f)
+
+        config = UnitexConfig()
+        config.load(options)
+
+        processor = UnitexProcessor(config)
         processor.open(self._arguments["txt"], mode="srtlf", tagged=False)
 
         kwargs = {}

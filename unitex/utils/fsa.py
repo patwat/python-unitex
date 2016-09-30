@@ -519,7 +519,7 @@ class Automaton:
             if not self[tid].is_visited():
                 L += self.__expand(self[tid])
 
-    def todot(self, file, encoding=None):
+    def save(self, file, encoding=None):
         if encoding is None:
             encoding = UnitexConstants.DEFAULT_ENCODING
 

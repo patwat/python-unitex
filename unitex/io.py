@@ -154,7 +154,7 @@ class UnitexFile(object):
     manipulate files on the disk and the virtual filesystems. It's
     mainly useful to read files from virtual filesystem whithout having
     to copy them to the disk.
-    
+
     **WARNING: the encoding must be UTF-8 and the data Unicode
     strings.**
     """
@@ -162,7 +162,7 @@ class UnitexFile(object):
     def __init__(self):
         self.__use_bom = None
 
-        self.__file = None
+        self.__path = None
         self.__mode = None
 
     def open(self, file, mode=None, use_bom=False):
@@ -189,11 +189,11 @@ class UnitexFile(object):
         *No return.*
         """
 
-        if self.__file is not None:
-            raise UnitexException("You must close the current file (%s) before open another one..." % self.__file)
+        if self.__path is not None:
+            raise UnitexException("You must close the current file (%s) before open another one..." % self.__path)
         self.__use_bom = use_bom
 
-        self.__file = file
+        self.__path = file
 
         if mode is None:
             mode = "r"
@@ -204,9 +204,9 @@ class UnitexFile(object):
         This function close the opened file and reset all the internal
         parameters.
         """
-        if self.__file is None:
+        if self.__path is None:
             raise UnitexException("There is no file to close...")
-        self.__file = None
+        self.__path = None
         self.__mode = None
 
     def write(self, data):
@@ -220,16 +220,16 @@ class UnitexFile(object):
 
         *No return.*
         """
-        if self.__file is None: 
+        if self.__path is None:
             raise UnitexException("You must open a file before writing...")
         if self.__mode not in ("w", "a"):
-            raise UnitexException("File '%s' is opened in read mode..." % self.__file)
+            raise UnitexException("File '%s' is opened in read mode..." % self.__path)
 
         if self.__mode == "w":
             bom = 1 if self.__use_bom is True else 0
-            _unitex.unitex_write_file(self.__file, data, bom)
+            _unitex.unitex_write_file(self.__path, data, bom)
         else:
-            _unitex.unitex_append_to_file(self.__file, data)
+            _unitex.unitex_append_to_file(self.__path, data)
 
     def read(self):
         """
@@ -242,8 +242,8 @@ class UnitexFile(object):
 
           The data read are returned as a unicode string.
         """
-        if self.__file is None: 
+        if self.__path is None:
             raise UnitexException("You must open a file before reading...")
         if self.__mode != "r":
-            raise UnitexException("File '%s' is opened in write/append mode..." % self.__file)
-        return _unitex.unitex_read_file(self.__file)
+            raise UnitexException("File '%s' is opened in write/append mode..." % self.__path)
+        return _unitex.unitex_read_file(self.__path)

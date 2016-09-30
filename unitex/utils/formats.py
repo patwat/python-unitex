@@ -393,7 +393,7 @@ class SentenceFST(Automaton):
         self.__sentence = None
 
         self.__tokens = None
-        self.__labels = None
+        self.__entries = None
 
     def get_sentence(self):
         return self.__sentence
@@ -402,16 +402,26 @@ class SentenceFST(Automaton):
         return self.__tokens
 
     def get_token(self, i):
-        return self.__tokens[i]
+        try:
+            return self.__tokens[i]
+        except IndexError:
+            raise UnitexException("SentenceFST token index out of range (size: %s)." %\
+                                  len(self.__tokens))
 
-    def get_label(self, i):
-        return self.__labels[i]
+    def get_entries(self):
+        return self.__entries
 
-    def load(self, sentence, tokens, states, labels):
+    def get_label(self, key):
+        try:
+            return self.__entries[key]
+        except KeyError:
+            raise UnitexException("SentenceFST label key error.")
+
+    def load(self, sentence, tokens, states, entries):
         self.__sentence = sentence
 
         self.__tokens = []
-        self.__labels = {}
+        self.__entries = {}
 
         start = 0
         for index, length in tokens:
@@ -436,14 +446,14 @@ class SentenceFST(Automaton):
                 break
 
             for lid, tid in states[i]:
-                entry = labels[lid][0]
+                entry = entries[lid][0]
 
-                p1 = labels[lid][1][0][0]
-                p2 = labels[lid][1][1][0]
+                p1 = entries[lid][1][0][0]
+                p2 = entries[lid][1][1][0]
 
-                if p1 not in self.__labels:
-                    self.__labels[p1] = []
-                self.__labels[p1].append((entry, p2))
+                if p1 not in self.__entries:
+                    self.__entries[p1] = []
+                self.__entries[p1].append((entry, p2))
 
                 transitions.append((sid, lid, tid))
 
@@ -456,7 +466,7 @@ class TextFST:
 
     def __init__(self):
         self.__tfst = None
-        self.__tind = None
+        self.__tind = []
 
     def __del__(self):
         self.__tfst.close()
@@ -465,9 +475,10 @@ class TextFST:
         return len(self.__tind)
 
     def __getitem__(self, i):
-        if i >= len(self):
+        try:
+            position = self.__tind[i]
+        except IndexError:
             raise UnitexException("TextFST index out of range (size: %s)." % len(self))
-        position = self.__tind[i]
 
         self.__tfst.seek(position)
 

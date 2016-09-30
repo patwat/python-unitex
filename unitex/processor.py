@@ -6,7 +6,6 @@ from __future__ import absolute_import
 import logging
 import os
 import re
-import yaml
 
 # Compatibility Python 2/3
 from io import open
@@ -14,10 +13,10 @@ from io import open
 from xml.sax.saxutils import escape
 
 from unitex import *
-from unitex.config import UnitexConfig
 from unitex.io import *
 from unitex.resources import *
 from unitex.tools import *
+from unitex.utils.formats import TextFST
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,7 +39,7 @@ class UnitexProcessor(object):
     """
 
     def __init__(self, config):
-        self.__options = None
+        self.__config = config
 
         self.__persisted_objects = None
 
@@ -48,73 +47,58 @@ class UnitexProcessor(object):
         self.__snt = None
         self.__dir = None
 
-        self.init(config)
-
-    def init(self, config):
-        options = None
-        with open(config, "r") as f:
-            options = yaml.load(f)
-
-        self.__options = UnitexConfig()
-        self.__options.load(options)
-
-        verbose = self.__options["verbose"]
-        debug = self.__options["debug"]
-        log = self.__options["log"]
+        verbose = self.__config["verbose"]
+        debug = self.__config["debug"]
+        log = self.__config["log"]
 
         init_log_system(verbose, debug, log)
 
         self._load()
 
-    def get_option(self, name):
-        if not name in self.__options:
-            raise UnitexException("Unkown option '%s'" % name)
-        return self.__options[name]
-
     def _load(self):
-        if self.__options["persistence"] is False:
+        if self.__config["persistence"] is False:
             return
         self.__persisted_objects = []
 
-        if self.__options["resources"]["alphabet"] is not None:
+        if self.__config["resources"]["alphabet"] is not None:
             _type = UnitexConstants.RESOURCE_ALPHABET
-            _object = load_persistent_alphabet(self.__options["resources"]["alphabet"])
+            _object = load_persistent_alphabet(self.__config["resources"]["alphabet"])
 
             self.__persisted_objects.append((_type, _object))
-            self.__options["resources"]["alphabet"] = _object
+            self.__config["resources"]["alphabet"] = _object
 
-        if self.__options["resources"]["alphabet-sorted"] is not None:
+        if self.__config["resources"]["alphabet-sorted"] is not None:
             _type = UnitexConstants.RESOURCE_ALPHABET
-            _object = load_persistent_alphabet(self.__options["resources"]["alphabet-sorted"])
+            _object = load_persistent_alphabet(self.__config["resources"]["alphabet-sorted"])
 
             self.__persisted_objects.append((_type, _object))
-            self.__options["resources"]["alphabet-sorted"] = _object
+            self.__config["resources"]["alphabet-sorted"] = _object
 
-        if self.__options["resources"]["sentence"] is not None:
+        if self.__config["resources"]["sentence"] is not None:
             _type = UnitexConstants.RESOURCE_GRAMMAR
-            _object = load_persistent_fst2(self.__options["resources"]["sentence"])
+            _object = load_persistent_fst2(self.__config["resources"]["sentence"])
 
             self.__persisted_objects.append((_type, _object))
-            self.__options["resources"]["sentence"] = _object
+            self.__config["resources"]["sentence"] = _object
 
-        if self.__options["resources"]["replace"] is not None:
+        if self.__config["resources"]["replace"] is not None:
             _type = UnitexConstants.RESOURCE_GRAMMAR
-            _object = load_persistent_fst2(self.__options["resources"]["replace"])
+            _object = load_persistent_fst2(self.__config["resources"]["replace"])
 
             self.__persisted_objects.append((_type, _object))
-            self.__options["resources"]["replace"] = _object
+            self.__config["resources"]["replace"] = _object
 
-        if self.__options["resources"]["dictionaries"] is not None:
+        if self.__config["resources"]["dictionaries"] is not None:
             _objects = []
 
             _type = UnitexConstants.RESOURCE_DICTIONARY
-            for dictionary in self.__options["resources"]["dictionaries"]:
+            for dictionary in self.__config["resources"]["dictionaries"]:
                 _object = load_persistent_dictionary(dictionary)
 
                 self.__persisted_objects.append((_type, _object))
                 _objects.append(_object)
 
-            self.__options["resources"]["dictionaries"] = _objects
+            self.__config["resources"]["dictionaries"] = _objects
 
     def _free(self):
         if self.__persisted_objects is None:
@@ -133,35 +117,36 @@ class UnitexProcessor(object):
             _LOGGER.error("Unable to clean processor. No file opened!")
             return
 
-        if self.__options["virtualization"] is True:
+        if self.__config["virtualization"] is True:
             if self.__dir is not None:
                 for vf in ls("%s%s" % (UnitexConstants.VFS_PREFIX, self.__dir)):
                     rm(vf)
             rm(self.__snt)
             rm(self.__txt)
         else:
-            rmdir(self.__dir)
             rm(self.__snt)
 
+        rmdir(self.__dir)
+
     def _normalize(self):
-        kwargs = self.__options["tools"]["normalize"]
+        kwargs = self.__config["tools"]["normalize"]
 
         ret = normalize(self.__txt, **kwargs)
         if ret is False:
             raise UnitexException("Text normalization failed!")
 
     def _segment(self):
-        grammar = self.__options["resources"]["sentence"]
+        grammar = self.__config["resources"]["sentence"]
         if grammar is None:
             raise UnitexException("Unable to segment text. No sentence grammar provided.")
 
-        alphabet = self.__options["resources"]["alphabet"]
+        alphabet = self.__config["resources"]["alphabet"]
         if alphabet is None:
             raise UnitexException("Unable to segment text. No alphabet file provided.")
 
         kwargs = {}
-        kwargs["start_on_space"] = self.__options["tools"]["fst2txt"]["start_on_space"]
-        kwargs["char_by_char"] = self.__options["tools"]["fst2txt"]["char_by_char"]
+        kwargs["start_on_space"] = self.__config["tools"]["fst2txt"]["start_on_space"]
+        kwargs["char_by_char"] = self.__config["tools"]["fst2txt"]["char_by_char"]
         kwargs["merge"] = True
 
         ret = fst2txt(grammar, self.__snt, alphabet, **kwargs)
@@ -169,17 +154,17 @@ class UnitexProcessor(object):
             raise UnitexException("Text segmentation failed!")
 
     def _replace(self):
-        grammar = self.__options["resources"]["replace"]
+        grammar = self.__config["resources"]["replace"]
         if grammar is None:
             raise UnitexException("Unable to normalize text. No replace grammar provided.")
 
-        alphabet = self.__options["resources"]["alphabet"]
+        alphabet = self.__config["resources"]["alphabet"]
         if alphabet is None:
             raise UnitexException("Unable to normalize text. No alphabet file provided.")
 
         kwargs = {}
-        kwargs["start_on_space"] = self.__options["tools"]["fst2txt"]["start_on_space"]
-        kwargs["char_by_char"] = self.__options["tools"]["fst2txt"]["char_by_char"]
+        kwargs["start_on_space"] = self.__config["tools"]["fst2txt"]["start_on_space"]
+        kwargs["char_by_char"] = self.__config["tools"]["fst2txt"]["char_by_char"]
         kwargs["merge"] = False
 
         ret = fst2txt(grammar, self.__snt, alphabet, **kwargs)
@@ -187,47 +172,47 @@ class UnitexProcessor(object):
             raise UnitexException("Text normalization failed!")
 
     def _tokenize(self):
-        alphabet = self.__options["resources"]["alphabet"]
+        alphabet = self.__config["resources"]["alphabet"]
         if alphabet is None:
             raise UnitexException("Unable to tokenize text. No alphabet file provided.")
 
-        kwargs = self.__options["tools"]["tokenize"]
+        kwargs = self.__config["tools"]["tokenize"]
 
         ret = tokenize(self.__snt, alphabet, **kwargs)
         if ret is False:
             raise UnitexException("Text tokenization failed!")
 
     def _lexicalize(self):
-        dictionaries = self.__options["resources"]["dictionaries"]
+        dictionaries = self.__config["resources"]["dictionaries"]
         if not dictionaries:
             raise UnitexException("Unable to lexicalize text. No dictionaries provided.")
 
-        alphabet = self.__options["resources"]["alphabet"]
+        alphabet = self.__config["resources"]["alphabet"]
         if alphabet is None:
             raise UnitexException("Unable to tokenize text. No alphabet file provided.")
 
-        kwargs = self.__options["tools"]["dico"]
+        kwargs = self.__config["tools"]["dico"]
 
         ret = dico(dictionaries, self.__snt, alphabet, **kwargs)
         if ret is False:
             raise UnitexException("Text lexicalization failed!")
 
     def _locate(self, grammar, match_mode, output_mode):
-        alphabet = self.__options["resources"]["alphabet"]
+        alphabet = self.__config["resources"]["alphabet"]
         if alphabet is None:
             raise UnitexException("Unable to locate pattern. No alphabet file provided.")
 
         kwargs = {}
-        kwargs["morpho"] = self.__options["tools"]["locate"]["morpho"]
-        kwargs["start_on_space"] = self.__options["tools"]["locate"]["start_on_space"]
-        kwargs["char_by_char"] = self.__options["tools"]["locate"]["char_by_char"]
-        kwargs["korean"] = self.__options["tools"]["locate"]["korean"]
-        kwargs["arabic_rules"] = self.__options["tools"]["locate"]["arabic_rules"]
-        kwargs["negation_operator"] = self.__options["tools"]["locate"]["negation_operator"]
-        kwargs["stop_token_count"] = self.__options["tools"]["locate"]["stop_token_count"]
-        kwargs["protect_dic_chars"] = self.__options["tools"]["locate"]["protect_dic_chars"]
-        kwargs["variable"] = self.__options["tools"]["locate"]["variable"]
-        kwargs["variable_error"] = self.__options["tools"]["locate"]["variable_error"]
+        kwargs["morpho"] = self.__config["tools"]["locate"]["morpho"]
+        kwargs["start_on_space"] = self.__config["tools"]["locate"]["start_on_space"]
+        kwargs["char_by_char"] = self.__config["tools"]["locate"]["char_by_char"]
+        kwargs["korean"] = self.__config["tools"]["locate"]["korean"]
+        kwargs["arabic_rules"] = self.__config["tools"]["locate"]["arabic_rules"]
+        kwargs["negation_operator"] = self.__config["tools"]["locate"]["negation_operator"]
+        kwargs["stop_token_count"] = self.__config["tools"]["locate"]["stop_token_count"]
+        kwargs["protect_dic_chars"] = self.__config["tools"]["locate"]["protect_dic_chars"]
+        kwargs["variable"] = self.__config["tools"]["locate"]["variable"]
+        kwargs["variable_error"] = self.__config["tools"]["locate"]["variable_error"]
 
         kwargs["sntdir"] = None
         kwargs["number_of_matches"] = None
@@ -249,7 +234,7 @@ class UnitexProcessor(object):
             raise UnitexException("Locate failed!")
 
         index = os.path.join(self.__dir, "concord.ind")
-        if self.__options["virtualization"] is True:
+        if self.__config["virtualization"] is True:
             index = "%s%s" % (UnitexConstants.VFS_PREFIX, index)
 
         if exists(index) is False:
@@ -257,7 +242,7 @@ class UnitexProcessor(object):
         return index
 
     def _concord(self, index, merge=False, output=None):
-        alphabet = self.__options["resources"]["alphabet"]
+        alphabet = self.__config["resources"]["alphabet"]
         if alphabet is None:
             raise UnitexException("Unable to build concordance. No alphabet file provided.")
 
@@ -272,7 +257,7 @@ class UnitexProcessor(object):
         kwargs["offsets"] = None
         kwargs["unxmlize"] = None
         kwargs["directory"] = None
-        kwargs["thai"] = self.__options["tools"]["concord"]["thai"]
+        kwargs["thai"] = self.__config["tools"]["concord"]["thai"]
 
         result = None
 
@@ -291,7 +276,7 @@ class UnitexProcessor(object):
             kwargs["only_matches"] = False
 
             result = os.path.join(self.__dir, "concord.txt")
-            if self.__options["virtualization"] is True:
+            if self.__config["virtualization"] is True:
                 result = "%s%s" % (UnitexConstants.VFS_PREFIX, result)
 
         ret = concord(index, alphabet, **kwargs)
@@ -335,16 +320,15 @@ class UnitexProcessor(object):
         self.__snt = os.path.join(directory, "%s.snt" % name)
         self.__dir = os.path.join(directory, "%s_snt" % name)
 
-        if self.__options["virtualization"] is True:
+        if self.__config["virtualization"] is True:
             txt = "%s%s" % (UnitexConstants.VFS_PREFIX, self.__txt)
             cp(self.__txt, txt)
 
             self.__txt = txt
             self.__snt = "%s%s" % (UnitexConstants.VFS_PREFIX, self.__snt)
 
-        else:
-            if os.path.exists(self.__dir) is False:
-                mkdir(self.__dir)
+        if os.path.exists(self.__dir) is False:
+            mkdir(self.__dir)
 
         self._normalize()
 
@@ -396,9 +380,35 @@ class UnitexProcessor(object):
 
         *Return [TextFST]:*
 
-          The function returns a TextFST object.
+          The function returns a TextFST object. The object uses the
+          text.tfst and text.tind files which are cleaned (i.e. erased)
+          when the processor is closed.
         """
-        pass
+        kwargs = self.__config["tools"]["normalize"]
+
+        alphabet = self.__config["resources"]["alphabet"]
+        if alphabet is None:
+            raise UnitexException("Unable to segment text. No alphabet file provided.")
+
+        ret = txt2tfst(self.__snt, alphabet, **kwargs)
+        if ret is False:
+            raise UnitexException("Text normalization failed!")
+
+        # To avoid the copy process, the UnitexFile must be modified!
+        tfst = os.path.join(self.__dir, "text.tfst")
+        if self.__config["virtualization"] is True:
+            _tfst = "%s%s" % (UnitexConstants.VFS_PREFIX, tfst)
+            mv(_tfst, tfst)
+
+        tind = os.path.join(self.__dir, "text.tind")
+        if self.__config["virtualization"] is True:
+            _tind = "%s%s" % (UnitexConstants.VFS_PREFIX, tind)
+            mv(_tind, tind)
+
+        fst = TextFST()
+        fst.load(tfst, tind, "utf-8")
+
+        return fst
 
     def iter(self, grammar, **kwargs):
         """
@@ -490,7 +500,7 @@ class UnitexProcessor(object):
             return True
 
         _output = os.path.join(self.__dir, "concord-merge-temp.txt")
-        if self.__options["virtualization"] is True:
+        if self.__config["virtualization"] is True:
             _output = "%s%s" % (UnitexConstants.VFS_PREFIX, _output)
 
         self._concord(index, merge=True, output=_output)

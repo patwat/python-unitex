@@ -27,13 +27,13 @@ class CustomBuild(build):
     def run(self):
         # Unitex library compilation.
         command = "cd %s && make 64BITS=yes LIBRARY=yes TRE_DIRECT_COMPILE=yes DEBUG=yes" % os.path.join(UNITEX_INC, "build")
-        
+
         try:
             process = subprocess.Popen(command, stderr=subprocess.PIPE, shell=True)
         except Exception as e:
             sys.stderr.write("Error in command: %s\n" % command)
             raise e
-        
+
         process.wait()
 
         if process.returncode != 0:
@@ -57,7 +57,7 @@ class CustomBuild(build):
         except Exception as e:
             sys.stderr.write("Error in command: %s\n" % command)
             raise e
-        
+
         process.wait()
 
         if process.returncode != 0:
@@ -79,7 +79,7 @@ class CustomClean(clean):
         except Exception as e:
             sys.stderr.write("Error in command: %s\n" % command)
             raise e
-        
+
         process.wait()
 
         if process.returncode != 0:
@@ -91,36 +91,36 @@ setup(name = "unitex",
       version = "1.0",
       description = "Python 3 binding for the Unitex library",
       long_description = open('README.md').read(),
-      
+
       author = "Patrick Watrin",
       author_email = "patrick.watrin@gmail.com",
-      
+
       # https://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers = ["License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
                      "Programming Language :: Python",
                      "Development Status :: 4 - Beta",
                      "Intended Audience :: Developers",
                      "Topic :: Scientific/Engineering :: Information Analysis"],
-      
+
       keywords = "Unitex, Finite-States Transducers, Natural Language Processing",
-      
+
       license = "GPLv3",
       install_requires = [],
-      
+
       package_dir = {"unitex": "unitex",
-					 "unitex.utils": "unitex/utils"},
+                     "unitex.utils": "unitex/utils"},
 
       packages = ["unitex",
-				  "unitex.utils"],
-      
+                  "unitex.utils"],
+
       data_files = [],
-      
+
       ext_modules=[Extension("_unitex",
                              include_dirs = [UNITEX_INC, get_python_inc()],
                              libraries=["unitex"],
                              library_dirs=['/usr/local/lib'],
                              sources = ["extensions/_unitex.cpp"])],
-      
+
        cmdclass = {
            "build": CustomBuild,
            "clean": CustomClean
