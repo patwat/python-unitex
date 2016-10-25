@@ -70,19 +70,19 @@ class TestUnitexUtils(unittest.TestCase):
         self._arguments["automaton"].add_path(path8.split())
         self._arguments["automaton"].add_path(path9.split())
 
-        self._arguments["automaton"].todot(self._arguments["raw"])
+        self._arguments["automaton"].save(self._arguments["raw"])
         self.assertTrue(os.path.exists(self._arguments["raw"]), "Automaton building failed!")
 
     def test_02_automaton_determinize(self):
         self._arguments["automaton"].determinize()
-        self._arguments["automaton"].todot(self._arguments["determinized"])
+        self._arguments["automaton"].save(self._arguments["determinized"])
 
         self.assertTrue(os.path.exists(self._arguments["determinized"]), "Automaton determinization failed!")
 
 
     def test_03_automaton_minimize(self):
         self._arguments["automaton"].minimize()
-        self._arguments["automaton"].todot(self._arguments["minimized"])
+        self._arguments["automaton"].save(self._arguments["minimized"])
 
         self.assertTrue(os.path.exists(self._arguments["minimized"]), "Automaton minimization failed!")
 
