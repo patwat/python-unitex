@@ -6,7 +6,6 @@ import logging
 import re
 import struct
 
-from builtins import chr
 from io import open
 
 from unitex import UnitexException, UnitexConstants
