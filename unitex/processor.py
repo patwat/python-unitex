@@ -380,9 +380,9 @@ class UnitexProcessor(object):
 
         *Return [TextFST]:*
 
-          The function returns a TextFST object. The object uses the
-          text.tfst and text.tind files which are cleaned (i.e. erased)
-          when the processor is closed.
+        WARNING: The function returns a TextFST object. The object uses
+        the text.tfst and text.tind files which are cleaned (i.e. erased)
+        when the processor is closed.
         """
         kwargs = self.__config["tools"]["normalize"]
 

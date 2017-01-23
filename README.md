@@ -200,8 +200,11 @@ from unitex.processor import UnitexProcessor
 files = [ ... ]
 grammar = load_persistent_fst2("/path/to/grammar.fst2")
 
+config = UnitexConfig()
+config.load("/path/to/unitex.yaml")
+
 # Persistence is achieved during object initialization
-processor = UnitexProcessor("/path/to/unitex.yaml")
+processor = UnitexProcessor(config)
 
 kwargs = {}
 kwargs["xml"] = False
