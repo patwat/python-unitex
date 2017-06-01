@@ -200,8 +200,12 @@ from unitex.processor import UnitexProcessor
 files = [ ... ]
 grammar = load_persistent_fst2("/path/to/grammar.fst2")
 
+options = None
+with open("/path/to/unitex.yaml", "r") as f:
+    options = yaml.load(f)
+
 config = UnitexConfig()
-config.load("/path/to/unitex.yaml")
+config.load(options)
 
 # Persistence is achieved during object initialization
 processor = UnitexProcessor(config)
