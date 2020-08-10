@@ -565,6 +565,51 @@ PyObject *unitex_read_file(PyObject *self, PyObject *args) {
     return content;
 }
 
+/* 'unitex_read_binary_file' function (UTF-8 encoding only)*/
+static char unitex_read_binary_file_docstring[] = "\
+This function read a binary file from the disk or from the virtual filesystem.\n\
+**WARNING: The file must be encoded in UTF-8.**\n\n\
+*Positional arguments (length: 1):*\n\n\
+- **0 [str]** -- the file path.\n\n\
+*Return [str]:*\n\n\
+  The function returns an byte array.\
+";
+static PyObject *unitex_read_binary_file(PyObject *self, PyObject *args);
+
+PyObject *unitex_read_binary_file(PyObject *self, PyObject *args) {
+    char *path;
+    if (!PyArg_ParseTuple(args, "s", &path))
+        return NULL;
+    PyObject *content = NULL;
+
+    UNITEXFILEMAPPED *amf;
+    const void *buffer;
+    size_t file_size;
+
+    GetUnitexFileReadBuffer(path, &amf, &buffer, &file_size);
+    const unsigned char* bufchar = (const unsigned char*)buffer;
+
+    size_t bom_size = 0;
+    if (file_size>2) {
+        if (((*(bufchar))==0xef) && ((*(bufchar+1))==0xbb) && ((*(bufchar+2))==0xbf)) {
+            bom_size = 3;
+        }
+    }
+
+    char* _content = (char*)malloc(file_size+1);
+    memcpy(_content, bufchar+bom_size, file_size-bom_size);
+
+    *(_content+file_size-bom_size) = '\0';
+
+    /* y# doesn't seem to work in ptyhon 2.X */
+    //content = Py_BuildValue("y#", _content, file_size);
+    content = Py_BuildValue("s#", _content, file_size);
+
+    CloseUnitexFileReadBuffer(amf, buffer, file_size);
+
+    return content;
+}
+
 /* 'unitex_write_file' function (UTF-8 encoding only)*/
 static char unitex_write_file_docstring[] = "\
 This function writes a file on the disk or on the virtual filesystem.\n\
@@ -664,6 +709,7 @@ static PyMethodDef unitex_methods[] = {
     {"unitex_ls", unitex_ls, METH_VARARGS, unitex_ls_docstring},
 
     {"unitex_read_file", unitex_read_file, METH_VARARGS, unitex_read_file_docstring},
+    {"unitex_read_binary_file", unitex_read_binary_file, METH_VARARGS, unitex_read_binary_file_docstring},
     {"unitex_write_file", unitex_write_file, METH_VARARGS, unitex_write_file_docstring},
     {"unitex_append_to_file", unitex_append_to_file, METH_VARARGS, unitex_append_to_file_docstring},
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 from io import open
 
 from unitex import *
@@ -18,7 +20,7 @@ class FSAConstants:
 
 
 
-class Edge:
+class Edge(object):
 
     def __init__(self, label, targets=None, source=None):
         self.__label = label
@@ -33,7 +35,12 @@ class Edge:
         return len(self.__targets)
 
     def __str__(self):
-        return self.get_label()
+        label = self.get_label()
+        label = label.encode(UnitexConstants.DEFAULT_ENCODING)
+        return label
+
+    def __unicode__(self):
+        return u"%s" % self.get_label()
 
     def __hash__(self):
         return hash(self.get_label())
@@ -86,7 +93,7 @@ class Edge:
 
 
 
-class Node:
+class Node(object):
 
     def __init__(self, _id, final=False):
         self.__id = _id
@@ -112,14 +119,19 @@ class Node:
             yield label
 
     def __str__(self):
-        s = "NODE[%s]" % str(self.get_id())
+        node = self.__unicode__()
+        node = node.encode(UnitexConstants.DEFAULT_ENCODING)
+        return node
+
+    def __unicode__(self):
+        s = u"NODE[%s]" % str(self.get_id())
 
         if self.is_final():
-            s += " -- FINAL"
+            s += u" -- FINAL"
 
         for label in self:
-            targets = " | ".join([str(target.get_id()) for target in self[label]])
-            s += "\n\t%s -> (%s)" % (label, targets)
+            targets = u" | ".join([str(target.get_id()) for target in self[label]])
+            s += u"\n\t%s -> (%s)" % (label, targets)
 
         return s
 
@@ -187,7 +199,7 @@ class Node:
 
 
 
-class NodeSets:
+class NodeSets(object):
 
     def __init__ (self):
         self.__sets = {}
@@ -211,7 +223,7 @@ class NodeSets:
 
 
 
-class Automaton:
+class Automaton(object):
 
     def __init__(self, name="Automaton"):
         self.__name = name
@@ -237,12 +249,17 @@ class Automaton:
             yield node
 
     def __str__(self):
-        title = "# FSA -- %s #" % self.get_name()
+        automaton = self.__unicode__()
+        automaton = automaton.encode(UnitexConstants.DEFAULT_ENCODING)
+        return automaton
 
-        s = "%s\n%s\n%s\n\n" % ("#" * len(title), title, "#" * len(title))
+    def __unicode__(self):
+        title = u"# FSA -- %s #" % self.get_name()
+
+        s = u"%s\n%s\n%s\n\n" % ("#" * len(title), title, "#" * len(title))
 
         for node in self:
-            s += "%s\n\n" % node
+            s += u"%s\n\n" % node
 
         return s
 

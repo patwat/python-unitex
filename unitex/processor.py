@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import logging
 import os
@@ -54,6 +54,9 @@ class UnitexProcessor(object):
         init_log_system(verbose, debug, log)
 
         self._load()
+
+    def __del__(self):
+        self._free()
 
     def _load(self):
         if self.__config["persistence"] is False:
@@ -395,15 +398,23 @@ class UnitexProcessor(object):
             raise UnitexException("Text normalization failed!")
 
         # To avoid the copy process, the UnitexFile must be modified!
+#        tfst = os.path.join(self.__dir, "text.tfst")
+#        if self.__config["virtualization"] is True:
+#            _tfst = "%s%s" % (UnitexConstants.VFS_PREFIX, tfst)
+#            mv(_tfst, tfst)
+#
+#        tind = os.path.join(self.__dir, "text.tind")
+#        if self.__config["virtualization"] is True:
+#            _tind = "%s%s" % (UnitexConstants.VFS_PREFIX, tind)
+#            mv(_tind, tind)
+
         tfst = os.path.join(self.__dir, "text.tfst")
         if self.__config["virtualization"] is True:
-            _tfst = "%s%s" % (UnitexConstants.VFS_PREFIX, tfst)
-            mv(_tfst, tfst)
+            tfst = "%s%s" % (UnitexConstants.VFS_PREFIX, tfst)
 
         tind = os.path.join(self.__dir, "text.tind")
         if self.__config["virtualization"] is True:
-            _tind = "%s%s" % (UnitexConstants.VFS_PREFIX, tind)
-            mv(_tind, tind)
+            tind = "%s%s" % (UnitexConstants.VFS_PREFIX, tind)
 
         fst = TextFST()
         fst.load(tfst, tind, "utf-8")

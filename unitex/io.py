@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import logging
 import os
 
@@ -179,6 +181,7 @@ class UnitexFile(object):
           open. Possible values are:
 
           - 'r': open for reading (default);
+          - 'b': open for reading (binary file);
           - 'w': open for writing;
           - 'a': open for writing (append to the end of file if it
             exists).
@@ -244,6 +247,10 @@ class UnitexFile(object):
         """
         if self.__path is None:
             raise UnitexException("You must open a file before reading...")
-        if self.__mode != "r":
+        if self.__mode not in ["r", "b"]:
             raise UnitexException("File '%s' is opened in write/append mode..." % self.__path)
-        return _unitex.unitex_read_file(self.__path)
+
+        if self.__mode == "r":
+            return _unitex.unitex_read_file(self.__path)
+        elif self.__mode == "b":
+            return _unitex.unitex_read_binary_file(self.__path)

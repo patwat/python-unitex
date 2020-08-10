@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import logging
 import re
 
-from unitex import UnitexException
+from unitex import UnitexException, UnitexConstants
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,7 +23,12 @@ class Tag(object):
         self.__flexions = []
 
     def __str__(self):
-        return self.get()
+        tag = self.get()
+        tag = tag.encode(UnitexConstants.DEFAULT_ENCODING)
+        return tag
+
+    def __unicode__(self):
+        return u"%s" % self.get()
 
     def load(self, tag):
         self.__pos = ""
@@ -112,7 +119,12 @@ class Entry(Tag):
         self.__lemma = ""
 
     def __str__(self):
-        return self.get()
+        entry = self.get()
+        entry = entry.encode(UnitexConstants.DEFAULT_ENCODING)
+        return entry
+
+    def __unicode(self):
+        return u"%s" % self.get()
 
     def load(self, entry, bracketed=False):
         if bracketed is True:

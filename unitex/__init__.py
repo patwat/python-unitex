@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import logging
 import os
 import sys
@@ -22,7 +24,7 @@ class UnitexConstants(object):
     This class lists all the constants used by the Unitex processor.
     """
 
-    DEFAULT_ENCODING="utf-8"
+    DEFAULT_ENCODING=sys.getfilesystemencoding()
 
     VFS_PREFIX = "$:"
 

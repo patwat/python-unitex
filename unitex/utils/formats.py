@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import array
 import logging
 import re
 import struct
 
-from io import open
+from io import open, StringIO
 
 from unitex import UnitexException, UnitexConstants
+from unitex.io import UnitexFile
 from unitex.utils.fsa import FSAConstants, Automaton
 from unitex.utils.types import BRACKETED_ENTRY, Tag, Entry
 
@@ -118,14 +121,14 @@ class OldCompressedDictionary:
         tnbr = self.__bin[pos] * 256 + self.__bin[pos+1]
         pos = pos + 2
 
-        _LOGGER.debug("Lookup Start: token[%s|%s] -- pos(%s) -- tnbr(%s)\n" % (token[:i], token[i:], pos, tnbr))
+        _LOGGER.debug(u"Lookup Start: token[%s|%s] -- pos(%s) -- tnbr(%s)\n" % (token[:i], token[i:], pos, tnbr))
 
         if i == len(token):
             data = []
 
-            _LOGGER.debug("   Check Final State: pos(%s) -- tnbr(%s)\n" % (pos, tnbr))
+            _LOGGER.debug(u"   Check Final State: pos(%s) -- tnbr(%s)\n" % (pos, tnbr))
             if not (tnbr & 32768):
-                _LOGGER.debug("      -> Final\n")
+                _LOGGER.debug(u"      -> Final\n")
                 index = self.__bin[pos] * 256 * 256 + self.__bin[pos+1] * 256 + self.__bin[pos+2]
 
                 for inf in self.INF_SEPARATOR.split(self.__inf[index]):
@@ -134,7 +137,7 @@ class OldCompressedDictionary:
 
                     data.append(E)
             else:
-                _LOGGER.debug("      -> Not final\n")
+                _LOGGER.debug(u"      -> Not final\n")
 
             return data, pos-2
         elif tnbr & 32768:
@@ -144,7 +147,7 @@ class OldCompressedDictionary:
 
         for j in range(tnbr):
             char = chr(self.__bin[pos] * 256 + self.__bin[pos+1])
-            _LOGGER.debug("   Matching char[%s] -- pos(%s) -> current[%s]\n" % (token[i], pos, char))
+            _LOGGER.debug(u"   Matching char[%s] -- pos(%s) -> current[%s]\n" % (token[i], pos, char))
 
             pos = pos + 2
 
@@ -152,13 +155,13 @@ class OldCompressedDictionary:
             pos = pos + 3
 
             if char == token[i]:
-                _LOGGER.debug("      -> Char found\n")
+                _LOGGER.debug(u"      -> Char found\n")
                 return self.lookup(token, i+1, offset)
 
             # WEIRD... Objective: handle whitespaces in MWU dictionaries for the match function
             #               -> ["Conseil", "d'", "administration"] == "Conseil d'administration"
             elif char == u" " and i == 0:
-                _LOGGER.debug("   -> Char is whitespace [pass]\n")
+                _LOGGER.debug(u"   -> Char is whitespace [pass]\n")
                 return self.lookup(token, i, offset)
 
         return None, pos
@@ -182,13 +185,13 @@ class OldCompressedDictionary:
 
         buffer, pos, tnbr = [], None, None
         for j in range(i, len(sequence)):
-            _LOGGER.debug("Match Token: '%s'\n" % sequence[j])
+            _LOGGER.debug(u"Match Token: '%s'\n" % sequence[j])
 
             entries, pos = self.lookup(sequence[j], pos=pos)
             if entries is None:
-                _LOGGER.debug("   -> No entry found ...\n")
+                _LOGGER.debug(u"   -> No entry found ...\n")
                 break
-            _LOGGER.debug("   -> Entries found: pos[%s] -- tnbr[%s]\n" % (pos, tnbr))
+            _LOGGER.debug(u"   -> Entries found: pos[%s] -- tnbr[%s]\n" % (pos, tnbr))
 
             buffer.append(j)
 
@@ -198,12 +201,12 @@ class OldCompressedDictionary:
                     return matches
 
             if separator is not None:
-                _LOGGER.debug("Match Separator: '%s'\n" % separator)
+                _LOGGER.debug(u"Match Separator: '%s'\n" % separator)
                 entries, pos = self.lookup(separator, pos=pos)
                 if entries is None:
-                    _LOGGER.debug("   -> No separator found ...\n")
+                    _LOGGER.debug(u"   -> No separator found ...\n")
                     break
-                _LOGGER.debug("   -> Separator found\n")
+                _LOGGER.debug(u"   -> Separator found\n")
 
         if not matches:
             return None
@@ -454,10 +457,12 @@ class SentenceFST(Automaton):
                     self.__entries[p1] = []
                 self.__entries[p1].append((entry, p2))
 
-                transitions.append((sid, lid, tid))
+                #transitions.append((sid, lid, tid))
+                transitions.append((sid, entry, tid))
 
-        for sid, lid, tid in transitions:
-            self.add_edge(lid, sid, tid)
+        #for sid, lid, tid in transitions:
+        for sid, entry, tid in transitions:
+            self.add_edge(entry, sid, tid)
 
 
 
@@ -473,6 +478,10 @@ class TextFST:
     def __len__(self):
         return len(self.__tind)
 
+    def __readline(self, position):
+        end = None
+        return end
+
     def __getitem__(self, i):
         try:
             position = self.__tind[i]
@@ -486,7 +495,7 @@ class TextFST:
             line = line.rstrip()
 
             if line[0] != "$":
-                raise UnitexException("File '%s' is corrupted ..." % self.__tfst.name)
+                raise UnitexException("Text automaton file is corrupted ...")
 
             # The sentence number (format '$n')
             number = int(line[1:])
@@ -591,18 +600,18 @@ class TextFST:
                 line = self.__tfst.readline()
                 line = line.rstrip()
 
-            _LOGGER.debug("SENTENCE[%s]\n" % number)
-            _LOGGER.debug(" - offset: (%s)\n" % ", ".join([str(i) for i in offset]))
-            _LOGGER.debug(" - text: %s\n" % text)
-            _LOGGER.debug(" - tokens: [%s]\n" % ", ".join([str(t) for t in tokens]))
-            _LOGGER.debug(" - states:\n")
+            _LOGGER.debug(u"SENTENCE[%s]\n" % number)
+            _LOGGER.debug(u" - offset: (%s)\n" % ", ".join([unicode(i) for i in offset]))
+            _LOGGER.debug(u" - text: %s\n" % text)
+            _LOGGER.debug(u" - tokens: [%s]\n" % ", ".join([unicode(t) for t in tokens]))
+            _LOGGER.debug(u" - states:\n")
             for state in states:
-                _LOGGER.debug("   - s: %s\n" % state)
-            _LOGGER.debug(" - tags:\n")
+                _LOGGER.debug(u"   - s: %s\n" % state)
+            _LOGGER.debug(u" - tags:\n")
             for tag in tags:
-                _LOGGER.debug("   - t: (%s)\n" % ", ".join([str(t) for t in tag]))
+                _LOGGER.debug(u"   - t: (%s)\n" % ", ".join([unicode(t) for t in tag]))
 
-            S = SentenceFST("SENTENCE[%d]" % number)
+            S = SentenceFST(u"SENTENCE[%d]" % number)
             S.load(text, tokens, states, tags)
 
             return S
@@ -611,17 +620,35 @@ class TextFST:
         for i in range(len(self)):
             yield self[i]
 
-    def load(self, fst, index, encoding=None):
+    def load(self, fst, ind, encoding=None):
         if encoding is None:
             encoding = UnitexConstants.DEFAULT_ENCODING
 
-        self.__tfst = open(fst, "r", encoding=encoding)
+        ffst = UnitexFile()
+        ffst.open(fst, "r")
+        self.__tfst = StringIO(ffst.read())
+        ffst.close()
+
         self.__tind = []
 
-        with open(index, "rb") as fin:
-            i = fin.read(4)
-            while i:
-                position = struct.unpack("<L", i)
-                self.__tind.append(position[0])
+#        find = UnitexFile()
+#        find.open(ind, "b")
+#        index = find.read()
+#        find.close()
+#
+#        i = 0
+#        while i<(len(index)-4):
+#            position = struct.unpack("<L", index[i:i+4])
+#            self.__tind.append(position[0])
+#        
+#            i += 4
 
-                i = fin.read(4)
+        # When using StringIO, the offsets (which are correct in Vim)
+        # given by the index file are not correct... WHY ?!
+        position = self.__tfst.tell()
+        line = self.__tfst.readline()
+        while line:
+            if line.startswith("$"):
+                self.__tind.append(position)
+            position = self.__tfst.tell()
+            line = self.__tfst.readline()

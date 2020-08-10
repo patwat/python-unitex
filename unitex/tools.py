@@ -3,6 +3,8 @@
 # NOTE: The documentation is somehow a copy/paste from the Unitex
 #       manual.
 
+from __future__ import unicode_literals
+
 import logging
 
 import _unitex
