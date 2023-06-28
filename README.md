@@ -32,10 +32,11 @@ apt-get install python-setuptools
 apt-get install python-yaml
 ```
 
-Once you have met these requirements and downloaded the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution (for Unitex >= 3.1), run (as root):
+Once you have met these requirements and downloaded the [Unitex](http://igm.univ-mlv.fr/~unitex/index.php?page=3&html=download.html) source distribution (for Unitex >= 3.1), clone this repository and run (as root):
 
 ```bash
-UNITEX_INC=/path/to/unitex/Src/C++ python setup.py install
+cd /path/to/this/repository
+UNITEX_INC=/path/to/unitex/Src/<directory with cpp files> python setup.py install
 ```
 
 ## Installation testing
